@@ -1,3 +1,4 @@
+/* 헤더 */
 #header {
     border-bottom: 1px solid rgba(0, 0, 0, .2);
     width: 100%;
@@ -8,14 +9,14 @@
     margin-bottom: 10px;
 }
 #header #header_wrapper {
-    max-width: 1300px;
+    max-width: 1024px;
     margin: 0 auto;
     position: relative;
     height: 80px
 }
 #header #header_wrapper .userMenu {
     height: 44px;
-    right: 50px;
+    right: 0px;
     bottom: 0px;
     position: absolute;
 }
@@ -41,12 +42,14 @@
 #header #header_wrapper .search {
     font-size: 14px;
     padding-left: 10px;
-    width: 480px;
+    width: 300px;
     height: 37px;
     border: 0;
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .15);
     background: #fff;
 }
+
+/* 메인메뉴 */
 #main_menu_container {
     width: 100%;
     background-color: #fff
@@ -101,6 +104,3 @@
     padding-right: 5px;
     text-decoration: none
 }
-
-
-
