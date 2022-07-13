@@ -3,6 +3,8 @@
 
 .project
 .classpath
+sql
+dataresource.properties
 
 ### Eclipse ###
 .metadata
@@ -123,3 +125,4 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/java,eclipse,windows
+/build/
