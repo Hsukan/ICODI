@@ -1,0 +1,109 @@
+/* 헤더 */
+#header {
+    border-bottom: 1px solid rgba(0, 0, 0, .2);
+    width: 100%;
+    z-index: 2;
+    top: 0;
+    background-color: #fff;
+    color: #000;
+    margin-bottom: 10px;
+}
+#header #header_wrapper {
+    max-width: 1024px;
+    margin: 0 auto;
+    position: relative;
+    height: 80px
+}
+#header #header_wrapper .userMenu {
+    height: 44px;
+    right: 0px;
+    bottom: 0px;
+    position: absolute;
+}
+#header #header_wrapper .userMenu a{
+    text-decoration: none;
+    color: #555;
+    float: left;
+    font-size: 13px;
+    padding: 7px 0;
+    margin-left: 15px;
+    padding-right: 5px;
+}
+
+#header #header_wrapper .search_wrapper {
+    position: absolute;
+    top: 25px;
+    left: 390px;
+    z-index: 100;
+    margin-bottom: 10px;
+    min-height: 30px
+}
+
+#header #header_wrapper .search {
+    font-size: 14px;
+    padding-left: 10px;
+    width: 300px;
+    height: 37px;
+    border: 0;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .15);
+    background: #fff;
+}
+
+/* 메인메뉴 */
+#main_menu_container {
+    width: 100%;
+    background-color: #fff
+}
+#main_menu_container #main_menu {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    margin: 0 auto;
+    max-width: 1300px
+}
+#main_menu_container .main_menu {
+    text-align: center;
+    text-transform: uppercase;
+    height: 55px
+}
+#main_menu_container .main_menu a {
+    display: block;
+    display: flex;
+    justify-content: center;
+    padding: 20px 1em 0;
+    color: #666;
+    text-decoration: none;
+    white-space: nowrap;
+    font-size: 13px;
+}
+#main_menu_container .main_menu a:hover {
+    color: #ff2477
+}
+
+
+#header_of_header_wrapper {
+    height: 24px;
+    width: 95%;
+}
+
+#header_of_header_wrapper #header_of_header {
+    max-width: 1300px;
+    margin: 0 auto
+}
+
+#header_of_header_wrapper #header_of_header div.btn_wrapper_right {
+    float: right
+}
+
+#header_of_header_wrapper #header_of_header a {
+    color: #555;
+    float: left;
+    font-size: 12px;
+    padding: 7px 0;
+    margin-left: 15px;
+    padding-right: 5px;
+    text-decoration: none
+}
+
+/* 회원가입메뉴 */
+
