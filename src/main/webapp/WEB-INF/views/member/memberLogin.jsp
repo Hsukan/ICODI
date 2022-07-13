@@ -65,7 +65,7 @@ window.onload = () => {
 			<table>
 				<tr>
 					<td><a href="#">기존회원이신가요?</a></td>
-					<td><a href="<%= request.getContextPath() %>/member/memberEnroll">회원가입</a></td>
+					<td><a href="<%= request.getContextPath()%>/member/memberEnroll">회원가입</a></td>
 				</tr>
 				<tr>
 					<td><input type="text" name="memberId" id="memberId"
