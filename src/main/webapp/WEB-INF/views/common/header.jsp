@@ -35,7 +35,6 @@
 				<a href="#"><%= loginMember.getMemberId() %>님, 환영합니다.</a> 
 				<a href="<%= request.getContextPath()%>/member/memberLogout">LOGOUT</a>         
                 <% } %>
-                
             </div>
             <form class="search_wrapper hide_for_mobile" action="/search/">
                 <input class="search" type="text" placeholder="검색어를 입력하세요" value="">
@@ -49,9 +48,7 @@
                 <div class="main_menu"><a href="#" data-alter="bottoms">Bottoms</a></div>
                 <div class="main_menu"><a href="#" data-alter="shoes">Shoes</a></div>
                 <div class="main_menu"><a href="#" data-alter="accessories">Accessories</a></div>
-                <div class="main_menu"><a href="#" data-alter="admin">Admin</a></div>
+                <div class="main_menu"><a href="<%= request.getContextPath() %>/admin/adminPage" data-alter="admin">Admin</a></div>
             </div>
         </div>
     </div>
-</body>
-</html>
