@@ -69,5 +69,30 @@ public class MemberDao {
 		String addressEx = rset.getString("member_address_extra");
 		return new Member(memberId, memberName, password, email, phone, enrollDate, memberRole, point, address, addressEx);
 	}
+	
+	public int insertMember(Connection conn, Member member) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String sql = prop.getProperty("insertMember");
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, member.getMemberId());
+			pstmt.setString(2, member.getMemberName());
+			pstmt.setString(3, member.getPassword());
+			pstmt.setString(4, member.getEmail());
+			pstmt.setString(5, member.getPhone());
+			pstmt.setString(6, member.getAddress());
+			pstmt.setString(7, member.getAddressEx());
+			
+			result = pstmt.executeUpdate();
+		}
+		catch (SQLException e) {
+			throw new MemberException("회원가입 오류", e);
+		}
+		finally {
+			close(pstmt);
+		}
+		return result;
+	}
 
 }
