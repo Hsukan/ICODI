@@ -4,6 +4,10 @@
 .project
 .classpath
 sql
+<<<<<<< HEAD
+=======
+dataresource.properties
+>>>>>>> branch 'master' of https://github.com/Hsukan/icodi.git
 
 ### Eclipse ###
 .metadata
