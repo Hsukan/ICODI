@@ -1,5 +1,9 @@
+<%@page import="com.kh.icodi.member.model.dto.Member"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%
+	Member loginMember = (Member) session.getAttribute("loginMember");
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -25,7 +29,12 @@
                 <a href="#">마이페이지</a>
                 <a href="#">마이쇼핑</a>
                 <a href="#">카트</a>
+                <%if (loginMember == null){ %>
                 <a href="<%= request.getContextPath()%>/member/memberLogin">LOGIN</a>
+                <% } else {%>
+				<a href="#"><%= loginMember.getMemberId() %>님, 환영합니다.</a> 
+				<a href="<%= request.getContextPath()%>/member/memberLogout">LOGOUT</a>         
+                <% } %>
             </div>
             <form class="search_wrapper hide_for_mobile" action="/search/">
                 <input class="search" type="text" placeholder="검색어를 입력하세요" value="">
