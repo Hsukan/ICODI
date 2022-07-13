@@ -24,7 +24,7 @@ public class BoardViewServlet extends HttpServlet {
 	private BoardService boardService = new BoardService();
 
 	/**
-	 * 
+	 * dd
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
