@@ -32,6 +32,8 @@ public class ProductExt extends Product {
 
 	@Override
 	public String toString() {
-		return "ProductExt [attachmentList=" + attachmentList + "]";
+		return "ProductExt [attachmentList=" + attachmentList + ", toString()=" + super.toString() + "]";
 	}
+
+
 }

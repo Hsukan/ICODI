@@ -18,7 +18,7 @@
         <div id="header_of_header_wrapper">
             <div id="header_of_header">
                 <div class="btn_wrapper_right">
-                    <a class="create btn" href="/create">· 코디 만들기</a>
+                    <a class="create btn" href="<%= request.getContextPath() %>/codibook/create">· 코디 만들기</a>
                     <a class="cscenter btn" href="/cs_center">· 고객센터</a>
                 </div>
             </div>
