@@ -104,7 +104,7 @@ public class CodiBoardDao {
 	}
 	
 	// 좋아요 추가하기
-	// insertLike = insert into likeThat values (seq_like_no.nexval, ?, ?)
+	// insertLike = insert into likeThat values (?, ?, seq_like_no.nextval)
 	public int insertLike(Connection conn, LikeThat likeIt) {
 		PreparedStatement pstmt = null;
 		int result = 0;
@@ -122,7 +122,50 @@ public class CodiBoardDao {
 		}
 		return result;
 	}
-
+	
+	// 좋아요 번호 조회
+	// selectLikeNo = select like_no from likeThat where codi_board_no = ? and member_id = ?
+	public int selectLikeNo(Connection conn, LikeThat delLike) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		int delLikeNo = 0;
+		String sql = prop.getProperty("selectLikeNo");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, delLike.getCodiBoardNo());
+			pstmt.setString(2, delLike.getMemberId());
+			rset = pstmt.executeQuery();
+			if(rset.next()) {
+				delLikeNo = rset.getInt(1);
+			}
+		} catch (SQLException e) {
+			throw new CodiBoardException("좋아요 번호 조회 오류!", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		return delLikeNo;
+	}
+	
+	// 좋아요 삭제하기
+	// deleteLike = delete from likeThat where like_no ?
+	public int deleteLike(Connection conn, int likeNo) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String sql = prop.getProperty("deleteLike");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, likeNo);
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new CodiBoardException("좋아요 삭제하기 오류!", e);
+		} finally {
+			close(pstmt);
+		}
+		return result;
+	}
 	private MyCodi handleMyCodiResultSet(ResultSet rset) throws SQLException {
 		MyCodi myCodi = new MyCodi();
 		myCodi.setCodiNo(rset.getInt("codi_no"));

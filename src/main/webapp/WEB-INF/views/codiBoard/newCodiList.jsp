@@ -5,6 +5,7 @@
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 <%
 	int totalPage = (int) request.getAttribute("totalPage");
+	String loginMemberId = (String)request.getAttribute("loginMemberId");
 %>
 <script src="<%= request.getContextPath()%>/js/jquery-3.6.0.js"></script>
 	<main>
@@ -22,6 +23,7 @@
 		</section>
 	</main>
 <script>
+// 최신코디 보기
 const goToNewCode = () => {
 	location.href = "<%= request.getContextPath()%>/codi/newCodiList"
 }
@@ -46,7 +48,7 @@ const getPage = (cPage) => {
 						<div class="myCodi">
 							<img src="<%= request.getContextPath()%>/upload/codiboard/\${myCodiFilename}" />
 							<p class="info">
-								<span id="\${codiBoardNo}" class="like">❤</span>
+								<span id="\${codiBoardNo}" class="like">♡</span>
 								<span id="likeCount">받은 좋아요 \${likeCount}</span>
 								<span id="writer">\${memberId}</span>
 								<span id="regDate">\${myCodiRegDate}</span>
@@ -65,7 +67,14 @@ const getPage = (cPage) => {
 			
 			document.querySelectorAll(".like").forEach((no) => {
 				no.onclick = (e) => {
-					likeIt(e);
+					if(<%= loginMember == null %>) {
+						alert("로그인 후 이용 가능합니다.");
+						return;
+					} else {
+						console.log('가능');
+					}
+					
+					// 	likeIt(e);
 				}
 			});
 		}

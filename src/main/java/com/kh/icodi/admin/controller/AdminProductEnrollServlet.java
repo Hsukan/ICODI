@@ -16,7 +16,7 @@ import com.kh.icodi.admin.model.dto.ProductAttachment;
 import com.kh.icodi.admin.model.dto.ProductExt;
 import com.kh.icodi.admin.model.dto.ProductSize;
 import com.kh.icodi.admin.model.service.AdminService;
-import com.kh.icodi.common.HelloMvcFileRenamePolicy;
+import com.kh.icodi.common.IcodiMvcFileRenamePolicy;
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.FileRenamePolicy;
 
@@ -34,14 +34,12 @@ public class AdminProductEnrollServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
-			request.setCharacterEncoding("utf-8");
-			
 			// 0. 첨부파일처리
 			ServletContext application = getServletContext();
 			String saveDirecotry = application.getRealPath("/upload/admin");
 			int maxPostSize = 1024 * 1024 * 10;
 			String encoding = "utf-8";
-			FileRenamePolicy policy = new HelloMvcFileRenamePolicy();
+			FileRenamePolicy policy = new IcodiMvcFileRenamePolicy();
 			
 			// 저장된 파일 정보 확인
 			MultipartRequest multiReq = new MultipartRequest(request, saveDirecotry, maxPostSize, encoding, policy);

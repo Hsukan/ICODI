@@ -30,7 +30,6 @@ public class CodiBookCreateServlet extends HttpServlet {
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
-			request.setCharacterEncoding("utf-8");
 			int categoryNo = Integer.parseInt(request.getParameter("categoryNo"));
 			List<ProductExt> product = codiBookService.findAllByCategoryNo(categoryNo);
 			Gson gson = new Gson();

@@ -50,4 +50,20 @@ public class CodiBoardService {
 		}
 		return result;
 	}
+
+	public int deleteLike(LikeThat delLike) {
+		Connection conn = getConnection();
+		int result = 0;
+		try {
+			int likeNo = codiBoardDao.selectLikeNo(conn, delLike);
+			result = codiBoardDao.deleteLike(conn, likeNo);
+			commit(conn);
+		} catch(Exception e) {
+			rollback(conn);
+			throw e; 
+		} finally {
+			close(conn);
+		}
+		return result;
+	}
 }

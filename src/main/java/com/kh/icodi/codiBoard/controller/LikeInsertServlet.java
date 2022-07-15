@@ -24,11 +24,16 @@ public class LikeInsertServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String memberId = request.getParameter("memberId");
-		int codiBoardNo = Integer.parseInt(request.getParameter("codiBoardNo"));
-		System.out.println("memberId = " + memberId);
-		LikeThat likeIt = new LikeThat(0, memberId, codiBoardNo);
-		
-		int result = codiBoardService.insertLike(likeIt); 
+		try {
+			String memberId = request.getParameter("memberId");
+			int codiBoardNo = Integer.parseInt(request.getParameter("codiBoardNo"));
+			System.out.println("memberId = " + memberId);
+			LikeThat likeIt = new LikeThat(0, memberId, codiBoardNo);
+			
+			int result = codiBoardService.insertLike(likeIt); 
+		} catch(Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
 	}
 }

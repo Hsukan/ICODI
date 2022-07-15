@@ -24,13 +24,10 @@ public class AdminProductStockServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
-			request.setCharacterEncoding("utf-8");
 			String productName = request.getParameter("productName");
 			String ioStatus = request.getParameter("ioStatus");
 			int ioStock =Integer.parseInt(request.getParameter("ioStock"));
-			System.out.println("productName = " + productName);
-			System.out.println("ioStatus = " + ioStatus);
-			System.out.println("ioStock = " + ioStock);
+			
 			ProductIO productIo = new ProductIO(0, productName, ioStatus, ioStock);
 
 			int result = adminService.insertIO(productIo);
