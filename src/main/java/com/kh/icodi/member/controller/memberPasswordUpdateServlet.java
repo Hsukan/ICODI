@@ -47,12 +47,13 @@ public class memberPasswordUpdateServlet extends HttpServlet {
 				int result = memberService.updatePassword(memberId, newPassword);
 				
 				msg = "비밀번호를 성공적으로 변경했습니다.";
+				request.setAttribute("pwdResult", true);
 				location += "/member/memberMyPage";
 			}
 			else {
 				msg = "기존 비밀번호가 일치하지 않습니다.";
 				location += "/member/memberPasswordUpdate";
-				
+				request.setAttribute("pwdResult", false);
 				Member loginMember = (Member) request.getSession().getAttribute("loginMember");
 				loginMember.setPassword(newPassword);
 			}

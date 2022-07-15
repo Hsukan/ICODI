@@ -39,14 +39,16 @@ public class MemberEnrollServlet extends HttpServlet {
 			
 			String memberId = request.getParameter("memberId");
 			String memberName = request.getParameter("memberName");
-			// String password = IcodiMvcUtils.getEncryptedPassword(request.getParameter("password"), memberId);
-			String password = request.getParameter("password");
+			String password = IcodiMvcUtils.getEncryptedPassword(request.getParameter("password"), memberId);
+			// String password = request.getParameter("password");
 			String email = request.getParameter("email");
 			String[] phones = request.getParameterValues("phone");
 			String address = request.getParameter("address");
 			String addressEx = request.getParameter("addressEx");
 			
-			String phone = phones != null ? String.join("-", phones) : null;
+			String phone = phones != null ? 
+					// String.join("-", phones)
+					String.join("", phones) : null;
 			
 			Member member =
 					new Member(memberId, memberName, password, email, phone, null, null, 0, address, addressEx);

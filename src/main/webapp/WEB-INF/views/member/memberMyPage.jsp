@@ -10,7 +10,7 @@
 	String address = loginMember.getAddress();
 	String addressEx = loginMember.getAddressEx();
 
-	String[] phones = phone.split("-");
+	// String[] phones = phone.split("-");
 %>
 <style>
     #modal.modal-overlay {
@@ -94,7 +94,7 @@
 					<td>비밀번호</td>
 					<td>
 						<input type="button" value="비밀번호 변경" id="btn-modal-passwordUpdate" 
-						onclick="window.open('<%= request.getContextPath() %>/member/memberPasswordUpdate', 'popup', 'width=300px, height=300px, location=no, status=no, scrollbars=no')">
+						onclick="updatePassword();">
 					</td>
 				</tr>
     			<tr>
@@ -118,8 +118,8 @@
 							<option value="018">018</option>
 							<option value="019">019</option>
 						</select>-
-						<input type="text" name="phone" id="phone2" maxlength="4" style="width: 30px;" value="<%= phones[1].replace(" ", "") %>" required>-
-						<input type="text" name="phone" id="phone3" maxlength="4" style="width: 30px;" value="<%= phones[2].replace(" ", "") %>" required>
+						<input type="text" name="phone" id="phone2" maxlength="4" style="width: 30px;" value="" required>-
+						<input type="text" name="phone" id="phone3" maxlength="4" style="width: 30px;" value="" required>
 					</td>
 				</tr>
   				<tr>
@@ -187,6 +187,11 @@
         }
     }).open();
 });
+   
+const updatePassword = () => {
+	window.open('<%= request.getContextPath() %>/member/memberPasswordUpdate', 'popup', 'width=400px, height=400px, location=no, status=no, scrollbars=no')
+	
+};
 
 /**
  * POST /member/memberDelete
