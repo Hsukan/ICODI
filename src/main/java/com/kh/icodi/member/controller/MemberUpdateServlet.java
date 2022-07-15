@@ -1,6 +1,7 @@
 package com.kh.icodi.member.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,26 +10,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.kh.icodi.common.IcodiMvcUtils;
 import com.kh.icodi.member.model.dto.Member;
 import com.kh.icodi.member.model.service.MemberService;
 
 /**
- * Servlet implementation class MemberEnrollServlet
+ * Servlet implementation class MemberUpdateServlet
  */
-@WebServlet("/member/memberEnroll")
-public class MemberEnrollServlet extends HttpServlet {
+@WebServlet("/member/memberUpdate")
+public class MemberUpdateServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private MemberService memberService = new MemberService();
-	
-
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher("/WEB-INF/views/member/memberEnroll.jsp")
-			.forward(request, response);
-	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
@@ -39,31 +30,33 @@ public class MemberEnrollServlet extends HttpServlet {
 			
 			String memberId = request.getParameter("memberId");
 			String memberName = request.getParameter("memberName");
-			String password = IcodiMvcUtils.getEncryptedPassword(request.getParameter("password"), memberId);
-			// String password = request.getParameter("password");
 			String email = request.getParameter("email");
 			String[] phones = request.getParameterValues("phone");
 			String address = request.getParameter("address");
 			String addressEx = request.getParameter("addressEx");
 			
-			String phone = phones != null ? 
-					String.join("-", phones)
+			String phone = phones != null ?
+					String.join("-", phones) 
 					// String.join("", phones) 
 					: null;
 			
-			Member member =
-					new Member(memberId, memberName, password, email, phone, null, null, 0, address, addressEx);
+			Member member = 
+					new Member(memberId, memberName, null, email, phone, null, null, 0, address, addressEx);
+			System.out.println("member@MemberUpdateServlet = " + member);
 			
-			System.out.println("member = " + member);
-			
-			int result = memberService.insertMember(member);
-			System.out.println("result@MemberEnrollServlet = " + result);
+			int result = memberService.updateMember(member);
 			
 			HttpSession session = request.getSession();
-			response.sendRedirect(request.getContextPath() + "/");
+			String msg = "";
 			
-		}
-		catch (Exception e) {
+			if(result>0) {
+				msg = "회원정보 수정성공!";
+				session.setAttribute("loginMember", memberService.findById(memberId));
+			}
+			
+			session.setAttribute("msg", msg);
+			response.sendRedirect(request.getContextPath() + "/member/memberMyPage");
+		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
 		}
