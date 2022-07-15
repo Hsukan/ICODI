@@ -13,7 +13,7 @@
 				</tr>
 				<tr>
 					<th>전화번호</th>
-					<td><input type="text" name="memberPhone" required /></td>
+					<td><input type="text" oninput="autoHyphen(this)" name="memberPhone" required maxlength="13"/></td>
 				</tr>
 				<tr id="tbl-pwFindTr"></tr>
 			</thead>
@@ -23,6 +23,11 @@
 	</form>
 <script>	
 		
+	const autoHyphen = (target) => {
+		target.value = target.value.replace(/[^0-9]/g, '')
+		   .replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`);
+	}
+	
 	
 	
 	document.pwFindFrm.addEventListener('submit', (e) => {
@@ -39,6 +44,20 @@
 			let ranPick3 = Math.floor(Math.random() * ranValue3.length);
 			let ranPick4 = Math.floor(Math.random() * ranValue4.length);
 			newPwd = newPwd + ranValue1[ranPick1] + ranValue2[ranPick2] + ranValue3[ranPick3] + ranValue4[ranPick4];
+		}
+		
+		const memberId = document.querySelector("#memberId");
+		if(!/^.{4,}$/.test(memberId.value)){
+			alert("유효한 아이디를 입력해주세요.");
+			memberId.select();
+			return false;
+		}
+		
+		const phone = document.querySelector("#memberPhone");
+		if(!/^010[0-9]{8}$/.test(phone.value)){
+			alert("유효한 전화번호를 입력해주세요");
+			phone.select();
+			return false;
 		}
 			
 	
