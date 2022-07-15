@@ -3,6 +3,8 @@
     pageEncoding="UTF-8"%>
 <%
 	Member loginMember = (Member) session.getAttribute("loginMember");
+	String msg = (String) session.getAttribute("msg");
+	if(msg != null) session.removeAttribute("msg");
 %>
 <!DOCTYPE html>
 <html>
@@ -12,6 +14,13 @@
 <link rel="stylesheet"
 	href="<%=request.getContextPath() %>/css/style.css" />
 <script src="<%= request.getContextPath() %>/js/jquery-3.6.0.js"></script>
+<script>
+window.onload = () => {
+	<% if(msg != null) { %>	
+		alert("<%= msg %>");
+	<% } %>
+}
+</script>
 </head>
 <body>
 	<div id="header">
@@ -52,6 +61,3 @@
             </div>
         </div>
     </div>
-</body>
-</html>
-

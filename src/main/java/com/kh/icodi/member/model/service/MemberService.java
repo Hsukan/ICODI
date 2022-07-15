@@ -37,6 +37,23 @@ public class MemberService {
 		return result;
 	}
 
+	public String findMemberId(Member member) {
+		Connection conn = getConnection();
+		String memberId = memberDao.findMemberId(conn, member);
+		close(conn);
+		return memberId;
+	}
+
+	public String findMemberPw(Member member, String newPwd) {
+		Connection conn = getConnection();
+		String memberPw = memberDao.findMemberPw(conn, member);
+		if(memberPw != null) {
+			int result = memberDao.updateMemberPw(conn, member, newPwd);
+		}
+		close(conn);
+		return memberPw;
+	}
+
 	public List<Member> findMemberLike(Map<String, Object> param) {
 		Connection conn = getConnection();
 		List<Member> list = memberDao.findMemberLike(conn, param);
@@ -81,5 +98,4 @@ public class MemberService {
 		}
 		return result;
 	}
-
 }
