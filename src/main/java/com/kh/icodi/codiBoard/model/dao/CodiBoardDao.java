@@ -124,7 +124,7 @@ public class CodiBoardDao {
 	}
 	
 	// 좋아요 번호 조회
-	// select like_no from likeThat where codi_board_no = ? and member_id = ?
+	// selectLikeNo = select like_no from likeThat where codi_board_no = ? and member_id = ?
 	public int selectLikeNo(Connection conn, LikeThat delLike) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
@@ -140,7 +140,7 @@ public class CodiBoardDao {
 				delLikeNo = rset.getInt(1);
 			}
 		} catch (SQLException e) {
-			throw new CodiBoardException("좋아요 번호 조회", e);
+			throw new CodiBoardException("좋아요 번호 조회 오류!", e);
 		} finally {
 			close(rset);
 			close(pstmt);
@@ -159,12 +159,12 @@ public class CodiBoardDao {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, likeNo);
 			result = pstmt.executeUpdate();
-			
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new CodiBoardException("좋아요 삭제하기 오류!", e);
+		} finally {
+			close(pstmt);
 		}
-		
-		return 0;
+		return result;
 	}
 	private MyCodi handleMyCodiResultSet(ResultSet rset) throws SQLException {
 		MyCodi myCodi = new MyCodi();
