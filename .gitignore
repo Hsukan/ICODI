@@ -5,8 +5,8 @@
 .classpath
 sql
 <<<<<<< HEAD
-dataresource.properties
 =======
+dataresource.properties
 >>>>>>> branch 'master' of https://github.com/Hsukan/icodi.git
 
 ### Eclipse ###

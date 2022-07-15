@@ -64,8 +64,8 @@ window.onload = () => {
 			action="<%= request.getContextPath()%>/member/memberLogin" method="POST">
 			<table>
 				<tr>
-					<td colspan="2"><div>기존회원이십니까?</div></td>
-					<td colspan="2"><a href="#">회원가입</a></td>
+					<td colspan="2"><a href="#">기존회원이신가요?</a></td>
+					<td colspan="2"><a href="<%= request.getContextPath()%>/member/memberEnroll">회원가입</a></td>
 				</tr>
 				<tr>
 					<td colspan="4"><input type="text" name="memberId" id="memberId"

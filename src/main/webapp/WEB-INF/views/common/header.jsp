@@ -18,7 +18,7 @@
         <div id="header_of_header_wrapper">
             <div id="header_of_header">
                 <div class="btn_wrapper_right">
-                    <a class="create btn" href="/create">· 코디 만들기</a>
+                    <a class="create btn" href="<%= request.getContextPath() %>/codibook/create">· 코디 만들기</a>
                     <a class="cscenter btn" href="/cs_center">· 고객센터</a>
                 </div>
             </div>
@@ -43,7 +43,7 @@
         <div id="main_menu_container">
             <div id="main_menu">
                 <div class="main_menu"><a href="#">ootd</a></div>
-                <div class="main_menu"><a href="#">Community</a></div>
+                <div class="main_menu"><a href="<%= request.getContextPath() %>/board/boardList">Community</a></div>
                 <div class="main_menu"><a href="#" data-alter="tops">Tops</a></div>
                 <div class="main_menu"><a href="#" data-alter="bottoms">Bottoms</a></div>
                 <div class="main_menu"><a href="#" data-alter="shoes">Shoes</a></div>
@@ -52,3 +52,6 @@
             </div>
         </div>
     </div>
+</body>
+</html>
+
