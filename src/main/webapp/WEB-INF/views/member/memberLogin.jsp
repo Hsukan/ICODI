@@ -1,25 +1,8 @@
 <%@page import="com.kh.icodi.member.model.dto.Member"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    
-<%
-		
-	String msg = (String) session.getAttribute("msg");
-	if(msg != null) session.removeAttribute("msg"); // 한번만 사용후 제거
-	
-	String saveId = null;
-	Cookie[] cookies = request.getCookies();
-	if(cookies != null)
-		for(Cookie c : cookies){
-			String name = c.getName();
-			String value = c.getValue();
-			System.out.println("[cookie] " + name + " = " + value);
-			if("saveId".equals(name)){
-				saveId = value;
-			}
-		}
-%>
-<%@ include file="/WEB-INF/views/common/header.jsp" %>
+<%@ include file="/WEB-INF/views/common/header.jsp" %>    
+
 <!DOCTYPE html>
 <html>
 <head>

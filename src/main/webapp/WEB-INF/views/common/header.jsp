@@ -2,7 +2,21 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
+	String msg = (String) session.getAttribute("msg");
+	if(msg != null) session.removeAttribute("msg"); // 한번만 사용후 제거
 	Member loginMember = (Member) session.getAttribute("loginMember");
+	
+	String saveId = null;
+	Cookie[] cookies = request.getCookies();
+	if(cookies != null)
+		for(Cookie c : cookies){
+			String name = c.getName();
+			String value = c.getValue();
+			System.out.println("[cookie] " + name + " = " + value);
+			if("saveId".equals(name)){
+				saveId = value;
+			}
+		}
 %>
 <!DOCTYPE html>
 <html>
@@ -26,7 +40,7 @@
         <div id="header_wrapper">
             <img src="<%=request.getContextPath() %>/images/logo.png" alt="" id="logo" style="width: 200px; height: 100px; position: absolute; left:100px; bottom: -15px;">
             <div class="userMenu">
-                <a href="#">마이페이지</a>
+                <a href="<%= request.getContextPath()%>/member/memberMyPage">마이페이지</a>
                 <a href="#">마이쇼핑</a>
                 <a href="#">카트</a>
                 <%if (loginMember == null){ %>
