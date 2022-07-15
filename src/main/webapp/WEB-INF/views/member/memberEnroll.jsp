@@ -83,7 +83,7 @@ document.memberEnrollFrm.onsubmit = (e) => {
 	}
 	
 	const password = document.querySelector("#password");
-	if(!/^[a-zA-Z0-9!@#$%^&*]{10,}$/.test(password.value)){
+	if(!/^[a-zA-Z0-9!@#$%^&*]{4,}$/.test(password.value)){
 		alert("유효한 비밀번호를 입력해 주세요.");
 		password.select();
 		return false;
@@ -103,12 +103,12 @@ document.memberEnrollFrm.onsubmit = (e) => {
 		return false;
 	}
 	
-	const phone =  = document.querySelectorAll(".phone");
-	if(!/^010[0-9]{8}$/.test(phone.value)){
-		alert("유효한 전화번호를 입력해주세요.");
-		phone.select();
-		return false;
-	}
+	//const phone =  = document.querySelectorAll(".phone");
+	//if(!/^010[0-9]{8}$/.test(phone.value)){
+	//	alert("유효한 전화번호를 입력해주세요.");
+	//	phone.select();
+	//	return false;
+	//}
 	
 };
 
@@ -116,24 +116,22 @@ document.memberEnrollFrm.onsubmit = (e) => {
 </script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
-window.onload = function(){
-	document.querySelector("#address").addEventListener('click', function(){
-	    new daum.Postcode({
-	        oncomplete: function(data) {
-	            // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분입니다.
-	            document.querySelector("#address").value = data.address;
-				document.querySelector("#addressEx").focus();
-	        }
-	    }).open();
-	});
-	document.querySelector("#researchButton").addEventListener('click', function(){
-	    new daum.Postcode({
-	        oncomplete: function(data) {
-	            // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분입니다.
-	            document.querySelector("#address").value = data.address;
-				document.querySelector("#addressEx").focus();
-	        }
-	    }).open();
-	});
-}
+document.querySelector("#address").addEventListener('click', function(){
+    new daum.Postcode({
+        oncomplete: function(data) {
+            // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분입니다.
+            document.querySelector("#address").value = data.address;
+			document.querySelector("#addressEx").focus();
+        }
+    }).open();
+});
+document.querySelector("#researchButton").addEventListener('click', function(){
+    new daum.Postcode({
+        oncomplete: function(data) {
+            // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분입니다.
+            document.querySelector("#address").value = data.address;
+			document.querySelector("#addressEx").focus();
+        }
+    }).open();
+});
 </script>

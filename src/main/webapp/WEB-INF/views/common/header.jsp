@@ -2,9 +2,21 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
-	Member loginMember = (Member) session.getAttribute("loginMember");
 	String msg = (String) session.getAttribute("msg");
-	if(msg != null) session.removeAttribute("msg");
+	if(msg != null) session.removeAttribute("msg"); // 한번만 사용후 제거
+	Member loginMember = (Member) session.getAttribute("loginMember");
+	
+	String saveId = null;
+	Cookie[] cookies = request.getCookies();
+	if(cookies != null)
+		for(Cookie c : cookies){
+			String name = c.getName();
+			String value = c.getValue();
+			System.out.println("[cookie] " + name + " = " + value);
+			if("saveId".equals(name)){
+				saveId = value;
+			}
+		}
 %>
 <!DOCTYPE html>
 <html>
@@ -14,13 +26,6 @@
 <link rel="stylesheet"
 	href="<%=request.getContextPath() %>/css/style.css" />
 <script src="<%= request.getContextPath() %>/js/jquery-3.6.0.js"></script>
-<script>
-window.onload = () => {
-	<% if(msg != null) { %>	
-		alert("<%= msg %>");
-	<% } %>
-}
-</script>
 </head>
 <body>
 	<div id="header">
@@ -35,7 +40,7 @@ window.onload = () => {
         <div id="header_wrapper">
             <img src="<%=request.getContextPath() %>/images/logo.png" alt="" id="logo" style="width: 200px; height: 100px; position: absolute; left:100px; bottom: -15px;">
             <div class="userMenu">
-                <a href="#">마이페이지</a>
+                <a href="<%= request.getContextPath()%>/member/memberMyPage">마이페이지</a>
                 <a href="#">마이쇼핑</a>
                 <a href="#">카트</a>
                 <%if (loginMember == null){ %>
@@ -51,13 +56,16 @@ window.onload = () => {
         </div>
         <div id="main_menu_container">
             <div id="main_menu">
-                <div class="main_menu"><a href="<%= request.getContextPath() %>/codi/newCodiList">ootd</a></div>
+                <div class="main_menu"><a href="#">ootd</a></div>
                 <div class="main_menu"><a href="<%= request.getContextPath() %>/board/boardList">Community</a></div>
-                <div class="main_menu"><a href="<%= request.getContextPath() %>/product/tops" data-alter="tops">Tops</a></div>
-                <div class="main_menu"><a href="<%= request.getContextPath() %>/product/bottoms" data-alter="bottoms">Bottoms</a></div>
-                <div class="main_menu"><a href="<%= request.getContextPath() %>/product/shoes" data-alter="shoes">Shoes</a></div>
-                <div class="main_menu"><a href="<%= request.getContextPath() %>/product/acc" data-alter="accessories">Accessories</a></div>
+                <div class="main_menu"><a href="#" data-alter="tops">Tops</a></div>
+                <div class="main_menu"><a href="#" data-alter="bottoms">Bottoms</a></div>
+                <div class="main_menu"><a href="#" data-alter="shoes">Shoes</a></div>
+                <div class="main_menu"><a href="#" data-alter="accessories">Accessories</a></div>
                 <div class="main_menu"><a href="<%= request.getContextPath() %>/admin/adminPage" data-alter="admin">Admin</a></div>
             </div>
         </div>
     </div>
+</body>
+</html>
+

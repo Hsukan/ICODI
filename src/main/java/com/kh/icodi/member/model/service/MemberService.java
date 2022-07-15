@@ -1,7 +1,9 @@
 package com.kh.icodi.member.model.service;
 
-import static com.kh.icodi.common.JdbcTemplate.*;
-
+import static com.kh.icodi.common.JdbcTemplate.close;
+import static com.kh.icodi.common.JdbcTemplate.commit;
+import static com.kh.icodi.common.JdbcTemplate.getConnection;
+import static com.kh.icodi.common.JdbcTemplate.rollback;
 
 import java.sql.Connection;
 import java.util.List;
@@ -9,6 +11,7 @@ import java.util.Map;
 
 import com.kh.icodi.member.model.dao.MemberDao;
 import com.kh.icodi.member.model.dto.Member;
+import com.kh.icodi.member.model.exception.MemberException;
 
 public class MemberService {
 	private MemberDao memberDao = new MemberDao();
@@ -98,4 +101,54 @@ public class MemberService {
 		}
 		return result;
 	}
+
+	public int updateMember(Member member) {
+		Connection conn = getConnection();
+		int result = 0;
+		try {
+			result = memberDao.updateMember(conn, member);
+			commit(conn);
+		} catch(Exception e) {
+			rollback(conn);
+			throw e;
+		} finally {
+			close(conn);
+		}
+		return result;
+	}
+
+	public int deleteMember(String memberId) {
+		Connection conn = getConnection();
+		int result = 0;
+		try{
+			result = memberDao.deleteMember(conn, memberId);
+			if(result == 0)
+				throw new MemberException("해당 회원은 존재하지 않습니다.");
+			commit(conn);
+		} catch (Exception e) {
+			rollback(conn);
+			throw e;
+		} finally {
+			close(conn);			
+		}
+		return result;
+	}
+
+	public int updatePassword(String memberId, String newPassword) {
+		Connection conn = getConnection();
+		int result = 0;
+		try {
+			result = memberDao.updatePassword(conn, memberId, newPassword);
+			commit(conn);
+		} 
+		catch(Exception e) {
+			rollback(conn);
+			throw e;
+		} 
+		finally {
+			close(conn);
+		}
+		return result;
+	}
+	
 }
