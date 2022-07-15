@@ -42,12 +42,12 @@
         </div>
         <div id="main_menu_container">
             <div id="main_menu">
-                <div class="main_menu"><a href="#">ootd</a></div>
+                <div class="main_menu"><a href="<%= request.getContextPath() %>/codi/newCodiList">ootd</a></div>
                 <div class="main_menu"><a href="<%= request.getContextPath() %>/board/boardList">Community</a></div>
-                <div class="main_menu"><a href="#" data-alter="tops">Tops</a></div>
-                <div class="main_menu"><a href="#" data-alter="bottoms">Bottoms</a></div>
-                <div class="main_menu"><a href="#" data-alter="shoes">Shoes</a></div>
-                <div class="main_menu"><a href="#" data-alter="accessories">Accessories</a></div>
+                <div class="main_menu"><a href="<%= request.getContextPath() %>/product/tops" data-alter="tops">Tops</a></div>
+                <div class="main_menu"><a href="<%= request.getContextPath() %>/product/bottoms" data-alter="bottoms">Bottoms</a></div>
+                <div class="main_menu"><a href="<%= request.getContextPath() %>/product/shoes" data-alter="shoes">Shoes</a></div>
+                <div class="main_menu"><a href="<%= request.getContextPath() %>/product/acc" data-alter="accessories">Accessories</a></div>
                 <div class="main_menu"><a href="<%= request.getContextPath() %>/admin/adminPage" data-alter="admin">Admin</a></div>
             </div>
         </div>
