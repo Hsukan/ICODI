@@ -64,26 +64,27 @@ window.onload = () => {
 			action="<%= request.getContextPath()%>/member/memberLogin" method="POST">
 			<table>
 				<tr>
-					<td><a href="#">기존회원이신가요?</a></td>
-					<td><a href="#">회원가입</a></td>
+					<td colspan="2"><div>기존회원이십니까?</div></td>
+					<td colspan="2"><a href="#">회원가입</a></td>
 				</tr>
 				<tr>
-					<td><input type="text" name="memberId" id="memberId"
+					<td colspan="4"><input type="text" name="memberId" id="memberId"
 						placeholder="아이디" value="<%= saveId != null ? saveId : "" %>"></td>
 				</tr>
 				<tr>
-					<td><input type="password" name="password" id="password"
+					<td colspan="4"><input type="password" name="password" id="password"
 						placeholder="비밀번호"></td>
 					<td></td>
 				</tr>
 				<tr>
-					<td><input type="submit" value="로그인"></td>
+					<td colspan="4"><input type="submit" value="로그인"></td>
 				</tr>
 				<tr>
-					<td><input type="checkbox" name="saveId" id="saveId"
+					<td colspan="2"><input type="checkbox" name="saveId" id="saveId"
 					<%= saveId != null ? "checked" : "" %>/>
 						<label for="saveId">아이디저장</label></td>
-					<td><a href="<%= request.getContextPath()%>/member/memberFind">아이디찾기 | 비밀번호찾기</a></td>
+					<td><a href="<%= request.getContextPath()%>/member/memberIdFind">아이디찾기</a></td>
+					<td><a href="<%= request.getContextPath()%>/member/memberPwFind">비밀번호찾기</a></td>
 				</tr>
 			</table>
 		</form>

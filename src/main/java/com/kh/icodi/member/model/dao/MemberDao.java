@@ -95,4 +95,73 @@ public class MemberDao {
 		return result;
 	}
 
+
+	public String findMemberId(Connection conn, Member member) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		String memberId = null;
+		String sql = prop.getProperty("findMemberId");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, member.getMemberName());
+			pstmt.setString(2, member.getPhone());
+			
+			rset = pstmt.executeQuery();
+			if(rset.next()) {
+				memberId = rset.getString("member_id"); 				
+			}
+		} catch (SQLException e) {
+			throw new MemberException ("회원 이름 조회 오류!", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		return memberId;
+	}
+
+
+	public String findMemberPw(Connection conn, Member member) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		String memberPw = null;
+		String sql = prop.getProperty("findMemberPw");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, member.getMemberId());
+			pstmt.setString(2, member.getPhone());
+			
+			rset = pstmt.executeQuery();
+			if(rset.next()) {
+				memberPw = rset.getString("member_pwd");
+			}
+		} catch (SQLException e) {
+			throw new MemberException ("회원 비밀번호 조회 오류!", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		return memberPw;
+	}
+
+	// updateMemberPw = update member set member_pwd = ? where member_id = ?
+	public int updateMemberPw(Connection conn, Member member, String newPwd) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String sql = prop.getProperty("updateMemberPw");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, newPwd);
+			pstmt.setString(2, member.getMemberId());
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new MemberException("비밀번호 입시 발급 오류!", e);
+		} finally {
+			close(pstmt);
+		}
+		return result;
+	}
+
 }

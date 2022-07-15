@@ -35,7 +35,7 @@ public class MemberLoginServlet extends HttpServlet {
 			
 			// 2. 사용자입력값 처리
 			String memberId = request.getParameter("memberId");
-			String password = request.getParameter("password");
+			String password = IcodiMvcUtils.getEncryptedPassword(request.getParameter("password"), memberId);
 			String saveId = request.getParameter("saveId");
 			System.out.println("memberId= " + memberId);
 			System.out.println("password= " + password);
