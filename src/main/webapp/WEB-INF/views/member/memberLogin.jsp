@@ -2,14 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
-<<<<<<< HEAD
-    
-<%		
-	if(msg != null) session.removeAttribute("msg"); // 한번만 사용후 제거
-	
-=======
 <%
->>>>>>> branch 'master' of https://github.com/Hsukan/icodi.git
 	String saveId = null;
 	Cookie[] cookies = request.getCookies();
 	if(cookies != null)
@@ -22,47 +15,6 @@
 			}
 		}
 %>
-<<<<<<< HEAD
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>로그인/로그아웃</title>
-<script>
-// 로그인실패 메세지
-window.onload = () => {
-	
-<% if(msg != null) { %>
-	alert("<%= msg%>");
-<% } %> 
-
-// 로그인 유효성
-<% if(loginMember == null){ %>
-	document.loginFrm.onsubmit = (e) => {
-		
-		const memberIdVal = document.querySelectcor("#memberId").value;
-		const passwordVal = document.querySelectcor("#password").value;
-		
-		if(!/^.{4.}$/.test(memberId.value)){
-			alert("유효한 아이디를 입력해주세요.");
-			memberId.select();
-			return false;
-		}
-		if(!/^.{4.}$/.test(password.value)){
-			alert("유효한 비밀번호를 입력해주세요.");
-			password.select();
-			return false;
-		}
-		
-	};
-	
-};
-<% } %>
-</script>
-</head>
-<body>
-=======
->>>>>>> branch 'master' of https://github.com/Hsukan/icodi.git
 	<div class="login-container">
 		<h2>LOGIN</h2>
 		<form id="loginFrm" name="loginFrm"

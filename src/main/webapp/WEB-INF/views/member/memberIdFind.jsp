@@ -13,7 +13,7 @@
 				</tr>
 				<tr>
 					<th>전화번호</th>
-					<td><input type="text" name="memberPhone" required/></td>
+					<td><input type="text" oninput="autoHyphen(this)" name="memberPhone" required maxlength="13"/></td>
 				</tr>
 				<tr id="tbl-idFindTr"></tr>
 			</thead>
@@ -21,8 +21,28 @@
  		<button id="findIdBtn">아이디찾기</button>
 	</form>
 <script>
+	const autoHyphen = (target) => {
+		target.value = target.value.replace(/[^0-9]/g, '')
+		   .replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`);
+	}
+
 	document.idFindFrm.addEventListener('submit', (e) => {
 		e.preventDefault();
+		
+		const memberName = document.querySelector("#memberName");
+		if(!/^[가-힣]{2,}$/.test(memberName.value)){
+			alert("한글 2글자이상 입력해주세요");
+			memberName.select();
+			return false;
+		}
+		
+		const phone = document.querySelector("#memberPhone");
+		if(!/^010[0-9]{8}$/.test(phone.value)){
+			alert("유효한 전화번호를 입력해주세요");
+			phone.select();
+			return false;
+		}
+		
 		$.ajax({
 			url : '<%= request.getContextPath()%>/member/memberIdFind',
 			method : "POST",
