@@ -47,8 +47,9 @@ public class MemberEnrollServlet extends HttpServlet {
 			String addressEx = request.getParameter("addressEx");
 			
 			String phone = phones != null ? 
-					// String.join("-", phones)
-					String.join("", phones) : null;
+					String.join("-", phones)
+					// String.join("", phones) 
+					: null;
 			
 			Member member =
 					new Member(memberId, memberName, password, email, phone, null, null, 0, address, addressEx);

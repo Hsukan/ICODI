@@ -1,3 +1,4 @@
+<%@page import="java.util.Arrays"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
@@ -9,8 +10,13 @@
 	String phone = loginMember.getPhone();
 	String address = loginMember.getAddress();
 	String addressEx = loginMember.getAddressEx();
+	
+	String[] phones = phone.split("-");
 
-	// String[] phones = phone.split("-");
+	List<String> phoneList = null;
+	if(phone != null){
+	phoneList = Arrays.asList(phones);
+	}
 %>
 <style>
     #modal.modal-overlay {
@@ -111,15 +117,15 @@
     				<td>휴대폰</td>
       				<td>
 						<select name="phone" id="phone1">
-							<option value="010">010</option>
-							<option value="011">011</option>
-							<option value="016">016</option>
-							<option value="017">017</option>
-							<option value="018">018</option>
-							<option value="019">019</option>
+							<option value="010" <%= phoneChecked(phoneList, "010") %>>010</option>
+							<option value="011" <%= phoneChecked(phoneList, "011") %>>011</option>
+							<option value="016" <%= phoneChecked(phoneList, "016") %>>016</option>
+							<option value="017" <%= phoneChecked(phoneList, "017") %>>017</option>
+							<option value="018" <%= phoneChecked(phoneList, "018") %>>018</option>
+							<option value="019" <%= phoneChecked(phoneList, "019") %>>019</option>
 						</select>-
-						<input type="text" name="phone" id="phone2" maxlength="4" style="width: 30px;" value="" required>-
-						<input type="text" name="phone" id="phone3" maxlength="4" style="width: 30px;" value="" required>
+						<input type="text" name="phone" id="phone2" maxlength="4" style="width: 30px;" value="<%= phones[1] %>" required>-
+						<input type="text" name="phone" id="phone3" maxlength="4" style="width: 30px;" value="<%= phones[2].replace(" ", "") %>" required>
 					</td>
 				</tr>
   				<tr>
@@ -189,8 +195,7 @@
 });
    
 const updatePassword = () => {
-	window.open('<%= request.getContextPath() %>/member/memberPasswordUpdate', 'popup', 'width=400px, height=400px, location=no, status=no, scrollbars=no')
-	
+	window.open('<%= request.getContextPath() %>/member/memberPasswordUpdate', 'popup', 'width=400px, height=400px, location=no, status=no, scrollbars=no');
 };
 
 /**
@@ -234,3 +239,8 @@ document.memberUpdateFrm.onsubmit = (e) => {
 }    
     
 </script>
+<%!
+public String phoneChecked(List<String> phoneList, String phone){
+	return phoneList != null && phoneList.contains(phone) ? "selected" : "";
+}
+%>

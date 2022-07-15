@@ -3,12 +3,14 @@
     pageEncoding="UTF-8"%>
 <%
 	Member loginMember = (Member) session.getAttribute("loginMember");
+
 %>
     <!doctype html>
     <html lang="en">
     <head>
     	<meta charset="UTF-8" />
     	<title>Document</title>
+    	<script src="<%= request.getContextPath() %>/js/jquery-3.6.0.js"></script>
     </head>
     <body>
 <section id=enroll-container>
@@ -47,36 +49,56 @@
 	/**
 	 * 비밀번호 일치여부 검사
 	 */
+	 /**
 	 document.querySelector("#newPasswordCheck").onblur = (e) => {
-			const password = document.querySelector("#newPassword");
-			const passwordCheck = e.target;
-			if(password.value !== passwordCheck.value){
-				alert("비밀번호가 일치하지 않습니다.");
-				password.select();
-			}
-		};
+		const password = document.querySelector("#newPassword");
+		const passwordCheck = e.target;
+		if(password.value !== passwordCheck.value){
+			alert("비밀번호가 dd일치하지 않습니다.");
+			password.select();
+		}
+	};
+	*/
 		
-		document.passwordUpdateFrm.onsubmit = () => {
-			const oldPassword = document.querySelector("#oldPassword");
-			const newPassword = document.querySelector("#newPassword");
-			const re = /^[a-zA-z0-9!@#$%^&*()]{4,}$/;
-			if(!re.test(oldPassword.value)){
-				alert("비밀번호는 영문자/숫자/!@#$%^&*()로 최소 4글자이상이어야 합니다.");
-				oldPassword.select();
-				return false;
-			}
-			if(!re.test(newPassword.value)){
-				alert("새 비밀번호는 영문자/숫자/!@#$%^&*()로 최소 4글자이상이어야 합니다.");
-				newPassword.select();
-				return false;
-			}
+	document.passwordUpdateFrm.onsubmit = (e) => {
+		e.preventDefault();
+		
+		const oldPassword = document.querySelector("#oldPassword");
+		const newPassword = document.querySelector("#newPassword");
+		const re = /^[a-zA-z0-9!@#$%^&*()]{4,}$/;
+		if(!re.test(oldPassword.value)){
+			alert("비밀번호는 영문자/숫자/!@#$%^&*()로 최소 4글자이상이어야 합니다.");
+			oldPassword.select();
+			return false;
+		}
+		if(!re.test(newPassword.value)){
+			alert("새 비밀번호는 영문자/숫자/!@#$%^&*()로 최소 4글자이상이어야 합니다.");
+			newPassword.select();
+			return false;
+		}
+		
+		const newPasswordCheck = document.querySelector("#newPasswordCheck");
+		if(newPassword.value !== newPasswordCheck.value){
+			alert("비밀번호가 일치하지 않습니다.");
+			newPassword.select();
+			return false;
+		}
 			
-			const newPasswordCheck = document.querySelector("#newPasswordCheck");
-			if(newPassword.value !== newPasswordCheck.value){
-				alert("비밀번호가 일치하지 않습니다.");
-				newPassword.select();
-				return false;
-			}
+			// 비동기요청
+			$.ajax({
+				url : '<%= request.getContextPath() %>/member/memberPasswordUpdate',
+				dataType : 'json',
+				method : 'post',
+				data : {
+						oldPassword : oldPassword.value,
+						memberId : "<%= loginMember.getMemberId() %>",
+						newPassword : newPassword.value
+						},
+				success(response){
+					console.log(response);
+				},
+				error : console.log
+			});
 		};
 	
 	</script>

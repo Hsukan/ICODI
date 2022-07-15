@@ -1,6 +1,8 @@
 package com.kh.icodi.member.controller;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -8,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.Gson;
 import com.kh.icodi.common.IcodiMvcUtils;
 import com.kh.icodi.member.model.dto.Member;
 import com.kh.icodi.member.model.service.MemberService;
@@ -42,24 +45,23 @@ public class memberPasswordUpdateServlet extends HttpServlet {
 			Member member = memberService.findById(memberId);
 			
 			String msg = null;
-			String location = request.getContextPath();
 			if(member != null && oldPassword.equals(member.getPassword())) {
 				int result = memberService.updatePassword(memberId, newPassword);
 				
 				msg = "비밀번호를 성공적으로 변경했습니다.";
-				request.setAttribute("pwdResult", true);
-				location += "/member/memberMyPage";
+				
 			}
 			else {
 				msg = "기존 비밀번호가 일치하지 않습니다.";
-				location += "/member/memberPasswordUpdate";
-				request.setAttribute("pwdResult", false);
 				Member loginMember = (Member) request.getSession().getAttribute("loginMember");
 				loginMember.setPassword(newPassword);
+				response.sendRedirect(request.getContextPath() + "/member/passwordUpdate");
 			}
 			
-			request.getSession().setAttribute("msg", msg);
-			response.sendRedirect(location);
+			Map<String, Object> map = new HashMap<>();
+			map.put("msg", "성공적으로 등록했습니다.");
+			response.setContentType("application/json; charset=utf-8");
+			new Gson().toJson(map, response.getWriter());
 		}
 		catch(Exception e) {
 			e.printStackTrace();
