@@ -1,54 +1,42 @@
-<%@page import="com.kh.icodi.cscenter.model.dto.CsCenterInquireAnswer"%>
-<%@page import="java.util.List"%>
 <%@page import="com.kh.icodi.cscenter.model.dto.CsCenterInquire"%>
+<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@include file = "/WEB-INF/views/common/header.jsp" %>
+<%@ include file="/WEB-INF/views/common/header.jsp" %>
 <% 
 	List <CsCenterInquire> list = (List<CsCenterInquire>)request.getAttribute("list");
 %>
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="stylesheet" href="<%=request.getContextPath()%>/css/csCenter.css" />
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
 <body>
-	<h1>SUPPORT CENTER</h1>
-	<hr />
-	<h2>문의내역확인</h2>
+	<h1>문의내역확인</h1>
+	
 	<table id="tbl-inquire-list">
-	<thead>
-	<tr>
 	<th>작성자</th>
 	<th>문의명</th>
 	<th>답변여부</th>
 	<th>등록일</th>
-	</tr>
-	</thead>
-	<tbody>
 	<%for(CsCenterInquire c : list) {%>
 		<tr>
-		<td>
-			<%=c.getMemberId() %>				
-		</td>
+			<%=c.getMemberId() %>
+		</tr>
+		<tr>
 		<td>
 		<a href="<%=request.getContextPath()%>/csCenter/inquireView?no=<%= c.getNo()%>">
-		 <%=c.getTitle() %>
-		</a>		
-		 </td>
-		 <td>
-			X(다시)
-		 </td>
-		 <td>
-		 <%=c.getInquireDate() %>
-		 </td>
+			<%=c.getTitle() %>
+		</a>
+		</td>
 		</tr>
+		<tr>
+			<td>
+			<%=c.getInquireDate() %>
+			</td>
+		</tr>
+		</table>
 	<%} %>
-	<tr>	
-	</tr>
-	</tbody>
-	</table>
 </body>
 </html>

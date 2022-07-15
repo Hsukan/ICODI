@@ -10,9 +10,11 @@ import java.util.Map;
 import com.kh.icodi.cscenter.model.dao.CsCenterDao;
 import com.kh.icodi.cscenter.model.dto.CsCenter;
 import com.kh.icodi.cscenter.model.dto.CsCenterInquire;
+import com.kh.icodi.cscenter.model.dto.CsCenterInquireAnswer;
 
 public class CsCenterService {
 	private CsCenterDao csCenterDao = new CsCenterDao();
+	
 	public List<CsCenter> findAll() {
 		Connection conn = getConnection();
 		List<CsCenter> list = csCenterDao.findAll(conn);
@@ -42,9 +44,9 @@ public class CsCenterService {
 	}
 	
 
-	public List<CsCenterInquire> findMyInquire() {
+	public List<CsCenterInquire> findMyInquire(String loginMemberId) {
 		Connection conn = getConnection();
-		List<CsCenterInquire> list = csCenterDao.findMyInquire(conn);
+		List<CsCenterInquire> list = csCenterDao.findMyInquire(conn,loginMemberId);
 		close(conn);
 		return list;
 	}
@@ -54,6 +56,47 @@ public class CsCenterService {
 		CsCenterInquire csCenterInquire = csCenterDao.findInquireContentByNo(conn,inquireNo);
 		close(conn);
 		return csCenterInquire;
+	}
+	public List<CsCenterInquire> findAllInquire() {
+		Connection conn = getConnection();
+		List<CsCenterInquire> list = csCenterDao.findAllInquire(conn);
+		close(conn);
+		return list;
+	}
+	
+	public int insertInquireAnswer(CsCenterInquireAnswer answer) {
+		Connection conn = getConnection();
+		int result = 0;
+		try {
+			result = csCenterDao.insertInquireAnswer(conn,answer);
+			commit(conn);
+		}catch(Exception e) {
+			rollback(conn);
+			throw e;
+		}finally {
+			close(conn);
+		}
+		return result;
+	}
+	public List<CsCenterInquireAnswer> findInquireAnwerByInquireNo(int inquireNo) {
+		Connection conn = getConnection();
+		List<CsCenterInquireAnswer> answerList = csCenterDao.findInquireAnwerByInquireNo(conn,inquireNo);
+		close(conn);
+		return answerList;
+	}
+	
+	public int deleteInquireAnswer(int inquireNo, int answerNo) {
+		Connection conn = getConnection();
+		int result = 0;
+		try {
+			result = csCenterDao.deleteInquireAnswer(conn,inquireNo,answerNo);			
+			commit(conn);
+		}catch(Exception e) {
+			rollback(conn);
+			throw e;
+		}
+		
+		return result;
 	}
 	
 	

@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.kh.icodi.cscenter.model.dto.CsCenter;
+import com.kh.icodi.cscenter.model.dto.CsCenterInquire;
 import com.kh.icodi.cscenter.model.service.CsCenterService;
 
 /**

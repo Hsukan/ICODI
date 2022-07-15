@@ -17,7 +17,7 @@
 	<table>
 		<tr>
 		<th>아이디</th>
-		<td><input type="text" name="memberId"/></td>
+		<td><input type="text" name="memberId" value="<%=loginMember.getMemberId()%>"/></td>
 		</tr>
 		<tr>
 		<th>제목</th>

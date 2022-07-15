@@ -1,14 +1,17 @@
 package com.kh.icodi.cscenter.controller;
 
 import java.io.IOException;
+import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-import com.kh.icodi.cscenter.model.dto.CsCenter;
 import com.kh.icodi.cscenter.model.dto.CsCenterInquire;
+import com.kh.icodi.cscenter.model.dto.CsCenterInquireAnswer;
 import com.kh.icodi.cscenter.model.service.CsCenterService;
 
 /**
@@ -26,6 +29,11 @@ public class CsCenterInquireViewServlet extends HttpServlet {
 			int InquireNo = Integer.parseInt(request.getParameter("no"));
 			CsCenterInquire csCenterInquire = csCenterService.findInquireContentByNo(InquireNo);
 			System.out.println(InquireNo);
+			
+			List<CsCenterInquireAnswer> answerList = csCenterService.findInquireAnwerByInquireNo(InquireNo);
+			
+			request.setAttribute("answerList", answerList);
+			
 			
 			request.setAttribute("csCenterInquire", csCenterInquire);
 			request.getRequestDispatcher("/WEB-INF/views/cscenter/csCenterInquireView.jsp").forward(request, response);

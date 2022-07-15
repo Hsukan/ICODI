@@ -15,6 +15,7 @@ import java.util.Properties;
 
 import com.kh.icodi.cscenter.model.dto.CsCenter;
 import com.kh.icodi.cscenter.model.dto.CsCenterInquire;
+import com.kh.icodi.cscenter.model.dto.CsCenterInquireAnswer;
 import com.kh.icodi.cscenter.model.dto.SelectType;
 
 public class CsCenterDao {
@@ -111,13 +112,14 @@ public class CsCenterDao {
 	
 
 	
-	public List<CsCenterInquire> findMyInquire(Connection conn) {
+	public List<CsCenterInquire> findMyInquire(Connection conn, String loginMemberId) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		List<CsCenterInquire> list = new ArrayList<>();
 		String sql = prop.getProperty("findMyInquire");
 		try {
 			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, loginMemberId);
 			rset = pstmt.executeQuery();
 			while(rset.next()) {
 				int no = rset.getInt("inquire_no");
@@ -172,5 +174,108 @@ public class CsCenterDao {
 		
 		return csCenterInquire;
 	}
+
+	public List<CsCenterInquire> findAllInquire(Connection conn) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		List<CsCenterInquire> list = new ArrayList<>();
+		String sql = prop.getProperty("findAllInquire");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				int no = rset.getInt("inquire_no");
+				String memberId = rset.getString("writer");
+				String inquireTitle = rset.getString("inquire_title");
+				String inquireContent = rset.getString("inquire_content");				
+				Date inquireDate = rset.getDate("inquire_date");
+				SelectType selectType = SelectType.valueOf(rset.getString("inquire_type"));
+				
+				
+				CsCenterInquire csCenterInquire = new CsCenterInquire(no, memberId, inquireTitle, selectType, inquireContent, inquireDate);
+				System.out.println(csCenterInquire.getSelectType());
+				list.add(csCenterInquire);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close(rset);
+			close(pstmt);
+		}
+		
+		return list;
+	}
+
+	public int insertInquireAnswer(Connection conn, CsCenterInquireAnswer answer) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String sql = prop.getProperty("insertInquireAnswer");
+		//insertInquireAnswer = insert into inquire_comment values(seq_answer_no.nextval,?,?,?,default)
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, answer.getInquireNo());
+			pstmt.setString(2, answer.getAnswerWriter());
+			pstmt.setString(3, answer.getAnswerContent());
+			
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close(pstmt);
+		}
+		
+		return result;
+	}
+
+	public List<CsCenterInquireAnswer> findInquireAnwerByInquireNo(Connection conn, int inquireNo) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		List<CsCenterInquireAnswer> list = new ArrayList<>();
+		String sql = prop.getProperty("findInquireAnwerByInquireNo");
+		//select * from inquire_comment where inquire_no = ?
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, inquireNo);
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				int answerNo = rset.getInt("answer_no");
+				inquireNo = rset.getInt("inquire_no");
+				String answerWriter = rset.getString("answer_writer");
+				String answerContent = rset.getString("answer_content");
+				Date answerDate = rset.getDate("answer_date");
+				
+				CsCenterInquireAnswer answer = new CsCenterInquireAnswer(answerNo, inquireNo, answerWriter, answerContent, answerDate);
+				list.add(answer);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close(rset);
+			close(pstmt);
+		}
+		
+		return list;
+	}
+
+	public int deleteInquireAnswer(Connection conn, int inquireNo, int answerNo) {
+//		 delete from inquire_comment where inquire_no = ? and answer_no = ?
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String sql = prop.getProperty("deleteInquireAnswer");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, inquireNo);
+			pstmt.setInt(2, answerNo);
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close(pstmt);
+		}
+		return result;
+	}
+	
 
 }

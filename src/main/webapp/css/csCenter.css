@@ -1,0 +1,12 @@
+@charset "UTF-8";
+li,ul {list-style : none;}
+input[type=button], #btn-inquireList{ color : green; background-color : white; border : 1px solid green; margin-bottom : 10px; width : 250px; height : 50px;}
+#csCenter{display : flex;}
+#csInfo{background-color : #CDF0E9;}
+#buttonContainer{display : flex; flex-direction : column;}
+#csCenterLeft{margin : 10px 10px 10px 30px;}
+#csInfo{width:250px;}
+#csCenterRight{display:flex; flex-direction : column; margin-left : 250px; width : 1000px;}
+#alert{background-color : #EBEBEB; padding : 15px; text-align:center; border-style:dotted;}
+td,tr{border: 1px solid black;}
+#inquireDelFrm{display:flex;}

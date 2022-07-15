@@ -23,6 +23,7 @@ public class CsCenterInquire {
 		this.content = content;
 		this.inquireDate = inquireDate;
 	}
+	
 	public int getNo() {
 		return no;
 	}

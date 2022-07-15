@@ -23,7 +23,10 @@
 	<div id="csCenterLeft">
 	<div id="buttonContainer">
 	<input type="button" value="1:1 문의하기" onclick="location.href='<%= request.getContextPath() %>/csCenter/inquireEnroll';">
-	<input type="button" value="문의내역 확인" onclick="location.href='<%= request.getContextPath() %>/csCenter/inquireList';">	
+	<form name="inquireListFrm" action="<%= request.getContextPath() %>/csCenter/inquireList">
+		<input type="hidden" name="memberId" value="<%= loginMember != null ? loginMember.getMemberId() : ""%>" />
+		<button type="submit" id="btn-inquireList" onclick="location.href='<%=request.getContextPath()%>/csCenter/inquireList'">문의내역확인</button>
+	</form>
 	</div>
 	<div id="csInfo">
 	<span>고객센터 전화번호</span>
@@ -38,5 +41,6 @@
 	<h1>[<%=csCenter.getNoticeTitle() %>]</h1>
 	<span><%=csCenter.getNoticeContent()%></span>
 	</div>
+	
 </body>
 </html>
