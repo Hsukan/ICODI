@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 import com.kh.icodi.codiBoard.model.dto.CodiBoardExt;
+import com.kh.icodi.codiBoard.model.dto.LikeThat;
 import com.kh.icodi.codiBoard.model.service.CodiBoardService;
 
 /**
@@ -38,7 +39,7 @@ public class NewCodiMoreServlet extends HttpServlet {
 			page.put("end", end);
 			
 			List<CodiBoardExt> codiBoardList = codiBoardService.newCodiMore(page);
-			
+
 			response.setContentType("application/json; charset=utf-8");
 			new Gson().toJson(codiBoardList, response.getWriter());
 		} catch(Exception e) {

@@ -1,14 +1,16 @@
 package com.kh.icodi.codiBoard.model.service;
 
-import static com.kh.icodi.common.JdbcTemplate.*;
+import static com.kh.icodi.common.JdbcTemplate.close;
+import static com.kh.icodi.common.JdbcTemplate.commit;
 import static com.kh.icodi.common.JdbcTemplate.getConnection;
+import static com.kh.icodi.common.JdbcTemplate.rollback;
 
 import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import com.kh.icodi.codiBoard.model.dao.CodiBoardDao;
-import com.kh.icodi.codiBoard.model.dto.CodiBoard;
 import com.kh.icodi.codiBoard.model.dto.CodiBoardExt;
 import com.kh.icodi.codiBoard.model.dto.LikeThat;
 import com.kh.icodi.myCodi.model.dto.MyCodi;
@@ -30,6 +32,12 @@ public class CodiBoardService {
 			for(CodiBoardExt codiBoard : codiBoardList) {
 				MyCodi myCodi = codiBoardDao.findMyCodiByCodiNo(conn, codiBoard.getCodiNo());
 				codiBoard.addMyCodi(myCodi);
+				List<LikeThat> likeList = codiBoardDao.findLikeThatByCodiBoardNo(conn, codiBoard.getCodiBoardNo());
+				if(likeList != null && !likeList.isEmpty()) {
+					for(LikeThat like : likeList) {
+						codiBoard.addLike(like);
+					}
+				}
 			}			
 		}
 		close(conn);
@@ -65,5 +73,12 @@ public class CodiBoardService {
 			close(conn);
 		}
 		return result;
+	}
+
+	public List<LikeThat> findLikeThatAll() {
+		Connection conn = getConnection();
+		List<LikeThat> likeList = codiBoardDao.findLikeThatAll(conn);
+		close(conn);
+		return likeList;
 	}
 }
