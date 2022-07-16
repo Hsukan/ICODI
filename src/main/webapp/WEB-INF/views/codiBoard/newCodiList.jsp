@@ -41,6 +41,8 @@ const getPage = (cPage) => {
 		data : {cPage},
 		success(response) {
 			const content = document.querySelector(".content-wrap");
+			console.log("response", response);
+			console.log({response});
 			response.forEach((response) => {
 				const {codiBoardNo, codiBoardContent, codiBoardRegDate, likeCount, likeList, myCodiList} = response;
 				

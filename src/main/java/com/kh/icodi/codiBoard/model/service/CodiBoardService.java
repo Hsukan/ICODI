@@ -11,9 +11,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.kh.icodi.codiBoard.model.dao.CodiBoardDao;
-import com.kh.icodi.codiBoard.model.dto.CodiBoardExt;
+import com.kh.icodi.codiBoard.model.dto.CodiBoard;
 import com.kh.icodi.codiBoard.model.dto.LikeThat;
-import com.kh.icodi.myCodi.model.dto.MyCodi;
 
 public class CodiBoardService {
 	private CodiBoardDao codiBoardDao = new CodiBoardDao();
@@ -23,25 +22,6 @@ public class CodiBoardService {
 		int totalContent = codiBoardDao.getTotalContentNewCodi(conn);
 		close(conn);
 		return totalContent;
-	}
-
-	public List<CodiBoardExt> newCodiMore(Map<String, Object> page) {
-		Connection conn = getConnection();
-		List<CodiBoardExt> codiBoardList = codiBoardDao.newCodiMore(conn, page);
-		if(codiBoardList != null && !codiBoardList.isEmpty()) {
-			for(CodiBoardExt codiBoard : codiBoardList) {
-				MyCodi myCodi = codiBoardDao.findMyCodiByCodiNo(conn, codiBoard.getCodiNo());
-				codiBoard.addMyCodi(myCodi);
-				List<LikeThat> likeList = codiBoardDao.findLikeThatByCodiBoardNo(conn, codiBoard.getCodiBoardNo());
-				if(likeList != null && !likeList.isEmpty()) {
-					for(LikeThat like : likeList) {
-						codiBoard.addLike(like);
-					}
-				}
-			}			
-		}
-		close(conn);
-		return codiBoardList;
 	}
 
 	public int insertLike(LikeThat likeIt) {
@@ -80,5 +60,12 @@ public class CodiBoardService {
 		List<LikeThat> likeList = codiBoardDao.findLikeThatAll(conn);
 		close(conn);
 		return likeList;
+	}
+
+	public List<CodiBoard> findCodiBoardIsOpenY(Map<String, Object> page) {
+		Connection conn = getConnection();
+		List<CodiBoard> codiBoardList = codiBoardDao.findCodiBoardIsOpenY(conn, page);
+		close(conn);
+		return codiBoardList;
 	}
 }
