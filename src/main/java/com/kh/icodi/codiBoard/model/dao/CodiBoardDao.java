@@ -14,10 +14,8 @@ import java.util.Map;
 import java.util.Properties;
 
 import com.kh.icodi.codiBoard.model.dto.CodiBoard;
-import com.kh.icodi.codiBoard.model.dto.CodiBoardExt;
 import com.kh.icodi.codiBoard.model.dto.LikeThat;
 import com.kh.icodi.codiBoard.model.exception.CodiBoardException;
-import com.kh.icodi.myCodi.model.dto.MyCodi;
 
 public class CodiBoardDao {
 	private Properties prop = new Properties();
@@ -32,7 +30,7 @@ public class CodiBoardDao {
 	}
 	
 	// 최신 코디 조회
-	// getTotalContentHotCodi = select count(*) from my_codi
+	// getTotalContentNewCodi = select count(*) from codi_board
 	public int getTotalContentNewCodi(Connection conn) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
@@ -52,55 +50,6 @@ public class CodiBoardDao {
 			close(pstmt);
 		}
 		return totalContent;
-	}
-	
-	// 최신 코디 더보기
-	// newCodiMore = select * from ( select row_number() over (order by codi_no desc) rnum, c.* from my_codi c) c where rnum between ? and ?
-	public List<CodiBoardExt> newCodiMore(Connection conn, Map<String, Object> page) {
-		PreparedStatement pstmt = null;
-		ResultSet rset = null;
-		List<CodiBoardExt> codiBoardList = new ArrayList<>();
-		String sql = prop.getProperty("newCodiMore");
-		
-		try {
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, (int) page.get("start"));
-			pstmt.setInt(2, (int) page.get("end"));
-			rset = pstmt.executeQuery();
-			while(rset.next()) {
-				codiBoardList.add(handleCodiBoardResultSet(rset));
-			}
-		} catch (SQLException e) {
-			throw new CodiBoardException("최신 코디 더보기 조회 오류", e);
-		} finally {
-			close(rset);
-			close(pstmt);
-		}
-		return codiBoardList;
-	}
-	
-	// 코디번호에 맞는 첨부파일 가져오기
-	// findMyCodiByCodiNo = select * from my_codi where codi_no = ?
-	public MyCodi findMyCodiByCodiNo(Connection conn, int codiNo) {
-		PreparedStatement pstmt = null;
-		ResultSet rset = null;
-		MyCodi myCodi = null;
-		String sql = prop.getProperty("findMyCodiByCodiNo");
-		
-		try {
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, codiNo);
-			rset = pstmt.executeQuery();
-			while(rset.next()) {
-				myCodi = handleMyCodiResultSet(rset);
-			}
-		} catch (SQLException e) {
-			throw new CodiBoardException("내 코디 첨부파일 조회 오류!", e);
-		} finally {
-			close(rset);
-			close(pstmt);
-		}
-		return myCodi;
 	}
 	
 	// 좋아요 추가하기
@@ -197,25 +146,6 @@ public class CodiBoardDao {
 		likeThat.setLikeNo(rset.getInt("like_no"));
 		return likeThat;
 	}
-
-	private MyCodi handleMyCodiResultSet(ResultSet rset) throws SQLException {
-		MyCodi myCodi = new MyCodi();
-		myCodi.setCodiNo(rset.getInt("codi_no"));
-		myCodi.setMemberId(rset.getString("member_id"));
-		myCodi.setMyCodiFilename(rset.getString("my_codi_filename"));
-		myCodi.setMyCodiRegDate(rset.getDate("my_codi_reg_date"));
-		return myCodi;
-	}
-
-	private CodiBoardExt handleCodiBoardResultSet(ResultSet rset) throws SQLException {
-		CodiBoardExt codiBoard = new CodiBoardExt();
-		codiBoard.setCodiBoardNo(rset.getInt("codi_board_no"));
-		codiBoard.setCodiNo(rset.getInt("codi_no"));
-		codiBoard.setCodiBoardContent(rset.getString("codi_board_content"));
-		codiBoard.setCodiBoardRegDate(rset.getDate("codi_board_reg_date"));
-		codiBoard.setLikeCount(rset.getInt("like_count"));
-		return codiBoard;
-	}
 	
 	// 좋아요 조회
 	// findLikeThatByCodiBoardNo = select * from likeThat where codi_board_no = ?
@@ -239,5 +169,43 @@ public class CodiBoardDao {
 			close(pstmt);
 		}
 		return likeList;
+	}
+	
+	// 코디 게시판 조회 (is_open Y)
+	// findCodiBoardIsOpenY = select * from ( select row_number () over (order by reg_date desc) rnum, b.* from codi_board b where is_open = 'Y') b where rnum between ? and ?
+	public List<CodiBoard> findCodiBoardIsOpenY(Connection conn, Map<String, Object> page) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		List<CodiBoard> codiBoardList = new ArrayList<>();
+		String sql = prop.getProperty("findCodiBoardIsOpenY");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, (int)page.get("start"));
+			pstmt.setInt(2, (int)page.get("end"));
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				codiBoardList.add(handleCodiBoardResultSet(rset));
+			}
+		} catch (SQLException e) {
+			throw new CodiBoardException("최신 코디 게시판 조회 오류!", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		return codiBoardList;
+	}
+
+	private CodiBoard handleCodiBoardResultSet(ResultSet rset) throws SQLException {
+		CodiBoard codiBoard = new CodiBoard();
+		codiBoard.setCodiBoardNo(rset.getInt("codi_board_no"));
+		codiBoard.setMemberId(rset.getString("member_id"));
+		codiBoard.setCodiBoardContent(rset.getString("codi_board_content"));
+		codiBoard.setLikeCount(rset.getInt("like_count"));
+		codiBoard.setCodiFilename(rset.getBlob("codi_filename"));
+		codiBoard.setIsOpen(rset.getString("is_open"));
+		codiBoard.setUseProduct(rset.getString("use_product"));
+		codiBoard.setRegDate(rset.getDate("reg_date"));
+		return codiBoard;
 	}
 }
