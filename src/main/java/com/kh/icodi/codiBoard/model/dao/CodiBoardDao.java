@@ -104,7 +104,7 @@ public class CodiBoardDao {
 	}
 	
 	// 좋아요 추가하기
-	// insertLike = insert into likeThat values (seq_like_no.nexval, ?, ?)
+	// insertLike = insert into likeThat values (?, ?, seq_like_no.nextval)
 	public int insertLike(Connection conn, LikeThat likeIt) {
 		PreparedStatement pstmt = null;
 		int result = 0;
@@ -121,6 +121,81 @@ public class CodiBoardDao {
 			close(pstmt);
 		}
 		return result;
+	}
+	
+	// 좋아요 번호 조회
+	// selectLikeNo = select like_no from likeThat where codi_board_no = ? and member_id = ?
+	public int selectLikeNo(Connection conn, LikeThat delLike) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		int delLikeNo = 0;
+		String sql = prop.getProperty("selectLikeNo");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, delLike.getCodiBoardNo());
+			pstmt.setString(2, delLike.getMemberId());
+			rset = pstmt.executeQuery();
+			if(rset.next()) {
+				delLikeNo = rset.getInt(1);
+			}
+		} catch (SQLException e) {
+			throw new CodiBoardException("좋아요 번호 조회 오류!", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		return delLikeNo;
+	}
+	
+	// 좋아요 삭제하기
+	// deleteLike = delete from likeThat where like_no ?
+	public int deleteLike(Connection conn, int likeNo) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String sql = prop.getProperty("deleteLike");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, likeNo);
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new CodiBoardException("좋아요 삭제하기 오류!", e);
+		} finally {
+			close(pstmt);
+		}
+		return result;
+	}
+	
+	// 좋아요 테이블 조회
+	// findLikeThatAll = select * from likeThat order by like_no
+	public List<LikeThat> findLikeThatAll(Connection conn) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		List<LikeThat> likeList = new ArrayList<>();
+		String sql = prop.getProperty("findLikeThatAll");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				likeList.add(handleLikeThatResultSet(rset));
+			}
+		} catch (SQLException e) {
+			throw new CodiBoardException("좋아요 테이블 조회 오류!", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		return likeList;
+	}
+	
+	private LikeThat handleLikeThatResultSet(ResultSet rset) throws SQLException {
+		LikeThat likeThat = new LikeThat();
+		likeThat.setMemberId(rset.getString("member_id"));
+		likeThat.setCodiBoardNo(rset.getInt("codi_board_no"));
+		likeThat.setLikeNo(rset.getInt("like_no"));
+		return likeThat;
 	}
 
 	private MyCodi handleMyCodiResultSet(ResultSet rset) throws SQLException {
@@ -140,5 +215,29 @@ public class CodiBoardDao {
 		codiBoard.setCodiBoardRegDate(rset.getDate("codi_board_reg_date"));
 		codiBoard.setLikeCount(rset.getInt("like_count"));
 		return codiBoard;
+	}
+	
+	// 좋아요 조회
+	// findLikeThatByCodiBoardNo = select * from likeThat where codi_board_no = ?
+	public List<LikeThat> findLikeThatByCodiBoardNo(Connection conn, int codiBoardNo) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		List<LikeThat> likeList = new ArrayList<>();
+		String sql = prop.getProperty("findLikeThatByCodiBoardNo");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, codiBoardNo);
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				likeList.add(handleLikeThatResultSet(rset));
+			}
+		} catch (SQLException e) {
+			throw new CodiBoardException("좋아요 테이블 조회 오류!", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		return likeList;
 	}
 }

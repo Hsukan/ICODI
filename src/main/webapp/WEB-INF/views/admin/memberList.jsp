@@ -18,6 +18,9 @@ div#search-memberId {
 div#search-memberName {
 	display: <%= "member_name".equals(type) ? "inline-block" : "none"%>;
 }
+div#search-memberRole {
+	display: <%= "member_role".equals(type) ? "inline-block" : "none"%>;
+}
 </style>
 <script>
 window.addEventListener('load', (e) => {
@@ -29,6 +32,7 @@ window.addEventListener('load', (e) => {
 		switch(e.target.value){
 		case "member_id" : id = "memberId"; break;
 		case "member_name" : id = "memberName"; break;
+		case "member_role" : id = "memberRole"; break;
 		}
 		document.querySelector(`#search-\${id}`).style.display = "inline-block";
 	}
@@ -42,6 +46,7 @@ window.addEventListener('load', (e) => {
         <select id="searchType">
             <option value="member_id" <%= "member_id".equals(type) ? "selected" : "" %>>아이디</option>        
             <option value="member_name" <%= "member_name".equals(type) ? "selected" : "" %>>회원명</option>
+            <option value="member_role" <%= "member_role".equals(type) ? "selected" : "" %>>회원권한</option>
         </select>
         <div id="search-memberId" class="search-type">
             <form action="<%=request.getContextPath()%>/admin/memberFinder">
@@ -58,6 +63,14 @@ window.addEventListener('load', (e) => {
                 	value="<%= "member_name".equals(type) ? kw : "" %>"/>
                 <button type="submit">검색</button>            
             </form>    
+        </div>
+        <div id="search-memberRole" class="search-type">
+            <form action="<%=request.getContextPath()%>/admin/memberFinder">
+                <input type="hidden" name="searchType" value="member_role"/>
+                <input type="radio" name="searchKeyword" value="U" <%= "member_role".equals(type) && "U".equals(kw) ? "checked" : "" %>> 일반
+                <input type="radio" name="searchKeyword" value="A" <%= "member_role".equals(type) && "A".equals(kw) ? "checked" : "" %>> 관리자
+                <button type="submit">검색</button>
+            </form>
         </div>
     </div>
 	

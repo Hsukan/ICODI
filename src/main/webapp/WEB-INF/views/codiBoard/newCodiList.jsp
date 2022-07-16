@@ -1,3 +1,5 @@
+<%@page import="com.kh.icodi.codiBoard.model.dto.LikeThat"%>
+<%@page import="java.util.List"%>
 <%@page import="com.kh.icodi.myCodi.model.dto.MyCodi"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -5,6 +7,8 @@
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 <%
 	int totalPage = (int) request.getAttribute("totalPage");
+	String loginMemberId = (String)request.getAttribute("loginMemberId");
+	List<LikeThat> likeList = (List<LikeThat>) request.getAttribute("likeThat");
 %>
 <script src="<%= request.getContextPath()%>/js/jquery-3.6.0.js"></script>
 	<main>
@@ -22,6 +26,7 @@
 		</section>
 	</main>
 <script>
+// 최신코디 보기
 const goToNewCode = () => {
 	location.href = "<%= request.getContextPath()%>/codi/newCodiList"
 }
@@ -37,23 +42,25 @@ const getPage = (cPage) => {
 		success(response) {
 			const content = document.querySelector(".content-wrap");
 			response.forEach((response) => {
-				const {codiBoardNo, codiBoardContent, codiBoardRegDate, likeCount, myCodiList} = response;
+				const {codiBoardNo, codiBoardContent, codiBoardRegDate, likeCount, likeList, myCodiList} = response;
 				
 				myCodiList.forEach((myCodi) => {
 					const {memberId, myCodiRegDate, myCodiFilename, codiNo} = myCodi;
 					
+					// const {likeNo, memberId, codiBoardNo} = like;
+					// console.log(likeNo, memberId, codiBoardNo);
 					const codi = `
 						<div class="myCodi">
 							<img src="<%= request.getContextPath()%>/upload/codiboard/\${myCodiFilename}" />
 							<p class="info">
-								<span id="\${codiBoardNo}" class="like">❤</span>
+								<span id="\${codiBoardNo}" class="like">좋아요함</span>
 								<span id="likeCount">받은 좋아요 \${likeCount}</span>
 								<span id="writer">\${memberId}</span>
 								<span id="regDate">\${myCodiRegDate}</span>
 							</p>
 						</div>
 					`
-					content.insertAdjacentHTML('beforeend', codi);
+					content.insertAdjacentHTML('beforeend', codi);						
 				});
 			 });
 		},
@@ -65,7 +72,14 @@ const getPage = (cPage) => {
 			
 			document.querySelectorAll(".like").forEach((no) => {
 				no.onclick = (e) => {
-					likeIt(e);
+					if(<%= loginMember == null %>) {
+						alert("로그인 후 이용 가능합니다.");
+						return;
+					} else {
+						console.log('가능');
+					}
+					
+					// 	likeIt(e);
 				}
 			});
 		}
