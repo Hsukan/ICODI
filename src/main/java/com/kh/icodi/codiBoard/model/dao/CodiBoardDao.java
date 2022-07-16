@@ -166,6 +166,38 @@ public class CodiBoardDao {
 		}
 		return result;
 	}
+	
+	// 좋아요 테이블 조회
+	// findLikeThatAll = select * from likeThat order by like_no
+	public List<LikeThat> findLikeThatAll(Connection conn) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		List<LikeThat> likeList = new ArrayList<>();
+		String sql = prop.getProperty("findLikeThatAll");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				likeList.add(handleLikeThatResultSet(rset));
+			}
+		} catch (SQLException e) {
+			throw new CodiBoardException("좋아요 테이블 조회 오류!", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		return likeList;
+	}
+	
+	private LikeThat handleLikeThatResultSet(ResultSet rset) throws SQLException {
+		LikeThat likeThat = new LikeThat();
+		likeThat.setMemberId(rset.getString("member_id"));
+		likeThat.setCodiBoardNo(rset.getInt("codi_board_no"));
+		likeThat.setLikeNo(rset.getInt("like_no"));
+		return likeThat;
+	}
+
 	private MyCodi handleMyCodiResultSet(ResultSet rset) throws SQLException {
 		MyCodi myCodi = new MyCodi();
 		myCodi.setCodiNo(rset.getInt("codi_no"));
@@ -183,5 +215,29 @@ public class CodiBoardDao {
 		codiBoard.setCodiBoardRegDate(rset.getDate("codi_board_reg_date"));
 		codiBoard.setLikeCount(rset.getInt("like_count"));
 		return codiBoard;
+	}
+	
+	// 좋아요 조회
+	// findLikeThatByCodiBoardNo = select * from likeThat where codi_board_no = ?
+	public List<LikeThat> findLikeThatByCodiBoardNo(Connection conn, int codiBoardNo) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		List<LikeThat> likeList = new ArrayList<>();
+		String sql = prop.getProperty("findLikeThatByCodiBoardNo");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, codiBoardNo);
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				likeList.add(handleLikeThatResultSet(rset));
+			}
+		} catch (SQLException e) {
+			throw new CodiBoardException("좋아요 테이블 조회 오류!", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		return likeList;
 	}
 }

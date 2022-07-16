@@ -61,7 +61,6 @@ public class MemberEnrollServlet extends HttpServlet {
 			
 			HttpSession session = request.getSession();
 			response.sendRedirect(request.getContextPath() + "/");
-			
 		}
 		catch (Exception e) {
 			e.printStackTrace();
