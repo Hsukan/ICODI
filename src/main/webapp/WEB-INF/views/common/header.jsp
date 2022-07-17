@@ -73,6 +73,3 @@ window.onload = () => {
             </div>
         </div>
     </div>
-</body>
-</html>
-
