@@ -1,10 +1,11 @@
 package com.kh.icodi.codiBook.model.service;
 
-import static com.kh.icodi.common.JdbcTemplate.close;
+import static com.kh.icodi.common.JdbcTemplate.*;
 import static com.kh.icodi.common.JdbcTemplate.getConnection;
 
 import java.sql.Connection;
 import java.util.List;
+import java.util.Map;
 
 import com.kh.icodi.admin.model.dto.ProductAttachment;
 import com.kh.icodi.admin.model.dto.ProductExt;
@@ -26,13 +27,25 @@ public class CodiBookService {
 		return products;
 	}
 
-	public int insertCodi(String img1, String img2, String img3, String img4) {
-		System.out.println("codiservice 도착");
+	public int insertCodi(String writer, String codiArr, Map<String, Object> param) {
 		Connection conn = getConnection();
 		int result = 0;
-		
-		result = codiBookDao.insertCodi(conn, img1, img2, img3, img4);
-		
+		try {
+			result = codiBookDao.insertCodi(conn, writer, codiArr, param);
+			commit(conn);
+		} catch(Exception e) {
+			rollback(conn);
+			throw e;
+		}
 		return result;
 	}
+
+	public List<String> find1(String writer) {
+		Connection conn = getConnection();
+		List<String> imgSrc = codiBookDao.find1(conn, writer);
+		
+		close(conn);
+		return imgSrc;
+	}
+
 }

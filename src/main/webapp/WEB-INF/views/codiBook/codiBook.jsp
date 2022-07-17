@@ -49,6 +49,10 @@
 			</div>
 		</article>
 		<article>
+		<form action="<%= request.getContextPath()%>/codi/myCodi">
+		<input type="hidden" name="memberId" value="<%= loginMember.getMemberId() %>" />
+		<button>내코디보기</button>
+		</form>
 			<div class="codiProductArea-wrap">
 				<ul id="category">
 					<li value="<%= CategoryNo.stringOf("TOP") %>">TOP</li>
@@ -58,22 +62,12 @@
 				</ul>
 			</div>
 		</article>
-		<form name="myCodiEnrollFrm"
-			action="<%= request.getContextPath()%>/codiBoard/codiBoardEnroll"
-			method="post">
-			<!--  enctype="multipart/form-data" -->
-			<input type="hidden" name="memberId" value="<%= loginMember.getMemberId() %>" />
-			<input id="codiList" type="hidden" name="codiArr" value="aaaa" />
-			<input id="imgBase" type="hidden" name="imgBase" value="aaaa" />
 			<div id="canvas">
 				<div id="div1" class="canvasDiv" ondragover="allowDrop(event)"></div>
 				<div id="div2" class="canvasDiv" ondragover="allowDrop(event)"></div>
 				<div id="div3" class="canvasDiv" ondragover="allowDrop(event)"></div>
 			</div>
-			<!-- <button type="submit" onclick=partShot()>partShot</button> -->
-<button type="button" onclick=partShot()>partShot</button>
-		</form>
-		<input type="button" id="btn_reset" value="Reset" onclick="reset();">
+			<input type="button" value="저장" id="btnSave"/>
 		<div id="container_img" class="div" ondragover="allowDrop(event)">
 			<ul>
 
@@ -171,6 +165,10 @@
         
 
     }
+    btnSave.onclick = (e) => {
+    	partShot();
+    };
+    
     function partShot() {
        //특정부분 스크린샷
         html2canvas(document.getElementById("canvas"))
@@ -178,26 +176,21 @@
          .then(function (canvas) {
 
         //이미지 저장
-        //console.log(canvas.toDataURL());
-        //saveAs(canvas.toDataURL(), 'file-name.jpg');
         	 var myImg = canvas.toDataURL('image/jpeg', 0.5);
  			myImg = myImg.replace("data:image/jpeg;base64,", "");
-        	console.log(myImg);
+        	//console.log(myImg);
         	
         	$.ajax({
         		type : "POST",
 				data : {
-					"imgSrc" : myImg
+					"imgSrc" : myImg,
+					"memberId" : "<%= loginMember.getMemberId() %>",
+					"codiArr" : arr2
 				},
 				dataType : "text",
 				url : '<%= request.getContextPath() %>/canvas',
 				success(data) {
-					//console.log(data);
-					const ul = document.querySelector("#container_img ul");
-					const img = `
-					<img src="data:image/png;base64,\${myImg}" />
-					`;
-					ul.insertAdjacentHTML('afterbegin', img);
+					console.log("이미지 저장 성공!");
 				},
 				error : function(a, b, c) {
 					alert("error");
@@ -216,24 +209,7 @@
 		console.log(document.getElementById("imgBase").value);
 		  
     };
-    
-    function saveAs(uri, filename) {
-        var link = document.createElement('a');
-        if (typeof link.download === 'string') {
-            link.href = uri;
-            link.download = filename;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            
-        } else {
-            window.open(uri);
-        }
-    }
 
-    const reset = () => {
-  location.reload();
-};
 	</script>
 </main>
 <script>
