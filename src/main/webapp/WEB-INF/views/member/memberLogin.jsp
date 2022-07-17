@@ -9,12 +9,6 @@
 <meta charset="UTF-8">
 <title>로그인/로그아웃</title>
 <script>
-// 로그인실패 메세지
-window.onload = () => {
-	
-<% if(msg != null) { %>
-	alert("<%= msg%>");
-<% } %> 
 
 // 로그인 유효성
 <% if(loginMember == null){ %>
