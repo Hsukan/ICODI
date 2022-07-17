@@ -102,4 +102,25 @@ public class CodiBookDao {
 		product.setProductPluspoint(rset.getDouble("product_pluspoint"));
 		return product;
 	}
+
+	public int insertCodi(Connection conn, String imgSrc) {
+		System.out.println("codiDao 도착");
+		System.out.println(imgSrc);
+		PreparedStatement pstmt = null;
+		int result= 0;
+		String sql = "insert into testclob values(?)";
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, imgSrc);
+			
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close(pstmt);
+		}
+		
+		return result;
+	}
 }
