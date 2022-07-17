@@ -105,12 +105,13 @@
 				</tr>
     			<tr>
     				<td>이름</td>
-					<td><input type="text" name="memberName" id="memberName" value="<%= memberName %>" /></td>
+					<td><input type="text" name="memberName" id="memberName" value="<%= memberName %>" readonly/></td>
 				</tr>
     			<tr>
     				<td>이메일</td>
 					<td>
-						<input type="email" name="email" id="email" value="<%= email %>">
+						<input type="email" name="email" id="email" value="<%= email %>" required><br>
+						<span id="msgEmail"></span>
 					</td>
 				</tr>
     			<tr>
@@ -125,20 +126,21 @@
 							<option value="019" <%= phoneChecked(phoneList, "019") %>>019</option>
 						</select>-
 						<input type="text" name="phone" id="phone2" maxlength="4" style="width: 30px;" value="<%= phones[1] %>" required>-
-						<input type="text" name="phone" id="phone3" maxlength="4" style="width: 30px;" value="<%= phones[2].replace(" ", "") %>" required>
+						<input type="text" name="phone" id="phone3" maxlength="4" style="width: 30px;" value="<%= phones[2].replace(" ", "") %>" required><br>
+						<span id="msgPhone"></span>
 					</td>
 				</tr>
   				<tr>
   					<td>주소</td>
 					<td>
-						<input type="text" name="address" id="address" value="<%= address %>">
+						<input type="text" name="address" id="address" value="<%= address %>" required>
 						<input type="button" id="researchButton" value="주소 찾기🔎"/>
 					</td>
 				</tr>
 				<tr>
 					<td></td>
 					<td>
-						<input type="text" name="addressEx" id="addressEx" value="<%= addressEx %>">
+						<input type="text" name="addressEx" id="addressEx" value="<%= addressEx %>" required>
 					</td>
 				</tr>
 			</table>
@@ -154,37 +156,55 @@
 </form>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
-   const modal = document.getElementById("modal")
-   function modalOn() {
-       modal.style.display = "flex"
-   }
-   function isModalOn() {
-       return modal.style.display === "flex"
-   }
-   function modalOff() {
-       modal.style.display = "none"
-   }
-   const btnModal = document.getElementById("btn-modal-memberUpdate")
-   btnModal.addEventListener("click", e => {
-       modalOn()
-   })
-   const closeBtn = modal.querySelector(".close-area")
-   closeBtn.addEventListener("click", e => {
-       modalOff()
-   })
-   modal.addEventListener("click", e => {
-       const evTarget = e.target
-       if(evTarget.classList.contains("modal-overlay")) {
-           modalOff()
-       }
-   })
-   window.addEventListener("keyup", e => {
-       if(isModalOn() && e.key === "Escape") {
-           modalOff()
-       }
-   })
+
+/** 모달창 띄우기 */
+const modal = document.getElementById("modal");
+function modalOn() {
+    modal.style.display = "flex"
+}
+
+function isModalOn() {
+    return modal.style.display === "flex"
+}
+
+function modalOff() {
+    modal.style.display = "none"
+}
+
+const btnModal = document.getElementById("btn-modal-memberUpdate")
+btnModal.addEventListener("click", e => {
+    modalOn()
+});
    
-   document.querySelector("#researchButton").addEventListener('click', function(){
+const closeBtn = modal.querySelector(".close-area")
+closeBtn.addEventListener("click", e => {
+    modalOff()
+});
+
+modal.addEventListener("click", e => {
+    const evTarget = e.target
+    if(evTarget.classList.contains("modal-overlay")) {
+        modalOff()
+    }
+});
+
+window.addEventListener("keyup", e => {
+    if(isModalOn() && e.key === "Escape") {
+        modalOff()
+    }
+});
+
+/** 주소 찾기 */
+document.querySelector("#address").addEventListener('click', function(){
+    new daum.Postcode({
+        oncomplete: function(data) {
+            // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분입니다.
+            document.querySelector("#address").value = data.address;
+			document.querySelector("#addressEx").focus();
+        }
+    }).open();
+});	
+document.querySelector("#researchButton").addEventListener('click', function(){
     new daum.Postcode({
         oncomplete: function(data) {
             // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분입니다.
@@ -210,33 +230,54 @@ const deleteMember = () => {
 /**
  * 폼 유효성 검사
  */
+const email = document.querySelector("#email");
+email.addEventListener('blur', (e) => {
+	if(!/^([\w\.-]+)@([\w-]+)(\.[\w-]+){1,2}$/.test(email.value)) {
+		msgEmail.innerHTML = '이메일 형식이 유효하지 않습니다.';
+		msgEmail.style.color = 'red';
+		email.select();
+		return false;
+	}
+	else {
+		msgEmail.innerHTML = '';
+		msgEmail.style.color = '';
+	}
+});
+
+const phone2 = document.querySelector("#phone2");
+phone2.addEventListener('blur', (e) => {
+	if(!/[0-9]{3,4}/.test(phone2.value)) {
+		msgPhone.innerHTML = '휴대폰 번호를 다시 확인해 주세요.';
+		msgPhone.style.color = 'red';
+		phone2.select();
+		return false;
+	}
+	else {
+		msgPhone.innerHTML = '';
+		msgPhone.style.color = '';
+	}
+});
+
+const phone3 = document.querySelector("#phone3");
+phone3.addEventListener('blur', (e) => {
+	if(!/[0-9]{4,}/.test(phone3.value)) {
+		msgPhone.innerHTML = '휴대폰 번호를 다시 확인해 주세요.';
+		msgPhone.style.color = 'red';
+		phone3.select();
+		return false;
+	}
+	else {
+		msgPhone.innerHTML = '';
+		msgPhone.style.color = '';
+	}
+
+});
+
 document.memberUpdateFrm.onsubmit = (e) => {
-   	
-   	const phone2 = document.querySelector("#phone2");
-   	if(!/^\d{2,4}$/.test(phone2.value)){
-   		phone2.select();
-   		return false;
-   	}
-   	
-   	const phone3 = document.querySelector("#phone3");
-   	if(!/^\d{4,}$/.test(phone3.value)){
-   		phone3.select();
-   		return false;
-   	}
-   	
-   	const address = document.querySelector("#address");
-   	if(!/^.|\n+$/.test(address.value)){
-   		address.select();
-   		return false;
-   	}
-   	
-   	const addressEx = document.querySelector("#addressEx");
-   	if(!/^.|\n+$/.test(addressEx.value)){
-   		addressEx.select();
-   		return false;
-   	}
-   	
-}    
+	if(!email.value || !phone2.value || !phone3.value || !address.value || !addressEx.value) {
+		return false;
+	}
+};
     
 </script>
 <%!
