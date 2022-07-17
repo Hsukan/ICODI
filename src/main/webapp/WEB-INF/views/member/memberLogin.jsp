@@ -11,6 +11,8 @@
 <script>
 
 // 로그인 유효성
+window.onload = () => {
+	
 <% if(loginMember == null){ %>
 	document.loginFrm.onsubmit = (e) => {
 		

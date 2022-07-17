@@ -3,6 +3,21 @@
     pageEncoding="UTF-8"%>
 <%
 	Member loginMember = (Member) session.getAttribute("loginMember");
+	String msg = (String) session.getAttribute("msg");
+	if(msg != null) session.removeAttribute("msg");
+	
+	String saveId = null;
+	Cookie[] cookies = request.getCookies();
+	if(cookies != null)
+		for(Cookie c : cookies){
+			String name = c.getName();
+			String value = c.getValue();
+			System.out.println("[cookie] " + name + " = " + value);
+			if("saveId".equals(name)){
+				saveId = value;
+			}
+		}
+
 
 %>
     <!doctype html>
@@ -11,6 +26,13 @@
     	<meta charset="UTF-8" />
     	<title>Document</title>
     	<script src="<%= request.getContextPath() %>/js/jquery-3.6.0.js"></script>
+    <script>
+window.onload = () => {
+	<% if(msg != null) { %>	
+		alert("<%= msg %>");
+	<% } %>
+}
+</script>
     </head>
     <body>
 <section id=enroll-container>
@@ -25,16 +47,25 @@
 					<td><input type="password" name="oldPassword" id="oldPassword" required></td>
 				</tr>
 				<tr>
+					<td colspan="2"><span id="msg1"></span></td>
+				</tr>
+				<tr>
 					<th>변경할 비밀번호</th>
 					<td>
 						<input type="password" name="newPassword" id="newPassword" required>
 					</td>
 				</tr>
 				<tr>
+					<td colspan="2"><span id="msg2"></span></td>
+				</tr>
+				<tr>
 					<th>비밀번호 확인</th>
 					<td>	
 						<input type="password" id="newPasswordCheck" required><br>
 					</td>
+				</tr>
+				<tr>
+					<td colspan="2"><span id="msg3"></span></td>
 				</tr>
 				<tr>
 					<td colspan="2" style="text-align: center;">
@@ -49,57 +80,78 @@
 	/**
 	 * 비밀번호 일치여부 검사
 	 */
-	 /**
-	 document.querySelector("#newPasswordCheck").onblur = (e) => {
-		const password = document.querySelector("#newPassword");
-		const passwordCheck = e.target;
-		if(password.value !== passwordCheck.value){
-			alert("비밀번호가 dd일치하지 않습니다.");
-			password.select();
+	 
+	const oldPassword = document.querySelector("#oldPassword");
+	const newPassword = document.querySelector("#newPassword");
+	const newPasswordCheck = document.querySelector("#newPasswordCheck");
+	
+	oldPassword.addEventListener('blur', (e) => {
+	const re = /^(?=.*\d{1,})(?=.*[!@#$%^&*]{1,})(?=.*[a-zA-Z]{1,}).{8,12}$/;
+		if(!re.test(oldPassword.value)){
+			msg1.innerHTML = "비밀번호는 영문+숫자+특수문자(!@#$%^&*) 포함 8자리 이상이여야 합니다.";
+			oldPassword.select();
+			return false;
 		}
-	};
-	*/
+		else {
+			msg1.innerHTML = '';
+		}
+	});
+	
+	newPassword.addEventListener('blur', (e) => {
+		const re = /^(?=.*\d{1,})(?=.*[!@#$%^&*]{1,})(?=.*[a-zA-Z]{1,}).{8,12}$/;
+		if(!re.test(newPassword.value)){
+			msg2.innerHTML = "새 비밀번호는 영문+숫자+특수문자(!@#$%^&*) 포함 8자리 이상이여야 합니다.";
+				newPassword.select();
+				return false;
+		}
+		else {
+			msg2.innerHTML = '';
+		}
+	});
+	
+	newPasswordCheck.addEventListener('blur', (e) => {
+		if(newPassword.value !== newPasswordCheck.value) {
+			msg3.innerHTML = '비밀번호가 일치하지 않습니다.';
+				newPasswordCheck.value = '';
+				newPassword.select();
+		}
+		else {
+			msg3.innerHTML = '';
+		}
+	});
+	
+	
+	
 		
 	document.passwordUpdateFrm.onsubmit = (e) => {
 		e.preventDefault();
 		
-		const oldPassword = document.querySelector("#oldPassword");
-		const newPassword = document.querySelector("#newPassword");
-		const re = /^[a-zA-z0-9!@#$%^&*()]{4,}$/;
-		if(!re.test(oldPassword.value)){
-			alert("비밀번호는 영문자/숫자/!@#$%^&*()로 최소 4글자이상이어야 합니다.");
-			oldPassword.select();
-			return false;
-		}
-		if(!re.test(newPassword.value)){
-			alert("새 비밀번호는 영문자/숫자/!@#$%^&*()로 최소 4글자이상이어야 합니다.");
-			newPassword.select();
+		if(newPassword.value !== newPasswordCheck.value) {
 			return false;
 		}
 		
-		const newPasswordCheck = document.querySelector("#newPasswordCheck");
-		if(newPassword.value !== newPasswordCheck.value){
-			alert("비밀번호가 일치하지 않습니다.");
-			newPassword.select();
-			return false;
-		}
+		
+		$.ajax({
+			url: '<%= request.getContextPath() %>/member/memberPasswordUpdate',
+			dataType: 'json',
+			method: 'post',
+			data : {
+				oldPassword : oldPassword.value,
+				memberId : "<%= loginMember.getMemberId() %>",
+				newPassword : newPassword.value
+			},
+			success(response) {
+				opener.parent.location='<%= request.getContextPath() %>/member/memberMyPage';
+				window.close();
+				
+			},
+			error : console.log
 			
-			// 비동기요청
-			$.ajax({
-				url : '<%= request.getContextPath() %>/member/memberPasswordUpdate',
-				dataType : 'json',
-				method : 'post',
-				data : {
-						oldPassword : oldPassword.value,
-						memberId : "<%= loginMember.getMemberId() %>",
-						newPassword : newPassword.value
-						},
-				success(response){
-					console.log(response);
-				},
-				error : console.log
-			});
-		};
+		});
+		
+	};
+	
+	
 	
 	</script>
 	</body>
