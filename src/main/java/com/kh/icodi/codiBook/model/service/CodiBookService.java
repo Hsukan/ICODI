@@ -26,12 +26,12 @@ public class CodiBookService {
 		return products;
 	}
 
-	public int insertCodi(String imgSrc) {
+	public int insertCodi(String img1, String img2, String img3, String img4) {
 		System.out.println("codiservice 도착");
 		Connection conn = getConnection();
 		int result = 0;
 		
-		result = codiBookDao.insertCodi(conn, imgSrc);
+		result = codiBookDao.insertCodi(conn, img1, img2, img3, img4);
 		
 		return result;
 	}

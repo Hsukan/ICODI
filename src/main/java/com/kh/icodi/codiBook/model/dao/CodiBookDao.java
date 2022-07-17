@@ -103,16 +103,27 @@ public class CodiBookDao {
 		return product;
 	}
 
-	public int insertCodi(Connection conn, String imgSrc) {
+	public int insertCodi(Connection conn, String img1, String img2, String img3, String img4) {
 		System.out.println("codiDao 도착");
-		System.out.println(imgSrc);
+		System.out.println(img1);
+		System.out.println(img2);
+		System.out.println(img3);
+		System.out.println(img4);
 		PreparedStatement pstmt = null;
 		int result= 0;
-		String sql = "insert into testclob values(?)";
+		//String sql = "insert into testclob values(1, ?, ?, ?, ?)";
+		//insertCodiBook = update testclob set str1 = ?, str2 = ?, str3 = ?, str4 = ? where no = 2;
+		//insertCodiBook = insert into testclob values(4, TO_CLOB(?), TO_CLOB(?), TO_CLOB(?), TO_CLOB(?))
+		//insertCodiBook = insert into testclob values (3, empty_clob(), empty_clob(), empty_clob(), empty_clob())
+		String sql = prop.getProperty("insertCodiBook");
+		System.out.println(sql);
 		
 		try {
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, imgSrc);
+//			pstmt.setString(1, img1);
+//			pstmt.setString(2, img2);
+//			pstmt.setString(3, img3);
+//			pstmt.setString(4, img4);
 			
 			result = pstmt.executeUpdate();
 		} catch (SQLException e) {
