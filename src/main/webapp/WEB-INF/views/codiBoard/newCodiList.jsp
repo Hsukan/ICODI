@@ -1,6 +1,5 @@
 <%@page import="com.kh.icodi.codiBoard.model.dto.LikeThat"%>
 <%@page import="java.util.List"%>
-<%@page import="com.kh.icodi.myCodi.model.dto.MyCodi"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>

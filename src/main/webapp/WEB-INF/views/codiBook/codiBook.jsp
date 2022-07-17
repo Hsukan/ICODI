@@ -58,16 +58,25 @@
 				</ul>
 			</div>
 		</article>
-		<div id="canvas">
-			<div id="div1" class="canvasDiv" ondragover="allowDrop(event)"></div>
-			<div id="div2" class="canvasDiv" ondragover="allowDrop(event)"></div>
-			<div id="div3" class="canvasDiv" ondragover="allowDrop(event)"></div>
-		</div>
-		<button onclick=partShot()>partShot</button>
+		<form name="myCodiEnrollFrm"
+			action="<%= request.getContextPath()%>/codiBoard/codiBoardEnroll"
+			method="post">
+			<!--  enctype="multipart/form-data" -->
+			<input type="hidden" name="memberId" value="<%= loginMember.getMemberId() %>" />
+			<input id="codiList" type="hidden" name="codiArr" value="aaaa" />
+			<input id="imgBase" type="hidden" name="imgBase" value="aaaa" />
+			<div id="canvas">
+				<div id="div1" class="canvasDiv" ondragover="allowDrop(event)"></div>
+				<div id="div2" class="canvasDiv" ondragover="allowDrop(event)"></div>
+				<div id="div3" class="canvasDiv" ondragover="allowDrop(event)"></div>
+			</div>
+			<!-- <button type="submit" onclick=partShot()>partShot</button> -->
+<button type="button" onclick=partShot()>partShot</button>
+		</form>
 		<input type="button" id="btn_reset" value="Reset" onclick="reset();">
 		<div id="container_img" class="div" ondragover="allowDrop(event)">
-			<ul>	
-			
+			<ul>
+
 			</ul>
 		</div>
 		</button>
@@ -75,11 +84,6 @@
 	</section>
 	<script>
 	const arr = [];
-
-    //드랍존 안에 있을때 계속 실행
-    function allowDrop(ev) {
-        ev.preventDefault();
-    }
 
     //클릭하고 이동시
     function drag(ev) {
@@ -119,7 +123,10 @@
         // console.log(arr);
 
     }
-
+    function allowDrop(ev) {
+        ev.preventDefault();
+    }
+    
     //드랍존 안에 드랍했을 때
     function drop(ev) {
         ev.preventDefault();
@@ -168,18 +175,48 @@
        //특정부분 스크린샷
         html2canvas(document.getElementById("canvas"))
         //id container 부분만 스크린샷
-        .then(function (canvas) {
+         .then(function (canvas) {
 
         //이미지 저장
-        saveAs(canvas.toDataURL(), 'file-name.jpg');
+        //console.log(canvas.toDataURL());
+        //saveAs(canvas.toDataURL(), 'file-name.jpg');
+        	 var myImg = canvas.toDataURL('image/jpeg', 0.5);
+ 			myImg = myImg.replace("data:image/jpeg;base64,", "");
+        	console.log(myImg);
+        	
+        	$.ajax({
+        		type : "POST",
+				data : {
+					"imgSrc" : myImg
+				},
+				dataType : "text",
+				url : '<%= request.getContextPath() %>/canvas',
+				success(data) {
+					//console.log(data);
+					const ul = document.querySelector("#container_img ul");
+					const img = `
+					<img src="data:image/png;base64,\${myImg}" />
+					`;
+					ul.insertAdjacentHTML('afterbegin', img);
+				},
+				error : function(a, b, c) {
+					alert("error");
+				}
+        	});
+
         	}).catch(function (err) {
        			 console.log(err);
-        	});
+        	}); 
+
         const codiArr = new Set(arr);
         console.log(codiArr);
-    }
-
-
+        
+		const arr2 = [...codiArr].join(", ");
+		document.getElementById("codiList").value = arr2;
+		console.log(document.getElementById("imgBase").value);
+		  
+    };
+    
     function saveAs(uri, filename) {
         var link = document.createElement('a');
         if (typeof link.download === 'string') {
@@ -188,6 +225,7 @@
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
+            
         } else {
             window.open(uri);
         }
@@ -197,7 +235,6 @@
   location.reload();
 };
 	</script>
-
 </main>
 <script>
 	document.querySelector("#category").addEventListener('click', (e) => {

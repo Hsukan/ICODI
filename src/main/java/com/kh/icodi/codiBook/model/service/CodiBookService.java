@@ -25,4 +25,14 @@ public class CodiBookService {
 		close(conn);
 		return products;
 	}
+
+	public int insertCodi(String imgSrc) {
+		System.out.println("codiservice 도착");
+		Connection conn = getConnection();
+		int result = 0;
+		
+		result = codiBookDao.insertCodi(conn, imgSrc);
+		
+		return result;
+	}
 }
