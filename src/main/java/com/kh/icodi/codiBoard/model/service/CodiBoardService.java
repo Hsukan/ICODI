@@ -11,8 +11,9 @@ import java.util.List;
 import java.util.Map;
 
 import com.kh.icodi.codiBoard.model.dao.CodiBoardDao;
-import com.kh.icodi.codiBoard.model.dto.CodiBoard;
+import com.kh.icodi.codiBoard.model.dto.CodiBoardExt;
 import com.kh.icodi.codiBoard.model.dto.LikeThat;
+import com.kh.icodi.member.model.dto.Member;
 
 public class CodiBoardService {
 	private CodiBoardDao codiBoardDao = new CodiBoardDao();
@@ -24,11 +25,26 @@ public class CodiBoardService {
 		return totalContent;
 	}
 
-	public int insertLike(LikeThat likeIt) {
+	public List<CodiBoardExt> findCodiBoard(Map<String, Object> param) {
 		Connection conn = getConnection();
-		int result = 0;
+		List<CodiBoardExt> codiBoardList =  codiBoardDao.findCodiBoard(conn, param);
+		close(conn);
+		return codiBoardList;
+	}
+
+	public LikeThat checkLiked(Map<String, Object> data) {
+		Connection conn = getConnection();
+		LikeThat liked = codiBoardDao.checkLiked(conn, data);
+		close(conn);
+		return liked;
+	}
+
+	public int deleteLike(Map<String, Object> data) {
+		Connection conn = getConnection();
+		int likeCount = 0;
 		try {
-			result = codiBoardDao.insertLike(conn, likeIt);
+			int result = codiBoardDao.deleteLiked(conn, data);
+			likeCount = codiBoardDao.countLiked(conn, data);
 			commit(conn);
 		} catch(Exception e) {
 			rollback(conn);
@@ -36,36 +52,24 @@ public class CodiBoardService {
 		} finally {
 			close(conn);
 		}
-		return result;
+		return likeCount;
 	}
 
-	public int deleteLike(LikeThat delLike) {
+	public int insertLike(Map<String, Object> data) {
 		Connection conn = getConnection();
-		int result = 0;
+		int likeCount = 0;
 		try {
-			int likeNo = codiBoardDao.selectLikeNo(conn, delLike);
-			result = codiBoardDao.deleteLike(conn, likeNo);
+			int result = codiBoardDao.insertLiked(conn, data);
+			likeCount = codiBoardDao.countLiked(conn, data);
 			commit(conn);
 		} catch(Exception e) {
 			rollback(conn);
-			throw e; 
+			throw e;
 		} finally {
 			close(conn);
 		}
-		return result;
+		return likeCount;
 	}
-
-	public List<LikeThat> findLikeThatAll() {
-		Connection conn = getConnection();
-		List<LikeThat> likeList = codiBoardDao.findLikeThatAll(conn);
-		close(conn);
-		return likeList;
-	}
-
-	public List<CodiBoard> findCodiBoardIsOpenY(Map<String, Object> page) {
-		Connection conn = getConnection();
-		List<CodiBoard> codiBoardList = codiBoardDao.findCodiBoardIsOpenY(conn, page);
-		close(conn);
-		return codiBoardList;
-	}
+	
+	
 }
