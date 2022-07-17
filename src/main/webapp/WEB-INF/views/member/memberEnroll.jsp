@@ -16,7 +16,7 @@
 				<th>비밀번호<sup>*</sup></th>
 				<td>
 					<input type="password" name="password" id="password" placeholder="비밀번호를 입력해주세요" maxlength="12" required />
-					<span id="msgPassword" class="msg">비밀번호는 영문/숫자/특수문자 하나를 반드시 포함해 8자리 이상이여야 합니다.</span>
+					<span id="msgPassword" class="msg">비밀번호는 영문+숫자+특수문자(!@#$%^&*) 포함 8자리 이상이여야 합니다.</span>
 				</td>
 			</tr>
 			<tr>
@@ -43,7 +43,7 @@
 			<tr>
 				<th>휴대폰<sup>*</sup></th>
 				<td>
-					<select name="phone">
+					<select name="phone" id="phone1">
 						<option value="010">010</option>
 						<option value="011">011</option>
 						<option value="016">016</option>
@@ -51,8 +51,8 @@
 						<option value="018">018</option>
 						<option value="019">019</option>
 					</select>-
-					<input type="text" name="phone" id="phone1" maxlength="4" required/>-
-					<input type="text" name="phone" id="phone2" maxlength="4" required/>
+					<input type="text" name="phone" id="phone2" maxlength="4" required/>-
+					<input type="text" name="phone" id="phone3" maxlength="4" required/>
 					<span id="msgPhone" class="msg"></span>
 				</td>
 			</tr>
@@ -149,12 +149,12 @@ email.addEventListener('blur', (e) => {
 	}
 });
 
-const phone1 = document.querySelector("#phone1");
-phone1.addEventListener('blur', (e) => {
-	if(!/[0-9]{3,4}/.test(phone1.value)) {
+const phone2 = document.querySelector("#phone2");
+phone2.addEventListener('blur', (e) => {
+	if(!/[0-9]{3,4}/.test(phone2.value)) {
 		msgPhone.innerHTML = '휴대폰 번호를 다시 확인해 주세요.';
 		msgPhone.style.color = 'red';
-		phone1.select();
+		phone2.select();
 		return false;
 	}
 	else {
@@ -163,12 +163,12 @@ phone1.addEventListener('blur', (e) => {
 	}
 });
 
-const phone2 = document.querySelector("#phone2");
-phone2.addEventListener('blur', (e) => {
-	if(!/[0-9]{4,}/.test(phone2.value)) {
+const phone3 = document.querySelector("#phone3");
+phone3.addEventListener('blur', (e) => {
+	if(!/[0-9]{4,}/.test(phone3.value)) {
 		msgPhone.innerHTML = '휴대폰 번호를 다시 확인해 주세요.';
 		msgPhone.style.color = 'red';
-		phone2.select();
+		phone3.select();
 		return false;
 	}
 	else {
@@ -180,7 +180,7 @@ phone2.addEventListener('blur', (e) => {
 
 document.memberEnrollFrm.onsubmit = (e) => {
 	if(!memberId.value || !password.value || !passwordCheck.value || !memberName.value || 
-			!email.value || !phone1.value || !phone2.value || !address.value || !addressEx.value) {
+			!email.value || !phone2.value || !phone3.value || !address.value || !addressEx.value) {
 		return false;
 	}
 };
