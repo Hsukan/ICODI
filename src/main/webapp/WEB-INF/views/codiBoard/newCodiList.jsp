@@ -13,10 +13,10 @@
 	<main>
 		<section>
 			<article>
-				<div class="header-wrap">
+				<nav class="ootdMenu">
 					<div id="hot">인기</div>
 					<div id="new" onclick="goToNewCodi();">최신</div>
-				</div>
+                </nav>
 				<div class="content-wrap"></div>
 				<div id="btn-more-content">
 					<button id="btn-more" onclick="paging(event);" value="1">MORE</button>
@@ -51,16 +51,23 @@ const getPage = (cPage) => {
 				const list = `
 				<div class="myCodi">
 					<img src="<%= request.getContextPath()%>/upload/codiboard/루피.jpg" />
-					<p class="info">
-					<button id="\${codiBoardNo}" class="like">
-						\${
-							likedMember === undefined ? '♡' : '♥'
-						}					
-					</button>
-						<span id="likeCount">받은 좋아요 \${likeCount}</span>
-						<span id="writer">작성자 \${memberId}</span>
-						<span id="regDate">\${regDate}</span>
-					</p>
+					<div class="icodi-info">
+                        <img src="<%= request.getContextPath()%>/upload/default.png">
+
+                        <div class="text-wrap">
+                            <div class="writerRegDateInfo">
+                                <a href="#" id="writer">\${memberId}</a>
+                                <span id="regDate">\${regDate}</span>
+                            </div>
+                            <div id="content">\${codiBoardContent}</div>
+                            <button id="\${codiBoardNo}" class="like">
+	    						\${
+	    							likedMember === undefined ? '♡' : '♥'
+	    						}	
+                            </button>
+                            <span id="likeCount">${likeCount}</span>
+                        </div>
+                    </div>
 				</div>
 				`;
 				content.insertAdjacentHTML('beforeend', list);
