@@ -8,41 +8,42 @@
 			<tr>
 				<th>아이디<sup>*</sup></th>
 				<td>
-					<input type="text" placeholder="아이디를 입력해주세요" name="memberId" id="memberId" required />
-					<span id="msg1" class="msg">아이디는 영문자/숫자 포함 6자리 이상이여야 합니다.</span>
+					<input type="text" placeholder="아이디를 입력해주세요" name="memberId" id="memberId" maxlength="10" required />
+					<span id="msgMemberId" class="msg">아이디는 영소문자/숫자 포함 6자리 이상이여야 합니다.</span>
 				</td>
 			</tr>
 			<tr>
 				<th>비밀번호<sup>*</sup></th>
 				<td>
-					<input type="password" name="password" id="password" placeholder="비밀번호를 입력해주세요" required />
-					<span id="msg2" class="msg">비밀번호는 영문/숫자/특수문자 포함 10자리 이상이여야 합니다.</span><br />
+					<input type="password" name="password" id="password" placeholder="비밀번호를 입력해주세요" maxlength="12" required />
+					<span id="msgPassword" class="msg">비밀번호는 영문+숫자+특수문자(!@#$%^&*) 포함 8자리 이상이여야 합니다.</span>
 				</td>
 			</tr>
 			<tr>
 				<th>비밀번호 확인<sup>*</sup></th>
 				<td>
-					<input type="password" id="passwordCheck" placeholder="비밀번호를 한 번 더 입력해주세요" required />
-					<span id="msg3" class="msg"></span>
+					<input type="password" id="passwordCheck" placeholder="비밀번호를 한 번 더 입력해주세요" maxlength="12" required />
+					<span id="msgPasswordCheck" class="msg"></span>
 				</td>
 			</tr>
 			<tr>
 				<th>이름<sup>*</sup></th>
 				<td>
-					<input type="text" name="memberName" id="memberName" placeholder="이름을 입력해주세요" required /><br />
-					<span id="msg4" class="msg"></span>
+					<input type="text" name="memberName" id="memberName" placeholder="이름을 입력해주세요" maxlength="20" required />
+					<span id="msgMemberName" class="msg"></span>
 				</td>
 			</tr>
 			<tr>
 				<th>이메일<sup>*</sup></th>
 				<td>
-					<input type="email" name="email" id="email" placeholder="이메일을 입력해주세요" required /><br />
+					<input type="email" name="email" id="email" placeholder="이메일을 입력해주세요" required />
+					<span id="msgEmail" class="msg"></span>
 				</td>
 			</tr>
 			<tr>
 				<th>휴대폰<sup>*</sup></th>
 				<td>
-					<select name="phone">
+					<select name="phone" id="phone1">
 						<option value="010">010</option>
 						<option value="011">011</option>
 						<option value="016">016</option>
@@ -50,8 +51,9 @@
 						<option value="018">018</option>
 						<option value="019">019</option>
 					</select>-
-					<input type="text" name="phone" maxlength="4" required/>-
-					<input type="text" name="phone" maxlength="4" required/>
+					<input type="text" name="phone" id="phone2" maxlength="4" required/>-
+					<input type="text" name="phone" id="phone3" maxlength="4" required/>
+					<span id="msgPhone" class="msg"></span>
 				</td>
 			</tr>
 			<tr>
@@ -65,6 +67,7 @@
 				<th></th>
 				<td>
 					<input type="text" id="addressEx" name="addressEx" required/>
+					<span id="msgAddress" class="msg"></span>
 				</td>
 			</tr>
 		</table>
@@ -75,41 +78,111 @@
 /**
  * 폼 유효성 검사
  */
-document.memberEnrollFrm.onsubmit = (e) => {
-	const memberId = document.querySelector("#memberId");
-	if(!/^[a-zA-Z0-9]{6,}$/.test(memberId.value)){
+const memberId = document.querySelector("#memberId");
+memberId.addEventListener('blur', (e) => {
+	if(!/^[a-z\d]{6,10}$/.test(memberId.value)){
+		msgMemberId.innerHTML = '아이디는 영소문자/숫자 포함 6자리 이상이여야 합니다.';
+		msgMemberId.style.color = 'red';
 		memberId.select();
 		return false;
 	}
+	else {
+		msgMemberId.innerHTML = '';
+		msgMemberId.style.color = '';
+	}
 	
-	const password = document.querySelector("#password");
-	if(!/^[a-zA-Z0-9!@#$%^&*]{4,}$/.test(password.value)){
-		alert("유효한 비밀번호를 입력해 주세요.");
+});
+const password = document.querySelector("#password");
+password.addEventListener('blur', (e) => {
+	if(!/^(?=.*\d{1,})(?=.*[!@#$%^&*]{1,})(?=.*[a-zA-Z]{1,}).{8,12}$/.test(password.value)){
+		msgPassword.innerHTML = '비밀번호는 영문+숫자+특수문자(!@#$%^&*) 포함 8자리 이상이여야 합니다.';
+		msgPassword.style.color = 'red';
 		password.select();
 		return false;
 	}
+	else {
+		msgPassword.innerHTML = '';
+		msgPassword.style.color = '';
+	}
 	
-	const passwordCheck = document.querySelector("#passwordCheck");
-	if(password.value != passwordCheck.value) {
-		document.querySelector("#msg3").innerHTML = "비밀번호가 일치하지 않습니다.";
+});
+const passwordCheck = document.querySelector("#passwordCheck");
+passwordCheck.addEventListener('blur', (e) => {
+	if(password.value !== passwordCheck.value) {
+		msgPassword.innerHTML = '비밀번호가 일치하지 않습니다.';
+		msgPassword.style.color = 'red';
+		passwordCheck.value = "";
 		password.select();
 		return false;
 	}
-	
-	const memberName = document.querySelector("#memberName");
+	else {
+		msgPassword.innerHTML = '';
+		msgPassword.style.color = '';
+	}
+});
+
+const memberName = document.querySelector("#memberName");
+memberName.addEventListener('blur', (e) => {
 	if(!/^[가-힣]{2,}$/.test(memberName.value)){
-		alert("한글 2글자이상 입력해주세요.");
+		msgMemberName.innerHTML = '한글 2글자 이상 입력해 주세요.';
+		msgMemberName.style.color = 'red';
 		memberName.select();
 		return false;
 	}
-	
-	//const phone =  = document.querySelectorAll(".phone");
-	//if(!/^010[0-9]{8}$/.test(phone.value)){
-	//	alert("유효한 전화번호를 입력해주세요.");
-	//	phone.select();
-	//	return false;
-	//}
-	
+	else {
+		msgMemberName.innerHTML = '';
+		msgMemberName.style.color = '';
+	}
+});
+
+const email = document.querySelector("#email");
+email.addEventListener('blur', (e) => {
+	if(!/^([\w\.-]+)@([\w-]+)(\.[\w-]+){1,2}$/.test(email.value)) {
+		msgEmail.innerHTML = '이메일 형식이 유효하지 않습니다.';
+		msgEmail.style.color = 'red';
+		email.select();
+		return false;
+	}
+	else {
+		msgEmail.innerHTML = '';
+		msgEmail.style.color = '';
+	}
+});
+
+const phone2 = document.querySelector("#phone2");
+phone2.addEventListener('blur', (e) => {
+	if(!/[0-9]{3,4}/.test(phone2.value)) {
+		msgPhone.innerHTML = '휴대폰 번호를 다시 확인해 주세요.';
+		msgPhone.style.color = 'red';
+		phone2.select();
+		return false;
+	}
+	else {
+		msgPhone.innerHTML = '';
+		msgPhone.style.color = '';
+	}
+});
+
+const phone3 = document.querySelector("#phone3");
+phone3.addEventListener('blur', (e) => {
+	if(!/[0-9]{4,}/.test(phone3.value)) {
+		msgPhone.innerHTML = '휴대폰 번호를 다시 확인해 주세요.';
+		msgPhone.style.color = 'red';
+		phone3.select();
+		return false;
+	}
+	else {
+		msgPhone.innerHTML = '';
+		msgPhone.style.color = '';
+	}
+
+});
+
+document.memberEnrollFrm.onsubmit = (e) => {
+	if(!memberId.value || !password.value || !passwordCheck.value || !memberName.value || 
+			!email.value || !phone2.value || !phone3.value || !address.value || !addressEx.value) {
+		return false;
+	}
 };
 
 
@@ -124,7 +197,7 @@ document.querySelector("#address").addEventListener('click', function(){
 			document.querySelector("#addressEx").focus();
         }
     }).open();
-});
+});	
 document.querySelector("#researchButton").addEventListener('click', function(){
     new daum.Postcode({
         oncomplete: function(data) {

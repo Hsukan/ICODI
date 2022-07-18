@@ -60,7 +60,7 @@ public class MemberEnrollServlet extends HttpServlet {
 			System.out.println("result@MemberEnrollServlet = " + result);
 			
 			HttpSession session = request.getSession();
-			response.sendRedirect(request.getContextPath() + "/");
+			response.sendRedirect(request.getContextPath() + "/member/memberLogin");
 		}
 		catch (Exception e) {
 			e.printStackTrace();

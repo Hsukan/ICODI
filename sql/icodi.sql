@@ -91,3 +91,4 @@ select * from alarm;
 --insert into alarm (no,member_id,alarm_date,alarm_message) values(seq_alarm_no.nextval,'eedongha1',default,'ㅎㅇㅎㅇ2');
 --select alarm_message, alarm_date from alarm where member_id = 'eedongha1';
 commit;
+

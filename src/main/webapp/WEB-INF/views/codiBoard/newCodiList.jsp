@@ -1,6 +1,5 @@
 <%@page import="com.kh.icodi.codiBoard.model.dto.LikeThat"%>
 <%@page import="java.util.List"%>
-<%@page import="com.kh.icodi.myCodi.model.dto.MyCodi"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
@@ -11,16 +10,19 @@
 	List<LikeThat> likeList = (List<LikeThat>) request.getAttribute("likeThat");
 %>
 <script src="<%= request.getContextPath()%>/js/jquery-3.6.0.js"></script>
+<script
+	src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
+<script src="https://unpkg.com/html2canvas@1.4.1/dist/html2canvas.js"></script>
 	<main>
 		<section>
 			<article>
-				<div class="header-wrap">
+				<nav class="ootdMenu">
 					<div id="hot">인기</div>
 					<div id="new" onclick="goToNewCodi();">최신</div>
-				</div>
+                </nav>
 				<div class="content-wrap"></div>
 				<div id="btn-more-content">
-					<button id="btn-more">MORE</button>
+					<button id="btn-more" onclick="paging(event);" value="1">MORE</button>
 				</div>
 			</article>
 		</section>
@@ -30,39 +32,50 @@
 const goToNewCode = () => {
 	location.href = "<%= request.getContextPath()%>/codi/newCodiList"
 }
-document.querySelector("#btn-more").addEventListener('click', (e) => {
-	const cPage = Number(document.querySelector("#cPage"))+1;
-	getPage(cPage);
-});
+
+const paging = (e) => {
+	const value = Number(e.target.value) + 1;
+	e.target.value = value;
+	getPage(e.target.value);
+}
 
 const getPage = (cPage) => {
 	$.ajax({
 		url : '<%= request.getContextPath()%>/codi/newCodiMore',
+		method : 'GET',
+		dataType : 'json',
 		data : {cPage},
 		success(response) {
 			const content = document.querySelector(".content-wrap");
-			response.forEach((response) => {
-				const {codiBoardNo, codiBoardContent, codiBoardRegDate, likeCount, likeList, myCodiList} = response;
-				
-				myCodiList.forEach((myCodi) => {
-					const {memberId, myCodiRegDate, myCodiFilename, codiNo} = myCodi;
-					
-					// const {likeNo, memberId, codiBoardNo} = like;
-					// console.log(likeNo, memberId, codiBoardNo);
-					const codi = `
-						<div class="myCodi">
-							<img src="<%= request.getContextPath()%>/upload/codiboard/\${myCodiFilename}" />
-							<p class="info">
-								<span id="\${codiBoardNo}" class="like">좋아요함</span>
-								<span id="likeCount">받은 좋아요 \${likeCount}</span>
-								<span id="writer">\${memberId}</span>
-								<span id="regDate">\${myCodiRegDate}</span>
-							</p>
-						</div>
-					`
-					content.insertAdjacentHTML('beforeend', codi);						
-				});
-			 });
+			
+			response.forEach((codi) => {
+				console.log(codi);
+				const {codiBoardNo, memberId, codiBoardContent, likeCount, useProduct, regDate, likedMember, filename} = codi;
+
+				const list = `
+				<div class="myCodi">
+					<img src="data:image/jpeg;base64,\${filename}" id="myCodiImg"/>
+					<div class="icodi-info">
+                        <img src="<%= request.getContextPath()%>/upload/codiboard/defaultProfile.png">
+
+                        <div class="text-wrap">
+                            <div class="writerRegDateInfo">
+                                <a href="#" id="writer">\${memberId}</a>
+                                <span id="regDate">\${regDate}</span>
+                            </div>
+                            <div id="content">\${codiBoardContent}</div>
+                            <button id="\${codiBoardNo}" class="like">
+	    						\${
+	    							likedMember === undefined ? '♡' : '♥'
+	    						}	
+                            </button>
+                            <span id="likeCount">\${likeCount}</span>
+                        </div>
+                    </div>
+				</div>
+				`;
+				content.insertAdjacentHTML('beforeend', list);
+			});
 		},
 		error : console.log,
 		complete() {
@@ -75,11 +88,8 @@ const getPage = (cPage) => {
 					if(<%= loginMember == null %>) {
 						alert("로그인 후 이용 가능합니다.");
 						return;
-					} else {
-						console.log('가능');
-					}
-					
-					// 	likeIt(e);
+					} 
+					likeIt(e);
 				}
 			});
 		}
@@ -88,42 +98,32 @@ const getPage = (cPage) => {
 getPage(1);
 
 const likeIt = (e) => {
-	const target = e.target;
-	const codiBoardNo = target.id;
-	const memberId = target.nextElementSibling.nextElementSibling.innerHTML;
+	const codiBoardNo = e.target.id;
+	const loginMemberId = "<%= loginMemberId %>";
+	e.target.disabled = true;
 	
-	target.classList.forEach((list) => {
-		if(list.indexOf('on') == -1) {
-			target.classList.add('on');
-			$.ajax({
-				url : '<%= request.getContextPath() %>/codiBoard/likeInsert',
-				method : 'POST',
-				data : {
-					codiBoardNo : codiBoardNo,
-					memberId : memberId
-				},
-				success(response) {
-					console.log(response)
-				},
-				error : console.log
-			});
-		} else {
-			target.classList.remove('on');
-			$.ajax({
-				url : '<%= request.getContextPath()%>/codiBoard/likeDelete',
-				method : 'POST',
-				data : {
-					codiBoardNo : codiBoardNo,
-					memberId : memberId
-				},
-				success(response) {
-					console.log(response);
-				},
-				error : console.log
-			});
+	$.ajax({
+		url : '<%= request.getContextPath() %>/codiBoard/likeUpdate',
+		method : 'POST',
+		dateType : 'json',
+		data : {codiBoardNo, loginMemberId},
+		success(response) {
+			const {type, likeCount} = response;
+			
+			if(type === 'insert') {
+				e.target.innerHTML = '♥';
+			} else {
+				e.target.innerHTML = '♡'
+			}
+			e.target.nextElementSibling.innerHTML = `\${likeCount}`;
+		},
+		error : console.log,
+		complete() {
+			e.target.disabled = false;	
 		}
-	});
-};
+	})
+}
+
 </script>
 </body>
 </html>

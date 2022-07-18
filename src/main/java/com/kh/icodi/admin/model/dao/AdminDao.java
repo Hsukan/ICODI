@@ -1,18 +1,23 @@
 package com.kh.icodi.admin.model.dao;
 
-import static com.kh.icodi.common.JdbcTemplate.*;
+import static com.kh.icodi.common.JdbcTemplate.close;
+
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import com.kh.icodi.admin.model.dto.Product;
 import com.kh.icodi.admin.model.dto.ProductAttachment;
+import com.kh.icodi.admin.model.dto.ProductExt;
 import com.kh.icodi.admin.model.dto.ProductIO;
+import com.kh.icodi.admin.model.dto.ProductSize;
 import com.kh.icodi.admin.model.exception.AdminException;
 
 public class AdminDao {
@@ -94,5 +99,138 @@ public class AdminDao {
 			close(pstmt);
 		}
 		return result;
+	}
+
+	// findAttachmentByProductCode = select * from product_attachment where product_code=?
+	public List<ProductAttachment> findAttachmentByProductCode(Connection conn, String pdCode) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		List<ProductAttachment> attachments = new ArrayList<>();
+		String sql = prop.getProperty("findAttachmentByProductCode");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, pdCode);
+			rset = pstmt.executeQuery();
+			while(rset.next())
+				attachments.add(handleAttachmentResultSet(rset));
+		}
+		catch (SQLException e) {
+			throw new AdminException("게시글별 첨부파일 조회 오류", e);
+		}
+		finally {
+			close(rset);
+			close(pstmt);			
+		}
+		
+		return attachments;
+	}
+
+	private ProductAttachment handleAttachmentResultSet(ResultSet rset) throws SQLException {
+		ProductAttachment attach = new ProductAttachment();
+		attach.setProductAttachNo(rset.getInt("product_attach_no"));
+		attach.setProductCode(rset.getString("product_code"));
+		attach.setProductOriginalFilename(rset.getString("product_original_filename"));
+		attach.setProductRenamedFilename(rset.getString("product_renamed_filename"));
+		attach.setCodiOriginalFilename(rset.getString("codi_original_filename")); 
+		attach.setCodiRenamedFilename(rset.getString("codi_renamed_filename"));
+		return attach;
+	}
+
+	// deleteProduct = delete from product where product_code = ?
+	public boolean deleteProduct(Connection conn, String[] pdCode) {
+		PreparedStatement pstmt = null;
+		String sql = prop.getProperty("deleteProduct");
+		int count[] = new int[pdCode.length];
+		
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+
+			for(int i = 0; i<pdCode.length; i++) {
+				pstmt.setString(1, pdCode[i]);
+				pstmt.addBatch();
+			}
+			count = pstmt.executeBatch();
+		}
+		catch (SQLException e) {
+			throw new AdminException("상품 삭제 오류!", e);
+		}
+		finally {
+			close(pstmt);
+		}
+		
+		boolean result = true;
+		
+		for(int i = 0; i<count.length; i++) {
+			System.out.println("count = " + count[i]);
+			if(count[i] == -3) {
+				result = false;
+				break;
+			}
+		}
+		return result;
+	}
+	
+	// getTotalContentByCategoryNo = select count(*) from product where category_code = ?
+	public int getTotalContentByCategoryNo(Connection conn, int categoryNo){
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		int totalContent = 0;
+		String sql = prop.getProperty("getTotalContentByCategoryNo");
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, categoryNo);
+			rset = pstmt.executeQuery();
+			while(rset.next()) 
+				totalContent = rset.getInt(1);
+			
+		} catch (SQLException e) {
+			throw new AdminException("상품수 조회 오류!", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		
+		return totalContent;
+	}
+
+	public List<ProductExt> findProductList(Connection conn, Map<String, Object> param) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		List<ProductExt> productList = new ArrayList<>();
+		String sql = prop.getProperty("findProductList");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, (int)param.get("categoryNo"));
+			pstmt.setInt(2, (int)param.get("start"));
+			pstmt.setInt(3, (int)param.get("end"));
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				productList.add(handleProductResultSet(rset));
+			}
+		} catch (SQLException e) {
+			throw new AdminException("상품 조회 실패!", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		return productList;
+	}
+
+	private ProductExt handleProductResultSet(ResultSet rset) throws SQLException {
+		ProductExt productExt = new ProductExt();
+		productExt.setProductCode(rset.getString("product_code"));
+		productExt.setCategoryCode(rset.getInt("category_code"));
+		productExt.setProductName(rset.getString("product_name"));
+		productExt.setProductPrice(rset.getInt("product_price"));
+		productExt.setProductRegDate(rset.getTimestamp("product_reg_date"));
+		productExt.setProductStock(rset.getInt("product_stock"));
+		productExt.setProductSize(ProductSize.valueOf(rset.getString("product_size")));
+		productExt.setProductColor(rset.getString("product_color"));
+		productExt.setProductInfo(rset.getString("product_info"));
+		productExt.setProductPluspoint(rset.getDouble("product_pluspoint"));
+		return productExt;
 	}
 }

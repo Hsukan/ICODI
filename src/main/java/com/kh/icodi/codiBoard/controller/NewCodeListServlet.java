@@ -16,6 +16,7 @@ import com.kh.icodi.member.model.dto.Member;
  * Servlet implementation class HotCodeListServlet
  */
 @WebServlet("/codi/newCodiList")
+
 public class NewCodeListServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private CodiBoardService codiBoardService = new CodiBoardService();
@@ -26,7 +27,7 @@ public class NewCodeListServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			int totalContent = codiBoardService.getTotalContentNewCodi();
-			int numPerPage = 5;
+			int numPerPage = 15;
 			int totalPage = (int)Math.ceil((double)totalContent / numPerPage);
 			Member loginMember = (Member)request.getSession().getAttribute("loginMember");
 			String loginMemberId = null;

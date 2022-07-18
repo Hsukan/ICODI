@@ -1,0 +1,68 @@
+@charset "UTF-8";
+/* 코디게시판 */
+main {
+    max-width: 1024px;
+    margin: 0 auto;
+}
+* {
+    margin: 0;
+    padding: 0;
+}
+a {
+    text-decoration: none;
+    color: black;
+}
+.content-wrap {
+    display: flex;
+    flex-wrap: wrap;
+}
+.ootdMenu {
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+}
+.myCodi {
+    width: 220px;
+    height: 430px;
+    border: 1px solid lightgray;
+    border-radius: 10px;
+}
+.myCodi :hover {
+    cursor: pointer;
+}
+#myCodiImg {
+    width: 100%;
+    height: 340px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+.icodi-info {
+    padding: 5px;
+    display: flex;
+    justify-content: space-around;
+}
+.icodi-info img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+.text-wrap {
+    display: inline-block;
+}
+#writer, #regDate, #content, #likeCount {
+    font-size: 12px;
+}
+#writer {
+    margin-right: 37px;
+    font-weight: bold;
+}
+#content {
+    margin-top: 5px;
+    color: gray;
+}
+.like {
+    border: none;
+    background-color: transparent;
+}
