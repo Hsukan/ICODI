@@ -35,6 +35,10 @@
 	document.querySelector("#btn-product-enroll").addEventListener('click', (e) => {
 		location.href = "<%= request.getContextPath()%>/admin/productEnroll";
 	});
+	
+	document.querySelector("#btn-product-delete").addEventListener('click', (e) => {
+		location.href = "<%= request.getContextPath()%>/admin/productDelete";
+	});
 	</script>
 </body>
 </html>
