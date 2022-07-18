@@ -13,7 +13,9 @@ ws.addEventListener('message', (e) => {
 			const wrapper = document.querySelector("#notification");
 			const i = document.querySelector("i");
 			i.classList.add('bell');
-			
+			i.addEventListener('click',()=>{
+				i.remove();
+			})
 			wrapper.append(i);
 			break;
 	}
