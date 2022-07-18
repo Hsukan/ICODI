@@ -188,5 +188,24 @@ public class CodiBookDao {
 		
 		
 		return boardNo;
+}
+	public int insertCodi(Connection conn, Map<String, Object> param) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String sql = "insert into testclob values (2, ?, ?, ?, ?)";
+		System.out.println("param@Dao = " + param);
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, (String)param.get("img1"));
+			pstmt.setString(2, (String)param.get("img2"));
+			pstmt.setString(3, (String)param.get("img3"));
+			pstmt.setString(4, (String)param.get("img4"));
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new CodiBookException("오류", e);
+		} finally {
+			close(pstmt);
+		}
+		return result;
 	}
 }

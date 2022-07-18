@@ -13,7 +13,7 @@
 				</tr>
 				<tr>
 					<th>전화번호</th>
-					<td><input type="text" oninput="autoHyphen(this)" name="memberPhone" required maxlength="13"/></td>
+					<td><input type="text" oninput="autoHyphen(this)" id="memberPhone" required maxlength="13"/></td>
 				</tr>
 				<tr id="tbl-idFindTr"></tr>
 			</thead>
@@ -35,9 +35,9 @@
 			memberName.select();
 			return false;
 		}
-		
+	
 		const phone = document.querySelector("#memberPhone");
-		if(!/^010[0-9]{8}$/.test(phone.value)){
+		if(!/^010-[0-9]{4}-[0-9]{4}$/.test(phone.value)){
 			alert("유효한 전화번호를 입력해주세요");
 			phone.select();
 			return false;
@@ -59,7 +59,6 @@
 				} else {
 					alert("존재하지 않는 회원입니다.");
 				}
-				
 			}, 
 			error : console.log
 					
