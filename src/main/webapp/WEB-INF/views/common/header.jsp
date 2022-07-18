@@ -2,9 +2,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
-	String msg = (String) session.getAttribute("msg");
-	if(msg != null) session.removeAttribute("msg"); // 한번만 사용후 제거
 	Member loginMember = (Member) session.getAttribute("loginMember");
+	String msg = (String) session.getAttribute("msg");
+	if(msg != null) session.removeAttribute("msg");
 	
 	String saveId = null;
 	Cookie[] cookies = request.getCookies();
@@ -27,6 +27,13 @@
 	href="<%=request.getContextPath() %>/css/style.css" />
 <link rel="stylesheet" href="<%= request.getContextPath() %>/css/codiBoard.css" />
 <script src="<%= request.getContextPath() %>/js/jquery-3.6.0.js"></script>
+<script>
+window.onload = () => {
+	<% if(msg != null) { %>	
+		alert("<%= msg %>");
+	<% } %>
+}
+</script>
 </head>
 <body>
 	<div id="header">
@@ -39,7 +46,7 @@
             </div>
         </div>
         <div id="header_wrapper">
-            <img src="<%=request.getContextPath() %>/images/logo.png" alt="" id="logo" style="width: 200px; height: 100px; position: absolute; left:100px; bottom: -15px;">
+            <a href="<%= request.getContextPath()%>/"><img src="<%=request.getContextPath() %>/images/logo.png" alt="" id="logo" style="width: 200px; height: 100px; position: absolute; left:100px; bottom: -15px;"></a>
             <div class="userMenu">
                 <a href="<%= request.getContextPath()%>/member/memberMyPage">마이페이지</a>
                 <a href="#">마이쇼핑</a>
@@ -67,6 +74,3 @@
             </div>
         </div>
     </div>
-</body>
-</html>
-
