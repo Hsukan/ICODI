@@ -108,7 +108,10 @@ public class CodiBookDao {
 		PreparedStatement pstmt = null;
 		int result = 0;
 		String sql = prop.getProperty("insertCodiBook");
+		System.out.println(writer + codiArr);
 		//System.out.println("param@Dao = " + param);
+		//insert into codi_board values(seq_codi_board_no.nextval, ?, '안녕', default, 'Y', ?, default, ?, ?, ?, ?)
+		//insert into codi_board values (seq_codi_board_no.nextval, 'honggd', '코디입니다요', default, null, 'Y', '상품,상품,상품', default);
 		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, writer);
@@ -164,6 +167,28 @@ public class CodiBookDao {
 		return imgSrc;
 	}
 
+	public int getLastBoardNo(Connection conn) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		int boardNo = 0;
+		String sql = prop.getProperty("getLastBoardNo");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			rset = pstmt.executeQuery();
+			if(rset.next()) {
+				boardNo = rset.getInt(1); // 첫번째 컬럼값
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close(rset);
+			close(pstmt);
+		}
+		
+		
+		return boardNo;
+}
 	public int insertCodi(Connection conn, Map<String, Object> param) {
 		PreparedStatement pstmt = null;
 		int result = 0;
