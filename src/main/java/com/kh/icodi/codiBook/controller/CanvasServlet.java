@@ -65,7 +65,9 @@ public class CanvasServlet extends HttpServlet {
 			param.put("img3", img3);
 			param.put("img4", img4);
 			int result = codiBookService.insertCodi(writer, codiArr, param);
+			System.out.println("result = " + result);
 			
+			request.setAttribute("codiBoardNo", result);
 //			request.setAttribute("imgSrc", imgSrc);
 //			request.getRequestDispatcher("/WEB-INF/views/codiBook/codi.jsp")
 //			.forward(request, response);
