@@ -8,6 +8,7 @@ import static com.kh.icodi.common.JdbcTemplate.rollback;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.kh.icodi.admin.model.dao.AdminDao;
 import com.kh.icodi.admin.model.dto.Product;
@@ -82,5 +83,22 @@ public class AdminService {
 		return result;
 	}
 
-	
+	public int getTotalContentByCategoryNo(int categoryNo) {
+		Connection conn = getConnection();
+		int totalContent = adminDao.getTotalContentByCategoryNo(conn, categoryNo);
+		close(conn);
+		return totalContent;
+	}
+
+	public List<ProductExt> findProductList(Map<String, Object> param) {
+		Connection conn = getConnection();
+		List<ProductExt> productList = adminDao.findProductList(conn, param);
+		for(ProductExt product : productList) {
+			List<ProductAttachment> attachments = adminDao.findAttachmentByProductCode(conn, product.getProductCode());
+			for(ProductAttachment attach : attachments) {
+				product.addAttachment(attach);
+			}
+		}
+		return productList;
+	}
 }

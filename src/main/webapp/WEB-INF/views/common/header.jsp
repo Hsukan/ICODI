@@ -66,10 +66,10 @@ window.onload = () => {
             <div id="main_menu">
                 <div class="main_menu"><a href="<%= request.getContextPath()%>/codi/newCodiList">ootd</a></div>
                 <div class="main_menu"><a href="<%= request.getContextPath() %>/board/boardList">Community</a></div>
-                <div class="main_menu"><a href="<%= request.getContextPath() %>/product/tops" data-alter="tops">Tops</a></div>
-                <div class="main_menu"><a href="<%= request.getContextPath() %>/product/bottoms" data-alter="bottoms">Bottoms</a></div>
-                <div class="main_menu"><a href="<%= request.getContextPath() %>/product/shoes" data-alter="shoes">Shoes</a></div>
-                <div class="main_menu"><a href="<%= request.getContextPath() %>/product/acc" data-alter="accessories">Accessories</a></div>
+                <div class="main_menu"><a href="<%= request.getContextPath() %>/product/tops?categoryNo=1" data-alter="tops">Tops</a></div>
+                <div class="main_menu"><a href="<%= request.getContextPath() %>/product/bottoms?categoryNo=2" data-alter="bottoms">Bottoms</a></div>
+                <div class="main_menu"><a href="<%= request.getContextPath() %>/product/shoes?categoryNo=3" data-alter="shoes">Shoes</a></div>
+                <div class="main_menu"><a href="<%= request.getContextPath() %>/product/acc?categoryNo=4" data-alter="accessories">Accessories</a></div>
                 <div class="main_menu"><a href="<%= request.getContextPath() %>/admin/adminPage" data-alter="admin">Admin</a></div>
             </div>
         </div>
