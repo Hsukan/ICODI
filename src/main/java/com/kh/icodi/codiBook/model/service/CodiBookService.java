@@ -40,6 +40,19 @@ public class CodiBookService {
 		return result;
 	}
 
+	public int insertCodi(Map<String, Object> param) {
+		Connection conn = getConnection();
+		int result = 0;
+		try {
+			result = codiBookDao.insertCodi(conn, param);
+			commit(conn);
+		} catch(Exception e) {
+			rollback(conn);
+			throw e;
+		}
+		return result;
+	}
+
 	public List<String> find1(String writer) {
 		Connection conn = getConnection();
 		List<String> imgSrc = codiBookDao.find1(conn, writer);
@@ -47,5 +60,4 @@ public class CodiBookService {
 		close(conn);
 		return imgSrc;
 	}
-
 }

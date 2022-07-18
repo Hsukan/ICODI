@@ -10,13 +10,16 @@
 	List<LikeThat> likeList = (List<LikeThat>) request.getAttribute("likeThat");
 %>
 <script src="<%= request.getContextPath()%>/js/jquery-3.6.0.js"></script>
+<script
+	src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
+<script src="https://unpkg.com/html2canvas@1.4.1/dist/html2canvas.js"></script>
 	<main>
 		<section>
 			<article>
-				<div class="header-wrap">
+				<nav class="ootdMenu">
 					<div id="hot">인기</div>
 					<div id="new" onclick="goToNewCodi();">최신</div>
-				</div>
+                </nav>
 				<div class="content-wrap"></div>
 				<div id="btn-more-content">
 					<button id="btn-more" onclick="paging(event);" value="1">MORE</button>
@@ -46,21 +49,29 @@ const getPage = (cPage) => {
 			const content = document.querySelector(".content-wrap");
 			
 			response.forEach((codi) => {
-				const {codiBoardNo, memberId, codiBoardContent, likeCount, useProduct, regDate, likedMember} = codi;
+				console.log(codi);
+				const {codiBoardNo, memberId, codiBoardContent, likeCount, useProduct, regDate, likedMember, filename} = codi;
 
 				const list = `
 				<div class="myCodi">
-					<img src="<%= request.getContextPath()%>/upload/codiboard/루피.jpg" />
-					<p class="info">
-					<button id="\${codiBoardNo}" class="like">
-						\${
-							likedMember === undefined ? '♡' : '♥'
-						}					
-					</button>
-						<span id="likeCount">받은 좋아요 \${likeCount}</span>
-						<span id="writer">작성자 \${memberId}</span>
-						<span id="regDate">\${regDate}</span>
-					</p>
+					<img src="data:image/jpeg;base64,\${filename}" id="myCodiImg"/>
+					<div class="icodi-info">
+                        <img src="<%= request.getContextPath()%>/upload/codiboard/defaultProfile.png">
+
+                        <div class="text-wrap">
+                            <div class="writerRegDateInfo">
+                                <a href="#" id="writer">\${memberId}</a>
+                                <span id="regDate">\${regDate}</span>
+                            </div>
+                            <div id="content">\${codiBoardContent}</div>
+                            <button id="\${codiBoardNo}" class="like">
+	    						\${
+	    							likedMember === undefined ? '♡' : '♥'
+	    						}	
+                            </button>
+                            <span id="likeCount">\${likeCount}</span>
+                        </div>
+                    </div>
 				</div>
 				`;
 				content.insertAdjacentHTML('beforeend', list);
@@ -104,7 +115,7 @@ const likeIt = (e) => {
 			} else {
 				e.target.innerHTML = '♡'
 			}
-			e.target.nextElementSibling.innerHTML = `받은 좋아요 \${likeCount}`;
+			e.target.nextElementSibling.innerHTML = `\${likeCount}`;
 		},
 		error : console.log,
 		complete() {

@@ -11,9 +11,9 @@ public class CodiBoardExt extends CodiBoard {
 		// TODO Auto-generated constructor stub
 	}
 
-	public CodiBoardExt(int codiBoardNo, String memberId, String codiBoardContent, int likeCount, Blob codiFilename,
+	public CodiBoardExt(int codiBoardNo, String memberId, String codiBoardContent, int likeCount, String filename,
 			String isOpen, String useProduct, Date regDate) {
-		super(codiBoardNo, memberId, codiBoardContent, likeCount, codiFilename, isOpen, useProduct, regDate);
+		super(codiBoardNo, memberId, codiBoardContent, likeCount, filename, isOpen, useProduct, regDate);
 		// TODO Auto-generated constructor stub
 	}
 
