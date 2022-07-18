@@ -68,7 +68,7 @@
 				<div id="div3" class="canvasDiv" ondragover="allowDrop(event)"></div>
 			</div>
 			<input type="button" value="저장" id="btnSave"/>
-		<div id="container_img" class="div" ondragover="allowDrop(event)">
+		<div id="container_img" class="div" ondragover="allowDrop(event)" ondrop="drop(event)">
 			<ul>
 
 			</ul>
@@ -78,48 +78,38 @@
 	</section>
 	<script>
 	const arr = [];
+	
+	function allowDrop(ev) {
+        ev.preventDefault();
+    }
 
     //클릭하고 이동시
     function drag(ev) {
-        ev.dataTransfer.setData("text", ev.target.id);
-        // console.log("id : " , ev.target.id);
-        // console.log("categoryCode : ", ev.target.dataset.categoryCode);
-        // const imgNum = ev.target.id.charAt(ev.target.id.length - 1);
-        const imgCategory = ev.target.dataset.categoryCode;
-        // console.log("이미지 번호 : ", imgCategory);
-        const div = document.getElementsByClassName("canvasDiv");
-        [...div].forEach((div) => {
-            const divNum = div.id.charAt(div.id.length - 1);
-            // console.log("div번호 : ", divNum);
+            ev.dataTransfer.setData("text", ev.target.id);
+            // console.log("id : " , ev.target.id);
+            // console.log("categoryCode : ", ev.target.dataset.categoryCode);
+            // const imgNum = ev.target.id.charAt(ev.target.id.length - 1);
+            const imgCategory = ev.target.dataset.categoryCode;
+            // console.log("이미지 번호 : ", imgCategory);
+            const div = document.getElementsByClassName("canvasDiv");
+            [...div].forEach((div) => {
+                const divNum = div.id.charAt(div.id.length - 1);
+                // console.log("div번호 : ", divNum);
 
-            
-            if (imgCategory === divNum) {
-                div.setAttribute('ondrop', "drop(event)")
-                div.classList.add("target");
-                // console.log(document.querySelector(".div"));
-            }
-            else {
-                div.classList.remove("target");
-                div.setAttribute('ondrop', " ");
-            }
-        });
-        const container_img= document.querySelector("#container_img");
-        // console.log(container_img);
-        container_img.setAttribute('ondrop', "drop(event)")
+                
+                if (imgCategory === divNum) {
+                    div.setAttribute('ondrop', "drop(event)")
+                    div.classList.add("target");
+                    // console.log(document.querySelector(".div"));
+                }
+                else {
+                    div.classList.remove("target");
+                    div.setAttribute('ondrop', " ");
+                }
+            });
+            console.log(arr);
 
-        arr.forEach((data) => {
-            console.log("data :" ,data);
-            console.log(" :", ev.target.dataset.productCode);
-            if(data == ev.target.dataset.productCode){
-                arr.pop(data);
-            }
-        });
-        // console.log(arr);
-
-    }
-    function allowDrop(ev) {
-        ev.preventDefault();
-    }
+        }
     
     //드랍존 안에 드랍했을 때
     function drop(ev) {
@@ -136,8 +126,10 @@
                 const imgId = imgData.id;
                 console.log("imgId : ",imgId);
     
-                arr.push(imgId);
-                // console.log(arr);
+                if(arr.indexOf(imgId) == -1){
+                    arr.push(imgId);
+                }
+                console.log(arr);
             }
             else{
 
@@ -205,8 +197,6 @@
         console.log(codiArr);
         
 		const arr2 = [...codiArr].join(", ");
-		document.getElementById("codiList").value = arr2;
-		console.log(document.getElementById("imgBase").value);
 		  
     };
 
