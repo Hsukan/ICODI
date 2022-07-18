@@ -13,7 +13,7 @@ import java.util.Map;
 import com.kh.icodi.codiBoard.model.dao.CodiBoardDao;
 import com.kh.icodi.codiBoard.model.dto.CodiBoardExt;
 import com.kh.icodi.codiBoard.model.dto.LikeThat;
-import com.kh.icodi.myCodi.model.dto.MyCodi;
+import com.kh.icodi.member.model.dto.Member;
 
 public class CodiBoardService {
 	private CodiBoardDao codiBoardDao = new CodiBoardDao();
@@ -25,30 +25,26 @@ public class CodiBoardService {
 		return totalContent;
 	}
 
-	public List<CodiBoardExt> newCodiMore(Map<String, Object> page) {
+	public List<CodiBoardExt> findCodiBoard(Map<String, Object> param) {
 		Connection conn = getConnection();
-		List<CodiBoardExt> codiBoardList = codiBoardDao.newCodiMore(conn, page);
-		if(codiBoardList != null && !codiBoardList.isEmpty()) {
-			for(CodiBoardExt codiBoard : codiBoardList) {
-				MyCodi myCodi = codiBoardDao.findMyCodiByCodiNo(conn, codiBoard.getCodiNo());
-				codiBoard.addMyCodi(myCodi);
-				List<LikeThat> likeList = codiBoardDao.findLikeThatByCodiBoardNo(conn, codiBoard.getCodiBoardNo());
-				if(likeList != null && !likeList.isEmpty()) {
-					for(LikeThat like : likeList) {
-						codiBoard.addLike(like);
-					}
-				}
-			}			
-		}
+		List<CodiBoardExt> codiBoardList =  codiBoardDao.findCodiBoard(conn, param);
 		close(conn);
 		return codiBoardList;
 	}
 
-	public int insertLike(LikeThat likeIt) {
+	public LikeThat checkLiked(Map<String, Object> data) {
 		Connection conn = getConnection();
-		int result = 0;
+		LikeThat liked = codiBoardDao.checkLiked(conn, data);
+		close(conn);
+		return liked;
+	}
+
+	public int deleteLike(Map<String, Object> data) {
+		Connection conn = getConnection();
+		int likeCount = 0;
 		try {
-			result = codiBoardDao.insertLike(conn, likeIt);
+			int result = codiBoardDao.deleteLiked(conn, data);
+			likeCount = codiBoardDao.countLiked(conn, data);
 			commit(conn);
 		} catch(Exception e) {
 			rollback(conn);
@@ -56,29 +52,24 @@ public class CodiBoardService {
 		} finally {
 			close(conn);
 		}
-		return result;
+		return likeCount;
 	}
 
-	public int deleteLike(LikeThat delLike) {
+	public int insertLike(Map<String, Object> data) {
 		Connection conn = getConnection();
-		int result = 0;
+		int likeCount = 0;
 		try {
-			int likeNo = codiBoardDao.selectLikeNo(conn, delLike);
-			result = codiBoardDao.deleteLike(conn, likeNo);
+			int result = codiBoardDao.insertLiked(conn, data);
+			likeCount = codiBoardDao.countLiked(conn, data);
 			commit(conn);
 		} catch(Exception e) {
 			rollback(conn);
-			throw e; 
+			throw e;
 		} finally {
 			close(conn);
 		}
-		return result;
+		return likeCount;
 	}
-
-	public List<LikeThat> findLikeThatAll() {
-		Connection conn = getConnection();
-		List<LikeThat> likeList = codiBoardDao.findLikeThatAll(conn);
-		close(conn);
-		return likeList;
-	}
+	
+	
 }
