@@ -49,6 +49,10 @@
 			</div>
 		</article>
 		<article>
+		<form action="<%= request.getContextPath()%>/codi/myCodi">
+		<input type="hidden" name="memberId" value="<%= loginMember.getMemberId() %>" />
+		<button>내코디보기</button>
+		</form>
 			<div class="codiProductArea-wrap">
 				<ul id="category">
 					<li value="<%= CategoryNo.stringOf("TOP") %>">TOP</li>
@@ -58,16 +62,15 @@
 				</ul>
 			</div>
 		</article>
-		<div id="canvas">
-			<div id="div1" class="canvasDiv" ondragover="allowDrop(event)"></div>
-			<div id="div2" class="canvasDiv" ondragover="allowDrop(event)"></div>
-			<div id="div3" class="canvasDiv" ondragover="allowDrop(event)"></div>
-		</div>
-		<button onclick=partShot()>partShot</button>
-		<input type="button" id="btn_reset" value="Reset" onclick="reset();">
-		<div id="container_img" class="div" ondragover="allowDrop(event)">
-			<ul>	
-			
+			<div id="canvas">
+				<div id="div1" class="canvasDiv" ondragover="allowDrop(event)"></div>
+				<div id="div2" class="canvasDiv" ondragover="allowDrop(event)"></div>
+				<div id="div3" class="canvasDiv" ondragover="allowDrop(event)"></div>
+			</div>
+			<input type="button" value="저장" id="btnSave"/>
+		<div id="container_img" class="div" ondragover="allowDrop(event)" ondrop="drop(event)">
+			<ul>
+
 			</ul>
 		</div>
 		</button>
@@ -75,51 +78,39 @@
 	</section>
 	<script>
 	const arr = [];
-
-    //드랍존 안에 있을때 계속 실행
-    function allowDrop(ev) {
+	
+	function allowDrop(ev) {
         ev.preventDefault();
     }
 
     //클릭하고 이동시
     function drag(ev) {
-        ev.dataTransfer.setData("text", ev.target.id);
-        // console.log("id : " , ev.target.id);
-        // console.log("categoryCode : ", ev.target.dataset.categoryCode);
-        // const imgNum = ev.target.id.charAt(ev.target.id.length - 1);
-        const imgCategory = ev.target.dataset.categoryCode;
-        // console.log("이미지 번호 : ", imgCategory);
-        const div = document.getElementsByClassName("canvasDiv");
-        [...div].forEach((div) => {
-            const divNum = div.id.charAt(div.id.length - 1);
-            // console.log("div번호 : ", divNum);
+            ev.dataTransfer.setData("text", ev.target.id);
+            // console.log("id : " , ev.target.id);
+            // console.log("categoryCode : ", ev.target.dataset.categoryCode);
+            // const imgNum = ev.target.id.charAt(ev.target.id.length - 1);
+            const imgCategory = ev.target.dataset.categoryCode;
+            // console.log("이미지 번호 : ", imgCategory);
+            const div = document.getElementsByClassName("canvasDiv");
+            [...div].forEach((div) => {
+                const divNum = div.id.charAt(div.id.length - 1);
+                // console.log("div번호 : ", divNum);
 
-            
-            if (imgCategory === divNum) {
-                div.setAttribute('ondrop', "drop(event)")
-                div.classList.add("target");
-                // console.log(document.querySelector(".div"));
-            }
-            else {
-                div.classList.remove("target");
-                div.setAttribute('ondrop', " ");
-            }
-        });
-        const container_img= document.querySelector("#container_img");
-        // console.log(container_img);
-        container_img.setAttribute('ondrop', "drop(event)")
+                
+                if (imgCategory === divNum) {
+                    div.setAttribute('ondrop', "drop(event)")
+                    div.classList.add("target");
+                    // console.log(document.querySelector(".div"));
+                }
+                else {
+                    div.classList.remove("target");
+                    div.setAttribute('ondrop', " ");
+                }
+            });
+            console.log(arr);
 
-        arr.forEach((data) => {
-            console.log("data :" ,data);
-            console.log(" :", ev.target.dataset.productCode);
-            if(data == ev.target.dataset.productCode){
-                arr.pop(data);
-            }
-        });
-        // console.log(arr);
-
-    }
-
+        }
+    
     //드랍존 안에 드랍했을 때
     function drop(ev) {
         ev.preventDefault();
@@ -135,8 +126,10 @@
                 const imgId = imgData.id;
                 console.log("imgId : ",imgId);
     
-                arr.push(imgId);
-                // console.log(arr);
+                if(arr.indexOf(imgId) == -1){
+                    arr.push(imgId);
+                }
+                console.log(arr);
             }
             else{
 
@@ -164,40 +157,50 @@
         
 
     }
+    btnSave.onclick = (e) => {
+    	partShot();
+    };
+    
     function partShot() {
        //특정부분 스크린샷
         html2canvas(document.getElementById("canvas"))
         //id container 부분만 스크린샷
-        .then(function (canvas) {
+         .then(function (canvas) {
 
         //이미지 저장
-        saveAs(canvas.toDataURL(), 'file-name.jpg');
+        	 var myImg = canvas.toDataURL('image/jpeg', 0.5);
+ 			myImg = myImg.replace("data:image/jpeg;base64,", "");
+        	//console.log(myImg);
+        	
+        	$.ajax({
+        		type : "POST",
+				data : {
+					"imgSrc" : myImg,
+					"memberId" : "<%= loginMember.getMemberId() %>",
+					"codiArr" : arr2
+				},
+				dataType : "text",
+				url : '<%= request.getContextPath() %>/canvas',
+				success(data) {
+					console.log("이미지 저장 성공!");
+				},
+				error : function(a, b, c) {
+					alert("error");
+				}
+        	});
+
         	}).catch(function (err) {
        			 console.log(err);
-        	});
+        	}); 
+
         const codiArr = new Set(arr);
         console.log(codiArr);
-    }
+        
+		const arr2 = [...codiArr].join(", ");
+		  
+    };
 
-
-    function saveAs(uri, filename) {
-        var link = document.createElement('a');
-        if (typeof link.download === 'string') {
-            link.href = uri;
-            link.download = filename;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        } else {
-            window.open(uri);
-        }
-    }
-
-    const reset = () => {
-  location.reload();
-};
 	</script>
-
 </main>
 <script>
 	document.querySelector("#category").addEventListener('click', (e) => {
