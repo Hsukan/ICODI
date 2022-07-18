@@ -58,16 +58,23 @@
 				</ul>
 			</div>
 		</article>
-		<div id="canvas">
-			<div id="div1" class="canvasDiv" ondragover="allowDrop(event)"></div>
-			<div id="div2" class="canvasDiv" ondragover="allowDrop(event)"></div>
-			<div id="div3" class="canvasDiv" ondragover="allowDrop(event)"></div>
-		</div>
-		<button onclick=partShot()>partShot</button>
+		<form name="myCodiEnrollFrm"
+			action="<%= request.getContextPath()%>/mycodi/mycoidEnroll"
+			method="post">
+			<!--  enctype="multipart/form-data" -->
+			<input type="hidden" name="memberId" value="<%= loginMember.getMemberId() %>" />
+			<input id="codiList" type="hidden" name="codiArr" value="aaaa" />
+			<div id="canvas">
+				<div id="div1" class="canvasDiv" ondragover="allowDrop(event)"></div>
+				<div id="div2" class="canvasDiv" ondragover="allowDrop(event)"></div>
+				<div id="div3" class="canvasDiv" ondragover="allowDrop(event)"></div>
+			</div>
+			<button type="submit" onclick=partShot()>partShot</button>
+		</form>
 		<input type="button" id="btn_reset" value="Reset" onclick="reset();">
 		<div id="container_img" class="div" ondragover="allowDrop(event)">
-			<ul>	
-			
+			<ul>
+
 			</ul>
 		</div>
 		</button>
@@ -75,11 +82,6 @@
 	</section>
 	<script>
 	const arr = [];
-
-    //드랍존 안에 있을때 계속 실행
-    function allowDrop(ev) {
-        ev.preventDefault();
-    }
 
     //클릭하고 이동시
     function drag(ev) {
@@ -119,7 +121,10 @@
         // console.log(arr);
 
     }
-
+    function allowDrop(ev) {
+        ev.preventDefault();
+    }
+    
     //드랍존 안에 드랍했을 때
     function drop(ev) {
         ev.preventDefault();
@@ -171,12 +176,16 @@
         .then(function (canvas) {
 
         //이미지 저장
-        saveAs(canvas.toDataURL(), 'file-name.jpg');
+        //console.log(canvas.toDataURL());
+        /* saveAs(canvas.toDataURL(), 'file-name.jpg'); */
         	}).catch(function (err) {
        			 console.log(err);
-        	});
+        	}); 
         const codiArr = new Set(arr);
         console.log(codiArr);
+		const arr2 = [...codiArr].join(", ");
+		document.getElementById("codiList").value = arr2;
+        
     }
 
 

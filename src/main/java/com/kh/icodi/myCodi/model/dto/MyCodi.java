@@ -7,18 +7,20 @@ public class MyCodi {
 	private String memberId;
 	private String myCodiFilename;
 	private Date myCodiRegDate;
+	private String productList;
 	
 	public MyCodi() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public MyCodi(int codiNo, String memberId, String myCodiFilename, Date myCodiRegDate) {
+	public MyCodi(int codiNo, String memberId, String myCodiFilename, Date myCodiRegDate, String productList) {
 		super();
 		this.codiNo = codiNo;
 		this.memberId = memberId;
 		this.myCodiFilename = myCodiFilename;
 		this.myCodiRegDate = myCodiRegDate;
+		this.productList = productList;
 	}
 
 	public int getCodiNo() {
@@ -52,10 +54,20 @@ public class MyCodi {
 	public void setMyCodiRegDate(Date myCodiRegDate) {
 		this.myCodiRegDate = myCodiRegDate;
 	}
+	
+	public String getProductList() {
+		return productList;
+	}
+
+	public void setProductList(String productList) {
+		this.productList = productList;
+	}
 
 	@Override
 	public String toString() {
 		return "MyCodi [codiNo=" + codiNo + ", memberId=" + memberId + ", myCodiFilename=" + myCodiFilename
-				+ ", myCodiRegDate=" + myCodiRegDate + "]";
+				+ ", myCodiRegDate=" + myCodiRegDate + ", productList=" + productList + "]";
 	}
+
+	
 }
