@@ -56,8 +56,8 @@
 							<li>
 								<img src="<%= request.getContextPath()%>/upload/admin/\${productRenamedFilename}"
 									id="\${productCode}" class="img"/>
-								<input type="checkbox" id="delCheck" value="\${productCode}" name="delCheck" />
-								<label for="delCheck">\${productCode}</label>
+								<input type="checkbox" id="pdCode" value="\${productCode}" name="pdCode" />
+								<label for="pdCode">\${productCode}</label>
 								<div id="productName">\${productName}</div>
 								<div id="productPrice">\${productPrice}</div>
 								<div id="productSize">\${productSize}</div>
