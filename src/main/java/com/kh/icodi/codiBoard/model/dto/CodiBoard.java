@@ -8,7 +8,7 @@ public class CodiBoard {
 	private String memberId;
 	private String codiBoardContent;
 	private int likeCount;
-	private Blob codiFilename;
+	private String filename;
 	private String isOpen;
 	private String useProduct;
 	private Date regDate;
@@ -18,14 +18,14 @@ public class CodiBoard {
 		// TODO Auto-generated constructor stub
 	}
 
-	public CodiBoard(int codiBoardNo, String memberId, String codiBoardContent, int likeCount, Blob codiFilename,
+	public CodiBoard(int codiBoardNo, String memberId, String codiBoardContent, int likeCount, String filename,
 			String isOpen, String useProduct, Date regDate) {
 		super();
 		this.codiBoardNo = codiBoardNo;
 		this.memberId = memberId;
 		this.codiBoardContent = codiBoardContent;
 		this.likeCount = likeCount;
-		this.codiFilename = codiFilename;
+		this.filename = filename;
 		this.isOpen = isOpen;
 		this.useProduct = useProduct;
 		this.regDate = regDate;
@@ -63,12 +63,12 @@ public class CodiBoard {
 		this.likeCount = likeCount;
 	}
 
-	public Blob getCodiFilename() {
-		return codiFilename;
+	public String getFilename() {
+		return filename;
 	}
 
-	public void setCodiFilename(Blob codiFilename) {
-		this.codiFilename = codiFilename;
+	public void setFilename(String filename) {
+		this.filename = filename;
 	}
 
 	public String getIsOpen() {
@@ -98,7 +98,7 @@ public class CodiBoard {
 	@Override
 	public String toString() {
 		return "CodiBoard [codiBoardNo=" + codiBoardNo + ", memberId=" + memberId + ", codiBoardContent="
-				+ codiBoardContent + ", likeCount=" + likeCount + ", codiFilename=" + codiFilename + ", isOpen="
-				+ isOpen + ", useProduct=" + useProduct + ", regDate=" + regDate + "]";
+				+ codiBoardContent + ", likeCount=" + likeCount + ", filename=" + filename + ", isOpen=" + isOpen
+				+ ", useProduct=" + useProduct + ", regDate=" + regDate + "]";
 	}
 }
