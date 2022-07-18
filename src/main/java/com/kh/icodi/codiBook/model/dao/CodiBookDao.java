@@ -104,22 +104,21 @@ public class CodiBookDao {
 		return product;
 	}
 
-	public int insertCodi(Connection conn, String writer, String codiArr, Map<String, Object> param) {
+	public int insertCodi(Connection conn, String memberId, String useProductArr, String content, String isOpen, Map<String, Object> param) {
 		PreparedStatement pstmt = null;
 		int result = 0;
 		String sql = prop.getProperty("insertCodiBook");
-		System.out.println(writer + codiArr);
-		//System.out.println("param@Dao = " + param);
-		//insert into codi_board values(seq_codi_board_no.nextval, ?, '안녕', default, 'Y', ?, default, ?, ?, ?, ?)
-		//insert into codi_board values (seq_codi_board_no.nextval, 'honggd', '코디입니다요', default, null, 'Y', '상품,상품,상품', default);
+		//insert into codi_board values(seq_codi_board_no.nextval, ?, ?, 0, ?, ?, default, ?, ?, ?, ?)
 		try {
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, writer);
-			pstmt.setString(2, codiArr);
-			pstmt.setString(3, (String)param.get("img1"));
-			pstmt.setString(4, (String)param.get("img2"));
-			pstmt.setString(5, (String)param.get("img3"));
-			pstmt.setString(6, (String)param.get("img4"));
+			pstmt.setString(1, memberId);
+			pstmt.setString(2, content);
+			pstmt.setString(3, useProductArr);
+//			pstmt.setString(4, isOpen);
+			pstmt.setString(4, (String)param.get("img1"));
+			pstmt.setString(5, (String)param.get("img2"));
+			pstmt.setString(6, (String)param.get("img3"));
+			pstmt.setString(7, (String)param.get("img4"));
 			result = pstmt.executeUpdate();
 		} catch (SQLException e) {
 			throw new CodiBookException("오류", e);
