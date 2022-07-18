@@ -26,6 +26,7 @@
 			</article>
 		<div id="content-wrap">
 			<button id="btn-product-enroll">상품등록</button>
+			<button id="btn-product-delete">상품삭제</button>
 		</div>
 		</section>
 	</main>

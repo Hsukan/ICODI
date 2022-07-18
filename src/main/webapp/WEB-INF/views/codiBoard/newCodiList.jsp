@@ -10,6 +10,9 @@
 	List<LikeThat> likeList = (List<LikeThat>) request.getAttribute("likeThat");
 %>
 <script src="<%= request.getContextPath()%>/js/jquery-3.6.0.js"></script>
+<script
+	src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
+<script src="https://unpkg.com/html2canvas@1.4.1/dist/html2canvas.js"></script>
 	<main>
 		<section>
 			<article>
@@ -46,13 +49,14 @@ const getPage = (cPage) => {
 			const content = document.querySelector(".content-wrap");
 			
 			response.forEach((codi) => {
-				const {codiBoardNo, memberId, codiBoardContent, likeCount, useProduct, regDate, likedMember} = codi;
+				console.log(codi);
+				const {codiBoardNo, memberId, codiBoardContent, likeCount, useProduct, regDate, likedMember, filename} = codi;
 
 				const list = `
 				<div class="myCodi">
-					<img src="<%= request.getContextPath()%>/upload/codiboard/루피.jpg" />
+					<img src="data:image/jpeg;base64,\${filename}" id="myCodiImg"/>
 					<div class="icodi-info">
-                        <img src="<%= request.getContextPath()%>/upload/default.png">
+                        <img src="<%= request.getContextPath()%>/upload/codiboard/defaultProfile.png">
 
                         <div class="text-wrap">
                             <div class="writerRegDateInfo">
@@ -65,7 +69,7 @@ const getPage = (cPage) => {
 	    							likedMember === undefined ? '♡' : '♥'
 	    						}	
                             </button>
-                            <span id="likeCount">${likeCount}</span>
+                            <span id="likeCount">\${likeCount}</span>
                         </div>
                     </div>
 				</div>
@@ -111,7 +115,7 @@ const likeIt = (e) => {
 			} else {
 				e.target.innerHTML = '♡'
 			}
-			e.target.nextElementSibling.innerHTML = `받은 좋아요 \${likeCount}`;
+			e.target.nextElementSibling.innerHTML = `\${likeCount}`;
 		},
 		error : console.log,
 		complete() {
