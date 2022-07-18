@@ -25,6 +25,10 @@
 <link rel="stylesheet"
 	href="<%=request.getContextPath() %>/css/style.css" />
 <script src="<%= request.getContextPath() %>/js/jquery-3.6.0.js"></script>
+<% if(loginMember != null) {%>
+<script src="<%= request.getContextPath()%>/js/ws.js"></script>
+<%} %>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
 	<div id="header">
@@ -45,8 +49,16 @@
                 <%if (loginMember == null){ %>
                 <a href="<%= request.getContextPath()%>/member/memberLogin">LOGIN</a>
                 <% } else {%>
-				<a href="#"><%= loginMember.getMemberId() %>님, 환영합니다.</a> 
-				<a href="<%= request.getContextPath()%>/member/memberLogout">LOGOUT</a>         
+               	
+				<a href="#"><%= loginMember.getMemberId() %>님, 환영합니다.</a>
+				<form action="<%=request.getContextPath()%>/alarm">
+					<input type="hidden" name="alarmMemberId" value="<%=loginMember.getMemberId() %>" />
+					<button id="btn-alarm"><i id="notification" class="fa-solid fa-bell"></i></button>
+				</form>
+				
+				
+				
+				<a href="<%= request.getContextPath()%>/member/memberLogout">LOGOUT</a>
                 <% } %>
             </div>
             <form class="search_wrapper hide_for_mobile" action="/search/">

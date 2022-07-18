@@ -9,8 +9,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.kh.icodi.cscenter.model.dto.CsCenterInquire;
+import com.kh.icodi.cscenter.model.dto.CsCenterInquireAnswer;
 import com.kh.icodi.cscenter.model.dto.SelectType;
 import com.kh.icodi.cscenter.model.service.CsCenterService;
+import com.kh.icodi.notification.model.service.NotificationService;
 
 /**
  * Servlet implementation class CsCenterInqurireEnrollServlet
@@ -19,6 +21,7 @@ import com.kh.icodi.cscenter.model.service.CsCenterService;
 public class CsCenterInqurireEnrollServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private CsCenterService csCenterService = new CsCenterService();
+	
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -37,9 +40,14 @@ public class CsCenterInqurireEnrollServlet extends HttpServlet {
 		String content = request.getParameter("content");
 		CsCenterInquire csCenterInquire = new CsCenterInquire(0, memberId, title, selectType, content, null);
 		System.out.println(csCenterInquire);
+		
 		//2. 업무로직
 		int result = csCenterService.insertInquire(csCenterInquire);
 		System.out.println("result = " + result);
+		
+		
+		
+		
 		//3. redirect
 		request.getSession().setAttribute("msg", "문의를 성공적으로 등록했습니다.");
 		response.sendRedirect(request.getContextPath() + "/cs_center");

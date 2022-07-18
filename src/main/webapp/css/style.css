@@ -48,6 +48,25 @@
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .15);
     background: #fff;
 }
+/* 알림 관련 */
+.bell {
+  transform-origin: top;
+  animation: bell 2s infinite linear;
+}
+
+@keyframes bell{
+  0%, 50%{
+	transform: rotate(0deg);
+	}
+  5%, 15%, 25%, 35%, 45% {
+	transform: rotate(13deg);
+  }
+  10%, 20%, 30%, 40% {
+	transform: rotate(-13deg);
+  }
+}
+
+#btn-alarm{background-color:white; border:none;}
 
 /* 메인메뉴 */
 #main_menu_container {

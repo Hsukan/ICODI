@@ -32,9 +32,10 @@ public class CsCenterInquireListServlet extends HttpServlet {
 			 String loginMemberId = request.getParameter("memberId");
 			 
 			 List<CsCenterInquire> list = csCenterService.findMyInquire(loginMemberId);
-			 
+//			List<CsCenterInquireAnswer> answerList = csCenterService.findInquireAnwerByInquireNo(InquireNo);
 			 
 			 request.setAttribute("list", list);
+//			 request.setAttribute("answerList", answerList);
 			 request.getRequestDispatcher("/WEB-INF/views/cscenter/csCenterInquireList.jsp").forward(request, response);
 			 
 		 }catch(Exception e) {

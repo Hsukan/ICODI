@@ -70,7 +70,24 @@ select * from inquire_comment;
 --delete from inquire_comment where answer_no = ?
 commit;
 select * from member;
---update member set member_role = 'A' where member_name = '이동하';
+--update member set MEMBER_PWD = '1234' where member_name = '이동하';
+--delete from member where member_name = '이동하';
 commit;
 select * from inquire_comment;
 --delete from inquire_comment where inquire_no = 15 and answer_no = 10;
+
+create table alarm(
+    no number,
+    member_id varchar2(50) not null,
+    alarm_date date default sysdate,
+    alarm_message varchar2(60) not null,
+    constraint pk_alarm_no primary key(no),
+    constraint fk_member_id foreign key(member_id) references member(member_id) on delete cascade
+);
+create sequence seq_alarm_no;
+
+select * from alarm;
+--insert into alarm (no,member_id,alarm_date,alarm_message) values(0,'eedongha1',default,'ㅎㅇㅎㅇ');
+--insert into alarm (no,member_id,alarm_date,alarm_message) values(seq_alarm_no.nextval,'eedongha1',default,'ㅎㅇㅎㅇ2');
+--select alarm_message, alarm_date from alarm where member_id = 'eedongha1';
+commit;

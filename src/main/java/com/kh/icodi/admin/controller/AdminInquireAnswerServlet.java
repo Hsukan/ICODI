@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.kh.icodi.cscenter.model.dto.CsCenter;
 import com.kh.icodi.cscenter.model.dto.CsCenterInquire;
+import com.kh.icodi.cscenter.model.dto.CsCenterInquireAnswer;
 import com.kh.icodi.cscenter.model.service.CsCenterService;
 
 /**
@@ -26,6 +27,7 @@ public class AdminInquireAnswerServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		List<CsCenterInquire> list = csCenterService.findAllInquire();
+		
 		
 		request.setAttribute("list", list);
 		

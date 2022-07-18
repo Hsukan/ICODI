@@ -20,13 +20,13 @@
 	<h1>SUPPORT CENTER</h1>
 	<hr />
 	<h2>문의내용확인</h2>
-	<table>
+	<table id="tbl-inquireView">
 		<tr>
-			<td>등록일</td>
-			<td><%=csCenterInquire.getInquireDate() %></td>
+			<th>등록일</th>
+			<td class="first"><%=csCenterInquire.getInquireDate() %></td>
 		</tr>
 		<tr>
-			<td>답변여부</td>
+			<th>답변여부</th>
 			<td>
 			<% if(answerList.isEmpty()){ %>
 				X
@@ -36,57 +36,72 @@
 			</td>
 		</tr>
 		<tr>
-			<td>문의내용</td>
+			<th>문의내용</th>
 			<td><%= csCenterInquire.getContent() %></td>
 		</tr>
 		<tr>
-			<td>답변내용</td>
-			<td></td>
-		</tr>		
+			<th>답변내용</th>
+			<td name="answerContent"></td>
+		</tr>
+		<tr>
+			<th>답변작성자</th>
+			<td name="answerWriter"></td>
+		</tr>
+		<tr>
+			<th>답변일</th>
+			<td name="answerDate"></td>
+		</tr>
 	</table>
 	
 	
 	
-	<%if(loginMember != null && loginMember.getMemberRole() == MemberRole.A){ %>
+	<%if(loginMember != null && loginMember.getMemberRole() == MemberRole.A ){ %>
 		<form name="inquireAnswerFrm" action="<%=request.getContextPath()%>/inquireAnswerEnroll" method="POST">
 			<input type="hidden" name="inquireNo" value="<%=csCenterInquire.getNo()%>"/>
 			<input type="hidden" name="answerNo" value=""/>
 			<input type="hidden" name="answerWriter" value="<%=loginMember != null && loginMember.getMemberRole() == MemberRole.A ? loginMember.getMemberId() : ""%>"/>
-			<textarea name="answerContent" id="" cols="60" rows="3"></textarea>
+			<textarea name="answerContent"  cols="60" rows="3" value="문의답변을 입력하세요"></textarea>
 			<button id="btn-answer-enroll">등록</button>
 		</form>
 	<%} %>
-	<table id="tbl-answer">
+	
+	<script>
 	<%
 		if(answerList == null || answerList.isEmpty()){
 	%>
-		<span>답변없음</span>
-			
+		document.querySelector("[name=answerContent]").innerHtml = "응답없음";
+
 	<%} 
 		else{
 			for(CsCenterInquireAnswer as : answerList){
 		%>
-	<tr>
-		<td><%=as.getAnswerContent() %></td>
-		<td><%=as.getAnswerWriter() %></td>
-		<td><%=as.getAnswerDate() %></td>
-		<td>
+		document.querySelector("[name=answerWriter]").innerHTML = "<%=as.getAnswerWriter()%>";
+		document.querySelector("[name=answerContent]").innerHTML = "<%=as.getAnswerContent()%>";
+		document.querySelector("[name=answerDate]").innerHTML = "<%=as.getAnswerDate()%>";
+	</script>
+	
 		<%if(loginMember != null && loginMember.getMemberRole() == MemberRole.A){ %>
 		<form id="inquireDelFrm" action="<%=request.getContextPath()%>/inquireAnswerDelete" method="POST">
 			<input type="hidden" name="inquireNo" value="<%=as.getInquireNo() %>" />
 			<input type="hidden" name="answerNo" value=<%=as.getAnswerNo() %> />
-			<input type="submit" value="삭제" onclick="location.href='<%=request.getContextPath()%>/inquireAnswerDelete'"/>
+			<input id="inquireDel" type="submit" value="문의답변삭제" onclick="location.href='<%=request.getContextPath()%>/inquireAnswerDelete'"/>
+			<div>
+		<p>주말 및 공휴일에는 고객센터 답변이 지연 될 수 있습니다.</p>
+		<p>고객센터 운영시간 : 월-금: 11AM~6PM.</p>
+	</div>
 		</form>
 		<%} %>		
-		</td>
-	</tr>
 	<% 	}
 	}%>
-	</table>
-	<ul>
-		<li>★주말 및 공휴일에는 고객센터 답변이 지연 될 수 있습니다.</li>
-		<li>★고객센터 운영시간: 월~금: 11AM~6PM(토/일/공휴일 휴무)</li>
-	</ul>
 	
+	
+	<script>
+	document.inquireAnswerFrm.onsubmit = (e) =>{
+		if(document.querySelector("[name=answerWriter]").innerHTML != null){
+			alert('이미 다른 응답이 있습니다.');
+			return false;
+		}
+	}
+	</script>
 </body>
 </html>

@@ -22,7 +22,7 @@
 <div id="csCenter">
 	<div id="csCenterLeft">
 	<div id="buttonContainer">
-	<input type="button" value="1:1 문의하기" onclick="location.href='<%= request.getContextPath() %>/csCenter/inquireEnroll';">
+	<input id="inquireInput" type="button" value="1:1 문의하기" onclick="location.href='<%= request.getContextPath() %>/csCenter/inquireEnroll';">
 	<form name="inquireListFrm" action="<%= request.getContextPath() %>/csCenter/inquireList">
 		<input type="hidden" name="memberId" value="<%= loginMember != null ? loginMember.getMemberId() : ""%>" />
 		<button type="submit" id="btn-inquireList" onclick="location.href='<%=request.getContextPath()%>/csCenter/inquireList'">문의내역확인</button>
@@ -30,7 +30,7 @@
 	</div>
 	<div id="csInfo">
 	<span>고객센터 전화번호</span>
-	<h3>1111-2222</h3>
+	<h2>1111-2222</h2>
 	<span>MON-FRI 11AM ~ 6PM</span>
 	<span>LUNCH 12:30PM ~ 1:30PM</span>
 	<span>DAY OFF 토/일/공휴일</span>
@@ -42,5 +42,14 @@
 	<span><%=csCenter.getNoticeContent()%></span>
 	</div>
 	
+	<script>
+	const inquireInput = document.querySelector("#inquireInput");
+	inquireInput.addEventListener('click',(e)=>{
+	if(<%=loginMember == null%>){
+			alert('로그인후 이용하세요');
+	}
+		})
+</script>
 </body>
+
 </html>

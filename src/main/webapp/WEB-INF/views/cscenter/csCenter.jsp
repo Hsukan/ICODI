@@ -21,7 +21,7 @@
 	<div id="csCenter">
 	<div id="csCenterLeft">
 	<div id="buttonContainer">
-	<input type="button" value="1:1 문의하기" onclick="location.href='<%= request.getContextPath() %>/csCenter/inquireEnroll';">
+	<input id="inquireInput" type="button" value="1:1 문의하기" onclick="location.href='<%= request.getContextPath() %>/csCenter/inquireEnroll';">
 	<form name = "inquireListFrm" action="<%= request.getContextPath() %>/csCenter/inquireList">
 		<input type="hidden" name="memberId" value="<%= loginMember != null ? loginMember.getMemberId() : null %>" />
 		<button type="submit" id="btn-inquireList" onclick="location.href='<%=request.getContextPath()%>/csCenter/inquireList'">문의내역확인</button>
@@ -29,14 +29,14 @@
 	</div>
 	<div id="csInfo">
 	<span>고객센터 전화번호</span>
-	<h3>1111-2222</h3>
+	<h2>1111-2222</h2>
 	<span>MON-FRI 11AM ~ 6PM</span>
 	<span>LUNCH 12:30PM ~ 1:30PM</span>
 	<span>DAY OFF 토/일/공휴일</span>
 	</div>
 	</div>
 	<div id="csCenterRight">
-	<div id="alert"><span>고객센터 안내 : 구매하신 상품 및 I COD I 이용에 편의를 돕기 위해 전용 고객센터를 운영하고 있으니, 아래 내용 확인 부탁드립니다.</span></div>
+	<div class="alert"><span>고객센터 안내 : 구매하신 상품 및 I COD I 이용에 편의를 돕기 위해 전용 고객센터를 운영하고 있으니, 아래 내용 확인 부탁드립니다.</span></div>
 	<h2>공지사항</h2>
 <ul>
 	<% if(list == null || list.isEmpty()){ %>
@@ -54,28 +54,38 @@
 	<hr />
 		<h2>자주 묻는 FAQ</h2>
 		<ul>
-			<span>배송관련</span>
-			<li>배송은 얼마나 걸리나요?</li>
-			<li>현재 배송상태를 알고 싶어요</li>
+			<h3>배송관련</h3>
+			<li><a href="">배송은 얼마나 걸리나요?</a></li>
+			<li><a href="">현재 배송상태를 알고 싶어요</a></li>
 		</ul>
 		<ul>
-			<span>주문관련</span>
-			<li>교환/반품/AS안내</li>
-			<li>주문 방법을 알려주세요</li>
+			<h3>주문관련</h3>
+			<li><a>교환/반품/AS안내</a></li>
+			<li><a>주문 방법을 알려주세요</a></li>
 	
 		</ul>
 		<ul>
-			<span>계정관련</span>
-			<li>아이디/비밀번호를 잊어버렸어요.</li>
-			<li>회원 탈퇴하는 방법</li>
+			<h3>계정관련</h3>
+			<li><a>아이디/비밀번호를 잊어버렸어요.</a></li>
+			<li><a>회원 탈퇴하는 방법</a></li>
 		</ul>
 		
 		<ul>
-			<span>적립금 관련</span>
-			<li>구매 적립금은 언제 지급되나요?</li>
+			<h3>적립금 관련</h3>
+			<li><a>구매 적립금은 언제 지급되나요?</a></li>
 		</ul>
 	</div>	
 	</div>
 </div>
+<script>
+	const inquireInput = document.querySelector("#inquireInput");
+	inquireInput.addEventListener('click',(e)=>{
+	if(<%=loginMember == null%>){
+			alert('로그인후 이용하세요');
+	}
+		})
+		
+	
+</script>
 </body>
 </html>

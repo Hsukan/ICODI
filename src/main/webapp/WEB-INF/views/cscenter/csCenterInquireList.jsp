@@ -6,6 +6,7 @@
     <%@include file = "/WEB-INF/views/common/header.jsp" %>
 <% 
 	List <CsCenterInquire> list = (List<CsCenterInquire>)request.getAttribute("list");
+	
 %>
 <!DOCTYPE html>
 <html>
@@ -23,7 +24,6 @@
 	<tr>
 	<th>작성자</th>
 	<th>문의명</th>
-	<th>답변여부</th>
 	<th>등록일</th>
 	</tr>
 	</thead>
@@ -37,9 +37,6 @@
 		<a href="<%=request.getContextPath()%>/csCenter/inquireView?no=<%= c.getNo()%>">
 		 <%=c.getTitle() %>
 		</a>		
-		 </td>
-		 <td>
-			X(다시)
 		 </td>
 		 <td>
 		 <%=c.getInquireDate() %>

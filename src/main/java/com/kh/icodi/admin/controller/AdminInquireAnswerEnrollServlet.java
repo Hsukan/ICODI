@@ -8,8 +8,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.kh.icodi.cscenter.model.dto.CsCenterInquire;
 import com.kh.icodi.cscenter.model.dto.CsCenterInquireAnswer;
 import com.kh.icodi.cscenter.model.service.CsCenterService;
+import com.kh.icodi.notification.model.service.NotificationService;
 
 /**
  * Servlet implementation class AdminInquireAnswerEnrollServlet
@@ -18,6 +20,7 @@ import com.kh.icodi.cscenter.model.service.CsCenterService;
 public class AdminInquireAnswerEnrollServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private CsCenterService csCenterService = new CsCenterService();
+	private NotificationService notificationService = new NotificationService();
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -33,6 +36,13 @@ public class AdminInquireAnswerEnrollServlet extends HttpServlet {
 			System.out.println("answer = " + answer);
 			
 			int result = csCenterService.insertInquireAnswer(answer);
+			
+			//문의 작성자에게 답변알림
+			CsCenterInquire csCenterInquire = csCenterService.findInquireContentByNo(inquireNo);
+			result = notificationService.notifyInquireAnswer(csCenterInquire);
+			
+			
+			
 			
 			response.sendRedirect(request.getContextPath() + "/csCenter/inquireView?no=" + inquireNo);
 			

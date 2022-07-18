@@ -13,10 +13,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import com.kh.icodi.cscenter.model.dto.Alarm;
 import com.kh.icodi.cscenter.model.dto.CsCenter;
 import com.kh.icodi.cscenter.model.dto.CsCenterInquire;
 import com.kh.icodi.cscenter.model.dto.CsCenterInquireAnswer;
 import com.kh.icodi.cscenter.model.dto.SelectType;
+import com.kh.icodi.cscenter.model.exception.CsCenterException;
 
 public class CsCenterDao {
 	
@@ -27,7 +29,7 @@ public class CsCenterDao {
 		try {
 			prop.load(new FileReader(filename));
 		} catch (IOException e) {
-			e.printStackTrace();
+			throw new CsCenterException("sql로드 오류!",e);
 		}
 	}
 	
@@ -50,7 +52,7 @@ public class CsCenterDao {
 				list.add(csCenter);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new CsCenterException("공지사항 조회 오류!",e);
 		}finally {
 			close(rset);
 			close(pstmt);
@@ -78,7 +80,7 @@ public class CsCenterDao {
 				
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new CsCenterException("공지사항 상세조회 오류!",e);
 		}finally {
 			close(rset);
 			close(pstmt);
@@ -101,7 +103,7 @@ public class CsCenterDao {
 			
 			result = pstmt.executeUpdate();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new CsCenterException("1:1문의 저장 오류!",e);
 		}finally {
 			close(pstmt);
 		}
@@ -136,7 +138,7 @@ public class CsCenterDao {
 			}
 			
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new CsCenterException("1:1문의 보기 오류!",e);
 		}finally {
 			close(rset);
 			close(pstmt);
@@ -166,7 +168,7 @@ public class CsCenterDao {
 				
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new CsCenterException("1:1문의 로드 오류!",e);
 		}finally {
 			close(rset);
 			close(pstmt);
@@ -198,7 +200,7 @@ public class CsCenterDao {
 				list.add(csCenterInquire);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new CsCenterException("1:1문의 로드 오류!",e);
 		}finally {
 			close(rset);
 			close(pstmt);
@@ -220,7 +222,7 @@ public class CsCenterDao {
 			
 			result = pstmt.executeUpdate();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new CsCenterException("1:1문의 답변 저장 오류!",e);
 		}finally {
 			close(pstmt);
 		}
@@ -249,7 +251,7 @@ public class CsCenterDao {
 				list.add(answer);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new CsCenterException("1:1문의 답변 로드 오류!",e);
 		}finally {
 			close(rset);
 			close(pstmt);
@@ -270,11 +272,67 @@ public class CsCenterDao {
 			pstmt.setInt(2, answerNo);
 			result = pstmt.executeUpdate();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new CsCenterException("1:1문의 답변 삭제 오류!",e);
 		}finally {
 			close(pstmt);
 		}
 		return result;
+	}
+
+	/**
+	 * 알람 테이블에 알람 넣기
+	 * @param conn
+	 * @param csCenterInquire
+	 * @return
+	 */
+	public int insertAlarm(Connection conn, CsCenterInquire csCenterInquire) {
+		PreparedStatement pstmt = null;
+		int result= 0;
+		//insert into alarm (no,member_id,alarm_date,alarm_message) values(seq_alarm_no.nextval,'eedongha1',default,'ㅎㅇㅎㅇ2')
+		String sql = prop.getProperty("insertAlarm");
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, csCenterInquire.getMemberId());
+			pstmt.setString(2, csCenterInquire.getTitle() + "에 답변이 달렸습니다.");
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new CsCenterException("알람 추가 오류!",e); 
+		}finally {
+			close(pstmt);
+		}
+		
+		
+		return result;
+	}
+
+	public List<Alarm> findAlarmById(Connection conn, String memberId) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		List<Alarm> list = new ArrayList<>();
+		String sql = prop.getProperty("findAlarmById");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, memberId);
+			rset = pstmt.executeQuery();
+			
+			while(rset.next()) {
+				
+				Date alarmDate = rset.getDate("alarm_date");
+				String alarmMessage = rset.getString("alarm_message");
+				Alarm alarm = new Alarm(0, memberId, alarmDate, alarmMessage);
+				list.add(alarm);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			
+		}finally {
+			close(rset);
+			close(pstmt);
+		}
+		
+		return list;
 	}
 	
 

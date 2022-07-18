@@ -9,34 +9,35 @@
 <!DOCTYPE html>
 <html>
 <head>
+<link rel="stylesheet" href="<%=request.getContextPath()%>/css/csCenter.css" />
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
 <body>
-	<h1>문의내역확인</h1>
 	
+	<h1>문의내역확인</h1>
+	<hr></hr>
 	<table id="tbl-inquire-list">
 	<th>작성자</th>
 	<th>문의명</th>
-	<th>답변여부</th>
 	<th>등록일</th>
 	<%for(CsCenterInquire c : list) {%>
 		<tr>
-			<%=c.getMemberId() %>
-		</tr>
-		<tr>
-		<td>
-		<a href="<%=request.getContextPath()%>/csCenter/inquireView?no=<%= c.getNo()%>">
-			<%=c.getTitle() %>
-		</a>
-		</td>
-		</tr>
-		<tr>
 			<td>
-			<%=c.getInquireDate() %>
+			<%=c.getMemberId() %>
 			</td>
+			<td>
+			<a href="<%=request.getContextPath()%>/csCenter/inquireView?no=<%= c.getNo()%>">
+			<%=c.getTitle() %>
+			</a>
+			</td>
+			<td>
+				<%=c.getInquireDate() %>
+			</td>	
+					
 		</tr>
-		</table>
+		
 	<%} %>
+		</table>
 </body>
 </html>
