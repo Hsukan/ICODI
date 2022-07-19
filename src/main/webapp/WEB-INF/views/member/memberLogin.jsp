@@ -3,11 +3,6 @@
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>    
 
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>로그인/로그아웃</title>
 <script>
 
 // 로그인 유효성
@@ -35,8 +30,8 @@ window.onload = () => {
 };
 <% } %>
 </script>
-</head>
-<body>
+
+<main>
 	<div class="login-container">
 		<h2>LOGIN</h2>
 		<form id="loginFrm" name="loginFrm"
@@ -68,5 +63,6 @@ window.onload = () => {
 			</table>
 		</form>
 	</div>
+</main>
 </body>
 </html>
