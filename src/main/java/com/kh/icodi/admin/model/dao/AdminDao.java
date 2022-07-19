@@ -218,7 +218,31 @@ public class AdminDao {
 		}
 		return productList;
 	}
-
+	
+	// 상품코드로 상품 찾기 (상품상세페이지)
+	// findProductByProductName = select * from product where product_name = ?
+	public List<ProductExt> findProductByProductName(Connection conn, String productName) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		List<ProductExt> productList = new ArrayList<>();
+		String sql = prop.getProperty("findProductByProductName");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, productName);
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				productList.add(handleProductResultSet(rset));
+			}
+		} catch (SQLException e) {
+			throw new AdminException("상품상세페이지 조회 오류!", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		return productList;
+	}
+	
 	private ProductExt handleProductResultSet(ResultSet rset) throws SQLException {
 		ProductExt productExt = new ProductExt();
 		productExt.setProductCode(rset.getString("product_code"));
