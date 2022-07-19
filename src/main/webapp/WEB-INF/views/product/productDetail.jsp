@@ -1,106 +1,101 @@
+<%@page import="com.kh.icodi.admin.model.dto.Product"%>
 <%@page import="com.kh.icodi.admin.model.dto.ProductAttachment"%>
 <%@page import="java.util.List"%>
 <%@page import="com.kh.icodi.admin.model.dto.ProductExt"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
+
 <%
 	List<ProductExt> productList = (List<ProductExt>)request.getAttribute("productList");
 	int productPrice = productList.get(0).getProductPrice();
 	String productName = productList.get(0).getProductName(); 
 	String productInfo = productList.get(0).getProductInfo();
 %>
-<style>
-main {
-	max-width: 1024px;
-}
-</style>
+<link rel="stylesheet" href="<%=request.getContextPath()%>/css/product.css" />
 	<main>
 		<section>
 			<article>
-				<div class="img-wrap">
-					<div id="product-img">
-						<%
-							if(productList != null && !productList.isEmpty()) {
-								for(ProductExt product : productList) {
-									List<ProductAttachment> attachments = product.getAttachmentList();
-									if(attachments != null && !attachments.isEmpty()) {
-										for(ProductAttachment attach : attachments) {
-											if(attach.getProductRenamedFilename() == null) break;
-						%>
-							<img src="<%= request.getContextPath() %>/upload/admin/<%= attach.getProductRenamedFilename()%>" alt="" />
-						<%
+				<div class="content-wrap">
+					<div class="img-wrap">
+						<div id="product-img">
+							<%-- <%
+								if(productList != null && !productList.isEmpty()) {
+									for(ProductExt product : productList) {
+										List<ProductAttachment> attachments = product.getAttachmentList();
+										if(attachments != null && !attachments.isEmpty()) {
+											for(ProductAttachment attach : attachments) {
+												if(attach.getProductRenamedFilename() == null) break;
+							%> --%>
+								<img src="<%= request.getContextPath() %>/upload/admin/<%= productList.get(0).getAttachmentList().get(1)%>" />
+							<%-- <%
+											}
 										}
-									}
- 								}
-							}
-						%>
-					</div>				
-				</div>
-				<div class="product-info-wrap">
-					<h2><%= productName %></h2>
-					<table>
-						<tbody>
-							<tr>
-								<th>price</th>
-								<td><%= productPrice %></td>
-							</tr>
-							<tr>
-								<th>color</th>
-								<td>
-									<ul class="color-list">
-										<% for(ProductExt product : productList) { %>
-											<li class="color"><%= product.getProductColor() %></li>
-										<% } %>
-									</ul>
-									<span>[필수] 옵션을 선택해주세요</span>
-								</td>
-							</tr>
-							<tr>
-								<th>size</th>
-								<td>
-									<ul class="size-list">
-										<% for(ProductExt product : productList) { %>
-											<li class="size size-disabled"><%= product.getProductSize() %></li>
-										<% } %>
-									</ul>
-									<span>[필수] 옵션을 선택해주세요</span>
-								</td>
-							</tr>
-						</tbody>
-					</table>
-
-					<div class="total-product-wrap">
-						<table class="totalProductList">
+	 								}
+								}
+							%> --%>
+						</div>				
+					</div>
+					<div class="product-info-wrap">
+						<h2 class="productName"><%= productName %></h2>
+						<table>
 							<tbody>
-							
+								<tr>
+									<th colspan="">price</th>
+									<td><%= productPrice %></td>
+								</tr>
+								<tr>
+									<th>color</th>
+									<td>
+										<ul class="color-list">
+											<% for(ProductExt product : productList) { %>
+												<li class="color"><%= product.getProductColor() %></li>
+											<% } %>
+										</ul>
+										<span id="essential">[필수] 옵션을 선택해주세요</span>
+									</td>
+								</tr>
+								<tr>
+									<th>size</th>
+									<td>
+										<ul class="size-list">
+											<% for(ProductExt product : productList) { %>
+												<li class="size size-disabled"><%= product.getProductSize() %></li>
+											<% } %>
+										</ul>
+										<span id="essential">[필수] 옵션을 선택해주세요</span>
+									</td>
+								</tr>
 							</tbody>
 						</table>
-					</div>
-					<div class="total-price">
-						TOTAL : 
-						<span id="totalPrice">0</span>원
-						(<span id="totalCount">0</span>개)
-					</div>
-					<button id="buy">BUY IT NOW</button>
-					<button id="cart">ADD TO CART</button>
-					
-					<div class="product-detail-wrap">
-						<div id="detail-header">DETAIL</div>
-						<div id="detail-content"><%= productInfo %></div>
+	
+						<div class="total-product-wrap">
+							<form action="">
+								<table class="totalProductList">
+									<tbody>
+									
+									</tbody>
+								</table>
+							</form>
+						</div>
+						<div class="total-price">
+							TOTAL : 
+							<span id="totalPrice" name="totalPriceVal">0</span>원
+							(<span id="totalCount" name="totalCountVal">0</span>개)
+						</div>
+						<button id="buy">BUY IT NOW</button>
+						<br />
+						<button id="cart">ADD TO CART</button>
+						
+						<div class="product-detail-wrap">
+							<div id="detail-header">DETAIL</div>
+							<div id="detail-content"><%= productInfo %></div>
+						</div>
 					</div>
 				</div>
 			</article>
 		</section>
 	</main>
-<style>
-.size {
-	border : 1px solid black;
-}
-.size-disabled {
-	background-color: gray;
-}
-</style>
 <script>
 document.querySelectorAll(".color").forEach((target) => {
 	target.addEventListener('click', (e) => {
@@ -151,20 +146,33 @@ document.querySelectorAll(".size").forEach((target) => {
 			colorList.forEach((li) => li.classList.remove('product-select'));
 			
 			const tbody = document.querySelector(".totalProductList tbody");
+			const productCode = `<%= productName%>_\${totalSize}_\${totalColor}`;
+			
+			for(let i = 0; i < tbody.children.length; i++) {
+				if(productCode == tbody.children[i].id) {
+					alert("이미 추가한 상품입니다.");
+					return;
+				}
+			}
+
 			const tr = `
-			<tr>
+			<tr id="\${productCode}" class="productList">
 				<td class='totalSelect'>
 					<p class="product">
-						<%= productName %>
+						<span id="totalProductName"><%= productName %></span>
 						<br />
 						- \${totalColor}/\${totalSize}
 					</p>
 					<span class="count"><input type="number" name="count" min="1" max="100" value="1" onchange="countChange(event)"/></span>
-					<span class="delete">X</span>
-					<span class="price"><%= productPrice %></span>
+					<span class="delete" onclick="productDelete(event)">X</span>
+					<span class="price"><%= productPrice %></span>원
+					<input type="hidden" name="productCode" value="\${productCode}" />
+					<input type="hidden" name="productColor" value="\${totalColor}" />
+					<input type="hidden" name="productSize" value="\${totalSize}" />
+					<input type="hidden" name="productCount" />
 				</td>
 			</tr>
-			`
+			`;
 			tbody.insertAdjacentHTML('beforeend', tr);
 			
 			// totalPrice
@@ -180,14 +188,14 @@ document.querySelectorAll(".size").forEach((target) => {
 });
 
 const countChange = (e) => {
-	let total = totalCount();
+	let totalCnt = totalCount();
 
 	const countVal = e.target.value;
 	const price = e.target.parentElement.nextElementSibling.nextElementSibling;
 	price.innerHTML = countVal * <%= productPrice %>;
+	document.querySelector("[name=productCount]").value = countVal;
 	
-	const totalPrice = document.querySelector("#totalPrice");
-	totalPrice.innerHTML = total * <%= productPrice %>;
+	totalPrice(totalCnt);
 };
 
 const totalCount = (e) => {
@@ -199,6 +207,18 @@ const totalCount = (e) => {
 	document.querySelector("#totalCount").innerHTML = totalCount;
 	return totalCount;
 };
+
+const totalPrice = (totalCnt) => {
+	const totalPrice = document.querySelector("#totalPrice");
+	totalPrice.innerHTML = totalCnt * <%= productPrice %>;
+}
+
+const productDelete = (e) => {
+	e.target.parentElement.parentElement.remove();
+	let totalCnt = totalCount();
+	totalPrice(totalCnt);
+};
+
 </script>
 </body>
 </html>
