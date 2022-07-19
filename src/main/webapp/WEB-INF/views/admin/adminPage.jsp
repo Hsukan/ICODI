@@ -27,6 +27,7 @@
 		<div id="content-wrap">
 			<button id="btn-product-enroll">상품등록</button>
 			<button id="btn-product-delete">상품삭제</button>
+			<button onclick="location.href='<%=request.getContextPath()%>/inquireAnswer'">문의 답변</button>
 		</div>
 		</section>
 	</main>
