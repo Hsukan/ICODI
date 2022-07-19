@@ -8,36 +8,90 @@
 <script src="https://unpkg.com/html2canvas@1.4.1/dist/html2canvas.js"></script>
 
 <style>
-.item img {
-	width: 110px;
-	height: 110px;
-}
+        .item img {
+            width: 110px;
+            height: 110px;
+        }
+        .item {
+        	list-style: none;
+        	width: 111px;
+        	height: 111px;
+        	border: 1px solid black;
+        	float : left;
+        	
+        }
 
-#canvas {
-	width: 360px;
-	height: 500px;
-}
+        #canvas {
+            width: 300px;
+            height: 450px;
+            float: left;
+            margin-left: 50px;
+            background-image: url(<%=request.getContextPath()%>/upload/codibook/마네킹.png);
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            border: 1px solid black;
+            text-align: center;
+        }
+        
+        .canvasDiv{
+            height: 130px;
+            padding: 10px;
+            /* border: 1px solid black; */
+        }
+        .div{
+            border: 1px solid black;
+        }
 
-.canvasDiv, .div {
-	width: 350px;
-	height: 135px;
-	padding: 10px;
-	border: 1px solid black;
-}
+        #container_img {
+            width: 500px;
+            height: 450px;
+            float: left;
+            padding:5px;
+            margin: 5px 5px 5px 5px;
+        }
 
-#container_img {
-	width: 400px;
-	height: 400px;
-}
+        #container_img img {
+            display: block;
+            float: left;
+        }
 
-.target {
-	border: 1px solid red;
-}
+        .target {
+           border: 1px solid red;
+        }
 
-.img {
-	width: 100px;
-	height: 100px;
-}
+        .img {
+            width: 125px;
+            height: 125px;
+        }
+
+        .codiProductArea-wrap {
+            height: 50px;
+            position: relative;
+            right: 30px;
+        }
+
+        #category {
+            list-style: none;
+
+        }
+
+        #category li {
+            float: left;
+            margin: 0 20px 0 0;
+            padding: 5px 15px;
+            border: 1px solid black;
+        }
+        
+
+        article {
+            width: 900px;
+            border: 1px solid black;
+            padding: 5px;
+            padding-left: 80px;
+            margin-top: 5px;
+            height: 600px;
+            position: relative;
+        }
 #modal.modal-overlay {
             width: 100%;
             height: 100%;
@@ -118,34 +172,33 @@
         #btnModal{
         	display: none;
         }
+        #div4{width: 200px; height: 200px; border: 1px solid black;}
 </style>
 <main>
-	<section>
-		<article>
-			<div class="codiProductArea-wrap">
+	</header>
+        <article>
+            <div class="codiProductArea-wrap">
 				<ul id="category">
 					<li value="<%= CategoryNo.stringOf("TOP") %>">TOP</li>
 					<li value="<%= CategoryNo.stringOf("BOTTOM") %>">BOTTOM</li>
 					<li value="<%= CategoryNo.stringOf("SHOES") %>">SHOES</li>
 					<li value="<%= CategoryNo.stringOf("ACC") %>">ACC</li>
 				</ul>
+				<input type="button" value="저장" id="btnSave" />
+				<button type="button" id="btnModal" ></button>
+                <input type="button" id="btn_reset" value="Reset" onclick="reset();"></button>
 			</div>
-		</article>
-			<div id="canvas">
-				<div id="div1" class="canvasDiv" ondragover="allowDrop(event)"></div>
-				<div id="div2" class="canvasDiv" ondragover="allowDrop(event)"></div>
-				<div id="div3" class="canvasDiv" ondragover="allowDrop(event)"></div>
-			</div>
-			<input type="button" value="저장" id="btnSave"/>
-			<button type="button" id="btnModal" ></button>
-			<input type="button" id="btn_reset" value="Reset" onclick="reset();"></button>
 		<div id="container_img" class="div" ondragover="allowDrop(event)" ondrop="drop(event)">
 			<ul>
 
 			</ul>
 		</div>
-		</button>
-
+			<div id="canvas">
+				<div id="div1" class="canvasDiv" ondragover="allowDrop(event)"></div>
+				<div id="div2" class="canvasDiv" ondragover="allowDrop(event)"></div>
+				<div id="div3" class="canvasDiv" ondragover="allowDrop(event)"></div>
+			</div>
+		</article>
 	</section>
 	<script>
 	const arr = [];
@@ -186,7 +239,8 @@
     function drop(ev) {
         ev.preventDefault();
         var data = ev.dataTransfer.getData("text");
-        
+        const divNumber = ev.target.id.charAt(ev.target.id.length - 1);
+
         const imgNum = ev.target.id.charAt(ev.target.id.length - 1);
         // console.log(imgNum);
         const div = document.getElementsByClassName("canvasDiv");
@@ -222,7 +276,7 @@
                 }
             }
             console.log(arr);
-
+	
         }
     };
     
@@ -292,9 +346,9 @@
 								id="\${productCode}" class="img" draggable="true" ondragstart="drag(event)"
 									data-product-code="\${productCode}" data-product-price="\${productPrice}"
 										data-category-code="\${target}"/>
-								<div class="productPrice">\${productPrice}원</div>
 							</li>			
 							`;
+								/* <div class="productPrice">\${productPrice}원</div> */
 						ul.insertAdjacentHTML('afterbegin', li);
 					});
 				})

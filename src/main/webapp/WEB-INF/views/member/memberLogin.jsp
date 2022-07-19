@@ -4,7 +4,6 @@
 <%@ include file="/WEB-INF/views/common/header.jsp" %>    
 
 <script>
-
 // 로그인 유효성
 window.onload = () => {
 	
