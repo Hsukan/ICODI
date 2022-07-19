@@ -4,10 +4,10 @@
 <link rel="stylesheet"
 	href="<%=request.getContextPath() %>/css/member.css" />
 <section id="enroll-container">
-	<h2>JOIN US</h2>
+	<h2 id="main-msg">JOIN US</h2>
 	<div id="form-container">
 		<form name="memberEnrollFrm" method="POST">
-			<table>
+			<table id="enroll-table">
 				<tr>
 					<th>아이디<sup>*</sup></th>
 					<td>

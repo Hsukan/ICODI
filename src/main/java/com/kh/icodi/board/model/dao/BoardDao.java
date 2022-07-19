@@ -495,5 +495,60 @@ public class BoardDao {
 		
 		return totalContent;
 	}
+	
+	public List<Board> findAllByMe(Connection conn, Map<String, Object> param) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		List<Board> list = new ArrayList<>();
+		String sql = prop.getProperty("findAllByMe");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, (String) param.get("writer"));
+			pstmt.setInt(2, (int) param.get("start"));
+			pstmt.setInt(3, (int) param.get("end"));
+			
+			rset = pstmt.executeQuery();
+			
+			while(rset.next()) {
+				BoardExt board = handleBoardResultSet(rset);
+				board.setAttachCount(rset.getInt("attach_count"));
+				board.setCommentCount(rset.getInt("comment_count"));
+				
+				list.add(board);
+			}
+			
+		} catch (SQLException e) {
+			throw new BoardException("내가 쓴 게시글 목록 조회 오류!", e);
+		}finally {
+			close(rset);
+			close(pstmt);
+		}
+		
+		
+		return list;
+	}
+
+	public int getTotalContentByMe(Connection conn, String loginMemberId) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		int totalContent = 0;
+		String sql = prop.getProperty("getTotalContentByMe");
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, loginMemberId);
+			
+			rset = pstmt.executeQuery();
+			if(rset.next())
+				totalContent = rset.getInt(1);
+		} catch (SQLException e) {
+			throw new BoardException("내가 쓴 게시물수 조회 오류!", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		
+		return totalContent;
+	}
 
 }
