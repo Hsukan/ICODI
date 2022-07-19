@@ -26,22 +26,6 @@ public class CodiBookService {
 		close(conn);
 		return products;
 	}
-//memberId, useProductArr, content, isOpen, param
-	public int insertCodi(String memberId, String useProductArr, String content, String isOpen, String imgSrc) {//Map<String, Object> param
-		Connection conn = getConnection();
-		int result = 0;
-		try {
-			result = codiBookDao.insertCodi(conn, memberId, useProductArr, content, isOpen, imgSrc);
-			
-
-			
-			commit(conn);
-		} catch(Exception e) {
-			rollback(conn);
-			throw e;
-		}
-		return result;
-	}
 
 	public int insertCodi(Map<String, Object> param) {
 		Connection conn = getConnection();

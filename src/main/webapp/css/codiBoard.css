@@ -15,6 +15,7 @@ a {
 .content-wrap {
     display: flex;
     flex-wrap: wrap;
+    justify-content: space-evenly;
 }
 .ootdMenu {
     height: 50px;

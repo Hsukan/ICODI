@@ -179,17 +179,11 @@ public class CodiBoardDao {
 
 	private CodiBoardExt handleCodiBoardResultSet(ResultSet rset) throws SQLException {
 		CodiBoardExt codiBoard = new CodiBoardExt();
-		String file;
 		codiBoard.setCodiBoardNo(rset.getInt("codi_board_no"));
 		codiBoard.setMemberId(rset.getString("member_id"));
 		codiBoard.setCodiBoardContent(rset.getString("codi_board_content"));
 		codiBoard.setLikeCount(rset.getInt("like_count"));
-		String file1 = rset.getString("filename_1");
-		String file2 = rset.getString("filename_2");
-		String file3 = rset.getString("filename_3");
-		String file4 = rset.getString("filename_4");
-		file = file1 + file2 + file3 + file4;
-		codiBoard.setFilename(file);
+		codiBoard.setFilename(rset.getString("filename"));
 		codiBoard.setIsOpen(rset.getString("is_open"));
 		codiBoard.setUseProduct(rset.getString("use_product"));
 		codiBoard.setRegDate(rset.getDate("reg_date"));
