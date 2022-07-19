@@ -1,0 +1,134 @@
+@charset "UTF-8";
+/***** 제품 상세페이지 *****/
+* {
+	margin:0;
+	padding:0;
+}
+li {
+	list-style: none;
+}
+main {
+	max-width: 1024px;
+	margin: 0 auto;
+}
+.content-wrap {
+	display:flex;
+}
+#product-img {
+	width : 650px;
+	display: flex;
+	justify-content: center;
+}
+#product-img img {
+	width: 500px;
+	height: 700px;
+}
+
+.productName {
+	height: 70px;
+	width: 420px;
+	display:flex;
+    align-items: center;
+    border-bottom: 1px solid lightgray;
+    margin-bottom: 30px;
+}
+
+th {
+	width:120px;
+	display:flex;
+}
+th,td {
+	padding: 10px 0;
+}
+.color-list, .size-list {
+	display:flex;
+}
+.color {
+	display: flex;
+	width:60px;
+	height:30px;
+	border: 1px solid lightgrey;
+	justify-content: center;
+    align-items: center;
+    flex-wrap:wrap;
+    margin-right: 10px;
+}
+#essential {
+	font-size: 13px;
+	color:gray;
+}
+.size {
+	width:30px;
+	height:30px;
+	display:flex;
+	justify-content: center;
+    align-items: center;
+    margin-right: 10px;
+    border : 1px solid lightgrey;
+}
+.size-disabled {
+	background-color: lightgrey;
+	color:gray;
+	border :none;
+}
+.totalSelect {
+	display:flex;
+    align-items: center;		
+}
+.product {
+	font-size: 13px;
+	color:gray;
+	width:210px;
+}
+#totalProductName {
+	font-weight: bold;
+	font-size:15px;
+	color:black;
+}
+[name=count] {
+	width: 30px;
+	margin-right: 5px;
+}
+
+.delete {
+	width:15px;
+	height:15px;
+	color:white;
+	background-color: lightgray;
+	font-size:12px;
+	display:flex;
+	justify-content: center;
+    align-items: center;
+    margin-top: 3px;
+}
+.price {
+	width:150px;
+	display :flex;
+	justify-content: flex-end;
+	font-weight: bold;
+	font-size:14px;
+}
+.total-price {
+	border-top: 1px solid lightgrey;
+	margin-top:22px;
+	font-size: 18px;
+	padding : 30px 0;
+	font-weight: bold;
+}
+button {
+	width:500px;
+	height:60px;
+	font-weight: bold;
+	margin-bottom: 5px;
+}
+#buy {
+	background-color: rgb(26, 188, 156);
+	color: white;
+	border :none;
+}
+#cart {
+	background-color: white;
+	color:rgb(22, 160, 133);
+	border:1px solid rgb(26, 188, 156);
+	height:50px;
+}
