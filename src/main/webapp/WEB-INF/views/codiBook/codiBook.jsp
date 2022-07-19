@@ -27,22 +27,67 @@
         }
 
         #canvas {
-            width: 300px;
-            height: 450px;
-            float: left;
-            margin-left: 50px;
-            background-image: url(<%=request.getContextPath()%>/upload/codibook/마네킹.png);
-            background-size: 100% 100%;
+        	background-image: url(<%=request.getContextPath()%>/upload/codibook/마네킹.png);
+        	background-size: 100% 100%;
             background-repeat: no-repeat;
-            border: 1px solid black;
-            text-align: center;
+        	border: 1px solid black;
+			text-align: center;
+            width: 390px;
+            display: flex;
+            flex-wrap: wrap;
+            margin-left: 20px;
+            justify-content: space-evenly;
+        }
+        
+        #canvas div{
+        	/* border: 1px solid black; */
+        	width: 170px;
         }
         
         .canvasDiv{
             height: 130px;
             padding: 10px;
             position : relative;
-
+        }
+        #topReset{
+        	z-index: 999;
+        	text-align: center;
+        	border: 1px solid black;
+        	width: 10px;
+        	height: 18px; 
+        	position: absolute;
+        	right:300px;
+        	top: 75px;
+        }
+        #bottomReset{
+        	z-index: 999;
+        	text-align: center;
+        	border: 1px solid black;
+        	width: 10px;
+        	height: 18px; 
+        	position: absolute;
+        	right:300px;
+        	top: 225px;
+        }
+        #shoesReset{
+        	z-index: 999;
+        	text-align: center;
+        	border: 1px solid black;
+        	width: 10px;
+        	height: 18px; 
+        	position: absolute;
+        	right:300px;
+        	top: 375px;
+        }
+        #accReset{
+        	z-index: 999;
+        	text-align: center;
+        	border: 1px solid black;
+        	width: 10px;
+        	height: 18px; 
+        	position: absolute;
+        	right:100px;
+        	top: 75px;
         }
         .div{
             border: 1px solid black;
@@ -90,13 +135,13 @@
         
 
         article {
-            width: 900px;
+        	margin : 0 auto;
+            width: 1000px;
             border: 1px solid black;
-            padding: 5px;
-            padding-left: 80px;
-            margin-top: 5px;
             height: 600px;
             position: relative;
+            padding-left: 50px;
+            
         }
 #modal.modal-overlay {
             width: 100%;
@@ -184,6 +229,7 @@
         	right: 5px;
         	top:5px;
         }
+
 </style>
 <main>
 	</header>
@@ -204,15 +250,22 @@
 
 			</ul>
 		</div>
+			<span id="topReset" class="divReset">x</span>
+			<span id="accReset" class="divReset">x</span>
+			<span id="bottomReset" class="divReset">x</span>
+			<span id="shoesReset" class="divReset">x</span>
 			<div id="canvas">
 				<div id="div1" class="canvasDiv" ondragover="allowDrop(event)">
-					<span id="topReset" class="divReset">x</span>
+				</div>
+				<div id="div4" class="canvasDiv" ondragover="allowDrop(event)">
 				</div>
 				<div id="div2" class="canvasDiv" ondragover="allowDrop(event)">
-					<span id="bottomReset" class="divReset">x</span>
+				</div>
+				<div id="div4" class="canvasDiv" ondragover="allowDrop(event)">
 				</div>
 				<div id="div3" class="canvasDiv" ondragover="allowDrop(event)">
-					<span id="shoesReset" class="divReset">x</span>
+				</div>
+				<div id="div4" class="canvasDiv" ondragover="allowDrop(event)">
 				</div>
 			</div>
 		</article>
@@ -241,7 +294,6 @@
                 if (imgCategory === divNum) {
                     div.setAttribute('ondrop', "drop(event)")
                     div.classList.add("target");
-                    // console.log(document.querySelector(".div"));
                 }
                 else {
                     div.classList.remove("target");
@@ -277,7 +329,16 @@
 
             }
         });
+		if([...document.querySelectorAll("#canvas img")].length > 0){
+        	document.getElementById("canvas").style.background = "url()";
+			
+		}
+		if([...document.querySelectorAll("#canvas img")].length == 0){
+		document.getElementById("canvas").style.background = "url(<%=request.getContextPath()%>/upload/codibook/마네킹.png)";
+			
+		}
 
+        
         //드랍된 이미지 태그,data 다 가져옴
 
         [...div].forEach((div) => {
@@ -296,7 +357,6 @@
             console.log(arr);
             
             //document.querySelector()
-			
         }
     };
     
@@ -331,24 +391,17 @@
     		
     		 img.remove();
  			productLoad(categoryNum);
+ 			arr = [];
              return;
     	});
     	
-        /* [...document.querySelectorAll("#canvas .canvasDiv")].forEach((div) => {
-                [...div.childNodes].forEach((img) => {
-                	const categoryNum = img.dataset.categoryCode;
-                	
-                    img.remove();
-        			productLoad(categoryNum);
-                    return;
-                });
-
-        }); */
 };
 	//상의 리셋
 	const topReset = document.querySelector("#topReset");
 	topReset.addEventListener('click', () => {
+		if(document.querySelector("#div1 img") == null) return;
 		document.querySelector("#div1 img").remove();
+		arr.pop();
 		productLoad(1);
     }); 
 	
@@ -356,6 +409,7 @@
 	const bottomReset = document.querySelector("#bottomReset");
 	bottomReset.addEventListener('click', () => {
 		document.querySelector("#div2 img").remove();
+		arr.pop();
 		productLoad(2);
     }); 
 	
@@ -363,9 +417,17 @@
 	const shoesReset = document.querySelector("#shoesReset");
 	shoesReset.addEventListener('click', () => {
 		document.querySelector("#div3 img").remove();
+		arr.pop();
 		productLoad(3);
     }); 
-
+	
+	//악세 리셋
+	const accReset = document.querySelector("#accReset");
+		accReset.addEventListener('click', () => {
+		document.querySelector("#div4 img").remove();
+		arr.pop();
+		productLoad(4);
+    }); 
 	</script>
 </main>
 <script>
