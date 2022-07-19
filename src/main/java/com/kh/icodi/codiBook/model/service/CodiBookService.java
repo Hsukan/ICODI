@@ -26,26 +26,7 @@ public class CodiBookService {
 		close(conn);
 		return products;
 	}
-
-	public int insertCodi(String writer, String codiArr, Map<String, Object> param) {
-		Connection conn = getConnection();
-		int result = 0;
-		int codiBoardNo = 0;
-		try {
-			result = codiBookDao.insertCodi(conn, writer, codiArr, param);
-			
-			codiBoardNo = codiBookDao.getLastBoardNo(conn);
-			System.out.println("codiBoardNo = " + codiBoardNo);
-			
-			
-			commit(conn);
-		} catch(Exception e) {
-			rollback(conn);
-			throw e;
-		}
-		return codiBoardNo;
-	}
-
+	
 	public int insertCodi(Map<String, Object> param) {
 		Connection conn = getConnection();
 		int result = 0;
