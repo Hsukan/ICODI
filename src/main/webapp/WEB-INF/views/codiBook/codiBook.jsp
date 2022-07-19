@@ -236,7 +236,7 @@
       
         html2canvas(document.getElementById("canvas")).then(function (canvas) {
         //이미지 저장
-        	var myImg = canvas.toDataURL('image/jpeg', 0.5);
+        	var myImg = canvas.toDataURL('image/jpeg', 1);
  			myImg = myImg.replace("data:image/jpeg;base64,", "");
  			document.querySelector("[name=imgSrc]").value = myImg;
         }).catch(function (err) {

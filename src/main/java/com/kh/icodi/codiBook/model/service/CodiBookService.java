@@ -27,12 +27,11 @@ public class CodiBookService {
 		return products;
 	}
 //memberId, useProductArr, content, isOpen, param
-	public int insertCodi(String memberId, String useProductArr, String content, String isOpen, Map<String, Object> param) {
+	public int insertCodi(String memberId, String useProductArr, String content, String isOpen, String imgSrc) {//Map<String, Object> param
 		Connection conn = getConnection();
 		int result = 0;
-		int codiBoardNo = 0;
 		try {
-			result = codiBookDao.insertCodi(conn, memberId, useProductArr, content, isOpen, param);
+			result = codiBookDao.insertCodi(conn, memberId, useProductArr, content, isOpen, imgSrc);
 			
 
 			
@@ -41,7 +40,7 @@ public class CodiBookService {
 			rollback(conn);
 			throw e;
 		}
-		return codiBoardNo;
+		return result;
 	}
 
 	public int insertCodi(Map<String, Object> param) {
