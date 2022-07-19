@@ -8,36 +8,96 @@
 <script src="https://unpkg.com/html2canvas@1.4.1/dist/html2canvas.js"></script>
 
 <style>
-.item img {
-	width: 110px;
-	height: 110px;
-}
+        .item img {
+            width: 110px;
+            height: 110px;
+        }
+        .item {
+        	list-style: none;
+        	width: 111px;
+        	height: 111px;
+        	border: 1px solid black;
+        	float : left;
+        	margin: 13px;
+        	position : relative;
+        }
+        .productPrice{
+        	position: absolute;
+        	bottom: -20px;
+        }
 
-#canvas {
-	width: 360px;
-	height: 500px;
-}
+        #canvas {
+            width: 300px;
+            height: 450px;
+            float: left;
+            margin-left: 50px;
+            background-image: url(<%=request.getContextPath()%>/upload/codibook/마네킹.png);
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            border: 1px solid black;
+            text-align: center;
+        }
+        
+        .canvasDiv{
+            height: 130px;
+            padding: 10px;
+            position : relative;
 
-.canvasDiv, .div {
-	width: 350px;
-	height: 135px;
-	padding: 10px;
-	border: 1px solid black;
-}
+        }
+        .div{
+            border: 1px solid black;
+        }
 
-#container_img {
-	width: 400px;
-	height: 400px;
-}
+        #container_img {
+            width: 500px;
+            height: 450px;
+            float: left;
+            padding:5px;
+            margin: 5px 5px 5px 5px;
+        }
 
-.target {
-	border: 1px solid red;
-}
+        #container_img img {
+            display: block;
+            float: left;
+        }
 
-.img {
-	width: 100px;
-	height: 100px;
-}
+        .target {
+           border: 1px solid red;
+        }
+
+        .img {
+            width: 125px;
+            height: 125px;
+        }
+
+        .codiProductArea-wrap {
+            height: 50px;
+            position: relative;
+            right: 30px;
+        }
+
+        #category {
+            list-style: none;
+
+        }
+
+        #category li {
+            float: left;
+            margin: 0 20px 0 0;
+            padding: 5px 15px;
+            border: 1px solid black;
+        }
+        
+
+        article {
+            width: 900px;
+            border: 1px solid black;
+            padding: 5px;
+            padding-left: 80px;
+            margin-top: 5px;
+            height: 600px;
+            position: relative;
+        }
 #modal.modal-overlay {
             width: 100%;
             height: 100%;
@@ -118,34 +178,44 @@
         #btnModal{
         	display: none;
         }
+        
+        .divReset{
+        	position: absolute;
+        	right: 5px;
+        	top:5px;
+        }
 </style>
 <main>
-	<section>
-		<article>
-			<div class="codiProductArea-wrap">
+	</header>
+        <article>
+            <div class="codiProductArea-wrap">
 				<ul id="category">
-					<li value="<%= CategoryNo.stringOf("TOP") %>">TOP</li>
-					<li value="<%= CategoryNo.stringOf("BOTTOM") %>">BOTTOM</li>
-					<li value="<%= CategoryNo.stringOf("SHOES") %>">SHOES</li>
-					<li value="<%= CategoryNo.stringOf("ACC") %>">ACC</li>
+					<li value="<%= CategoryNo.stringOf("TOP") %>" id="top">TOP</li>
+					<li value="<%= CategoryNo.stringOf("BOTTOM") %>" id="bottom">BOTTOM</li>
+					<li value="<%= CategoryNo.stringOf("SHOES") %>" id="shoes">SHOES</li>
+					<li value="<%= CategoryNo.stringOf("ACC") %>" id="acc">ACC</li>
 				</ul>
+				<input type="button" value="저장" id="btnSave" />
+				<button type="button" id="btnModal" ></button>
+                <input type="button" id="btn_reset" value="Reset" onclick="reset();"></button>
 			</div>
-		</article>
-			<div id="canvas">
-				<div id="div1" class="canvasDiv" ondragover="allowDrop(event)"></div>
-				<div id="div2" class="canvasDiv" ondragover="allowDrop(event)"></div>
-				<div id="div3" class="canvasDiv" ondragover="allowDrop(event)"></div>
-			</div>
-			<input type="button" value="저장" id="btnSave"/>
-			<button type="button" id="btnModal" ></button>
-			<input type="button" id="btn_reset" value="Reset" onclick="reset();"></button>
-		<div id="container_img" class="div" ondragover="allowDrop(event)" ondrop="drop(event)">
+		<div id="container_img" class="div">
 			<ul>
 
 			</ul>
 		</div>
-		</button>
-
+			<div id="canvas">
+				<div id="div1" class="canvasDiv" ondragover="allowDrop(event)">
+					<span id="topReset" class="divReset">x</span>
+				</div>
+				<div id="div2" class="canvasDiv" ondragover="allowDrop(event)">
+					<span id="bottomReset" class="divReset">x</span>
+				</div>
+				<div id="div3" class="canvasDiv" ondragover="allowDrop(event)">
+					<span id="shoesReset" class="divReset">x</span>
+				</div>
+			</div>
+		</article>
 	</section>
 	<script>
 	const arr = [];
@@ -186,7 +256,8 @@
     function drop(ev) {
         ev.preventDefault();
         var data = ev.dataTransfer.getData("text");
-        
+        const divNumber = ev.target.id.charAt(ev.target.id.length - 1);
+
         const imgNum = ev.target.id.charAt(ev.target.id.length - 1);
         // console.log(imgNum);
         const div = document.getElementsByClassName("canvasDiv");
@@ -221,8 +292,11 @@
                     arr.splice(i, 1);
                 }
             }
+            //ev.target.innerHTML = " ";
             console.log(arr);
-
+            
+            //document.querySelector()
+			
         }
     };
     
@@ -252,7 +326,15 @@
 
     const reset = () => {
 
-        [...document.querySelectorAll("#canvas div")].forEach((div) => {
+    	[...document.querySelectorAll("#canvas img")].forEach((img) => {
+    		const categoryNum = img.dataset.categoryCode;
+    		
+    		 img.remove();
+ 			productLoad(categoryNum);
+             return;
+    	});
+    	
+        /* [...document.querySelectorAll("#canvas .canvasDiv")].forEach((div) => {
                 [...div.childNodes].forEach((img) => {
                 	const categoryNum = img.dataset.categoryCode;
                 	
@@ -261,8 +343,29 @@
                     return;
                 });
 
-        });
+        }); */
 };
+	//상의 리셋
+	const topReset = document.querySelector("#topReset");
+	topReset.addEventListener('click', () => {
+		document.querySelector("#div1 img").remove();
+		productLoad(1);
+    }); 
+	
+	//하의 리셋
+	const bottomReset = document.querySelector("#bottomReset");
+	bottomReset.addEventListener('click', () => {
+		document.querySelector("#div2 img").remove();
+		productLoad(2);
+    }); 
+	
+	//신발 리셋
+	const shoesReset = document.querySelector("#shoesReset");
+	shoesReset.addEventListener('click', () => {
+		document.querySelector("#div3 img").remove();
+		productLoad(3);
+    }); 
+
 	</script>
 </main>
 <script>
