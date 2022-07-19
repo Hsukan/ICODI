@@ -105,11 +105,11 @@ public class CodiBookDao {
 		return product;
 	}
 
-	// insertCodiBook = insert into codi_board values(seq_codi_board_no.nextval, ?, ?, default, ?, ?, default, ?, ?, ?, ?)
 	public int insertCodi(Connection conn, Map<String, Object> param) {
 		PreparedStatement pstmt = null;
 		int result = 0;
 		String sql = prop.getProperty("insertCodiBook");
+		//insert into long_test values(seq_codi_board_no.nextval, ?, ?, 0, ?, ?, default, ?)
 
 		try {
 			pstmt = conn.prepareStatement(sql);
@@ -117,10 +117,7 @@ public class CodiBookDao {
 			pstmt.setString(2, (String)param.get("content"));
 			pstmt.setString(3, ((IsOpen)param.get("isOpen")).name());
 			pstmt.setString(4, (String)param.get("useProductArr"));
-			pstmt.setString(5, (String)param.get("img1"));
-			pstmt.setString(6, (String)param.get("img2"));
-			pstmt.setString(7, (String)param.get("img3"));
-			pstmt.setString(8, (String)param.get("img4"));
+			pstmt.setString(5, (String)param.get("imgSrc"));
 			result = pstmt.executeUpdate();
 		} catch (SQLException e) {
 			throw new CodiBookException("코디만들기 생성 오류", e);
