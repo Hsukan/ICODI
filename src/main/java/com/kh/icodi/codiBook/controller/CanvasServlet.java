@@ -27,13 +27,12 @@ public class CanvasServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
+			request.setCharacterEncoding("utf-8");
 			String imgSrc = request.getParameter("imgSrc");
-			String writer = request.getParameter("memberId");
-			String codiArr = request.getParameter("codiArr");
-			
-			//System.out.println("writer@canvas = " + writer);
-			//System.out.println("codiArr@canvas = " + codiArr);
-			//System.out.println("imgSrc = " + imgSrc);
+			String memberId = request.getParameter("memberId");
+			String useProductArr = request.getParameter("useProductArr");
+			String content = request.getParameter("content");
+			String isOpen = request.getParameter("isOpen");
 			
 			long length = imgSrc.length();
 			System.out.println("imgSrc length = " + length);
@@ -64,10 +63,10 @@ public class CanvasServlet extends HttpServlet {
 			param.put("img2", img2);
 			param.put("img3", img3);
 			param.put("img4", img4);
-			int result = codiBookService.insertCodi(writer, codiArr, param);
-			System.out.println("result = " + result);
-			
-			request.setAttribute("codiBoardNo", result);
+//			int result = codiBookService.insertCodi(writer, codiArr, param);
+//			System.out.println("result = " + result);
+//			
+//			request.setAttribute("codiBoardNo", result);
 //			request.setAttribute("imgSrc", imgSrc);
 //			request.getRequestDispatcher("/WEB-INF/views/codiBook/codi.jsp")
 //			.forward(request, response);
