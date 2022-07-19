@@ -232,4 +232,19 @@ public class BoardService {
 		
 		return result;
 	}
+
+	public List<BoardExt> findLike(Map<String, Object> param) {
+		Connection conn = getConnection();
+		List<BoardExt> list = boardDao.findLike(conn, param);
+		close(conn);
+		return list;
+	}
+
+	public int getTotalContentLike(Map<String, Object> param) {
+		Connection conn = getConnection();
+		int totalContent = boardDao.getTotalContentLike(conn, param);
+		close(conn);
+		return totalContent;
+	}
+
 }

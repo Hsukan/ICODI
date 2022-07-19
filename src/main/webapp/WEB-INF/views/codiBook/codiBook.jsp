@@ -337,8 +337,6 @@
 		document.getElementById("canvas").style.background = "url(<%=request.getContextPath()%>/upload/codibook/마네킹.png)";
 			
 		}
-
-        
         //드랍된 이미지 태그,data 다 가져옴
 
         [...div].forEach((div) => {
@@ -396,6 +394,7 @@
     	});
     	
 };
+	
 	//상의 리셋
 	const topReset = document.querySelector("#topReset");
 	topReset.addEventListener('click', () => {
