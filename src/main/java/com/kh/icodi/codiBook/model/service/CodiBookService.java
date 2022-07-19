@@ -40,11 +40,5 @@ public class CodiBookService {
 		return result;
 	}
 
-	public List<String> find1(String writer) {
-		Connection conn = getConnection();
-		List<String> imgSrc = codiBookDao.find1(conn, writer);
-		
-		close(conn);
-		return imgSrc;
-	}
+	
 }
