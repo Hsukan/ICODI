@@ -362,4 +362,34 @@ public class MemberDao {
 		return result;
 	}
 
+
+	public int checkId(Connection conn, String memberId) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		int result = 0;
+		String sql = prop.getProperty("findById");	
+		// select * from member where member_id = ?
+	
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, memberId);
+			
+			rset = pstmt.executeQuery();
+			
+			if(rset.next() || memberId.equals("")) {
+				result = 0;
+			} else {
+				result = 1;
+			}
+			
+		} catch (SQLException e) {
+			throw new MemberException("회원 중복 검사 오류!", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		
+		return result;
+	}
+
 }
