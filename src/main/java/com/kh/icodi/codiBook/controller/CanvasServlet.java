@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.kh.icodi.codiBook.model.dto.IsOpen;
 import com.kh.icodi.codiBook.model.service.CodiBookService;
 
 /**
@@ -32,10 +33,9 @@ public class CanvasServlet extends HttpServlet {
 			String memberId = request.getParameter("memberId");
 			String useProductArr = request.getParameter("useProductArr");
 			String content = request.getParameter("content");
-			String isOpen = request.getParameter("isOpen");
-//			if(isOpen == null) {
-//				isOpen = "Y";
-//			}
+			String _isOpen = request.getParameter("isOpen");
+			IsOpen isOpen = _isOpen == null ? IsOpen.Y : IsOpen.N;
+			
 			
 			long length = imgSrc.length();
 			
@@ -52,13 +52,17 @@ public class CanvasServlet extends HttpServlet {
 			String img3 = image2.substring(0, middle2);
 			String img4 = image2.substring(middle2);
 			
-			
 			Map<String, Object> param = new HashMap<>();
 			param.put("img1", img1);
 			param.put("img2", img2);
 			param.put("img3", img3);
 			param.put("img4", img4);
-			int result = codiBookService.insertCodi(memberId, useProductArr, content, isOpen, param);
+			param.put("memberId", memberId);
+			param.put("useProductArr", useProductArr);
+			param.put("content", content);
+			param.put("isOpen", isOpen);
+
+			int result = codiBookService.insertCodi(param);
 			
 			response.sendRedirect(request.getContextPath() + "/codibook/create");
 		} catch(Exception e) {
@@ -66,5 +70,4 @@ public class CanvasServlet extends HttpServlet {
 			throw e;
 		}
 	}
-
 }
