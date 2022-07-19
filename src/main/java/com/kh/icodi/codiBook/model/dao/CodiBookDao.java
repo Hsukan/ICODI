@@ -105,11 +105,11 @@ public class CodiBookDao {
 		return product;
 	}
 
-	// insertCodiBook = insert into codi_board values(seq_codi_board_no.nextval, ?, ?, default, ?, ?, default, ?, ?, ?, ?)
 	public int insertCodi(Connection conn, Map<String, Object> param) {
 		PreparedStatement pstmt = null;
 		int result = 0;
 		String sql = prop.getProperty("insertCodiBook");
+		//insert into long_test values(seq_codi_board_no.nextval, ?, ?, 0, ?, ?, default, ?)
 
 		try {
 			pstmt = conn.prepareStatement(sql);
@@ -117,10 +117,7 @@ public class CodiBookDao {
 			pstmt.setString(2, (String)param.get("content"));
 			pstmt.setString(3, ((IsOpen)param.get("isOpen")).name());
 			pstmt.setString(4, (String)param.get("useProductArr"));
-			pstmt.setString(5, (String)param.get("img1"));
-			pstmt.setString(6, (String)param.get("img2"));
-			pstmt.setString(7, (String)param.get("img3"));
-			pstmt.setString(8, (String)param.get("img4"));
+			pstmt.setString(5, (String)param.get("imgSrc"));
 			result = pstmt.executeUpdate();
 		} catch (SQLException e) {
 			throw new CodiBookException("코디만들기 생성 오류", e);
@@ -129,63 +126,5 @@ public class CodiBookDao {
 		}
 		return result;
 	}
-	
-	public List<String> find1(Connection conn, String writer) {
-		PreparedStatement pstmt = null;
-		ResultSet rset = null;
-		List<String> imgSrc = new ArrayList<>();
-		String str = null;
-		String sql = prop.getProperty("findAll");
-		
-		try {
-			//select * from testvarchar where member = ?
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, writer);
-			
-			rset = pstmt.executeQuery();
-			
-			while(rset.next()) {
-				
-				String str1 = rset.getString("str1");
-				String str2 = rset.getString("str2");
-				String str3 = rset.getString("str3");
-				String str4 = rset.getString("str4");
-				str = str1 + str2 + str3 + str4;
-				System.out.println("str = " + str);
-				imgSrc.add(str);
-				
-			}
-		} 
-		catch (SQLException e) {
-			e.printStackTrace();
-		}finally {
-			close(rset);
-			close(pstmt);
-		}
-		
-		return imgSrc;
-	}
 
-	public int getLastBoardNo(Connection conn) {
-		PreparedStatement pstmt = null;
-		ResultSet rset = null;
-		int boardNo = 0;
-		String sql = prop.getProperty("getLastBoardNo");
-		
-		try {
-			pstmt = conn.prepareStatement(sql);
-			rset = pstmt.executeQuery();
-			if(rset.next()) {
-				boardNo = rset.getInt(1); // 첫번째 컬럼값
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}finally {
-			close(rset);
-			close(pstmt);
-		}
-		
-		
-		return boardNo;
-	}
 }
