@@ -246,5 +246,20 @@ public class BoardService {
 		close(conn);
 		return totalContent;
 	}
+	
+	public List<Board> findAllByMe(Map<String, Object> param) {
+		Connection conn = getConnection();
+		List<Board> list = boardDao.findAllByMe(conn, param);
+		close(conn);
+		return list;
+	}
+
+	public int getTotalContentByMe(String loginMemberId) {
+		Connection conn = getConnection();
+		int totalContent = boardDao.getTotalContentByMe(conn, loginMemberId);
+		close(conn);
+		System.out.println(totalContent);
+		return totalContent;
+	}
 
 }
