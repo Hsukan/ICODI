@@ -1,0 +1,65 @@
+@charset "UTF-8";
+/* 회원가입 */
+h2 {
+  text-align: center;
+  font-size: 32px;
+  font-weight: bolder;
+  color: #20B2AA;
+  margin-top: 60px;
+  margin-bottom: 30px;
+}
+table th {
+  text-align: left;
+  padding-right: 20px;
+  font-size: 15px;
+}
+sup {
+  color: lightcoral;
+  padding-left: 4px;
+  margin-top : 10px;
+}
+input {
+  width: 280px;
+  height: 35px;
+  border: solid 1px lightgray;
+  box-shadow: inset 0px 0.5px 0.5px lightgray;
+  margin: 5px;
+  border-radius: 6px;
+}
+input:focus {
+  outline-color: #20b2ab77;
+}
+span {
+  font-size: 13px;
+  padding-left: 4px;
+}
+select {
+  width: 65px;
+  height: 40px;
+  border: solid 1px lightgray;
+  box-shadow: inset 0px 0.5px 0.5px lightgray;
+  margin: 5px;
+  border-radius: 6px;
+}
+input[type=submit] {
+  background-color: #20B2AA;
+  border: unset;
+  color: white;
+  font-size: 16px;
+  font-weight: bolder;
+  width: 150px; 
+  height: 45px;
+  margin-top: 30px;
+}
+div#form-container,#submit-container{
+  display: flex;
+  justify-content: center;
+}
+input#phone2,#phone3 {
+  width: 60px;
+}
+input#researchButton {
+  width: 120px; 
+  height: 37px; 
+  margin-top: 2px;
+}

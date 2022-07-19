@@ -59,7 +59,10 @@ public class MemberEnrollServlet extends HttpServlet {
 			int result = memberService.insertMember(member);
 			System.out.println("result@MemberEnrollServlet = " + result);
 			
+			
 			HttpSession session = request.getSession();
+			
+			session.setAttribute("msg", "회원가입을 완료했습니다.");
 			response.sendRedirect(request.getContextPath() + "/member/memberLogin");
 		}
 		catch (Exception e) {

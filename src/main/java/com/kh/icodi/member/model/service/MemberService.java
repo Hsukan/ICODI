@@ -150,5 +150,13 @@ public class MemberService {
 		}
 		return result;
 	}
+
+	public int checkId(String memberId) {
+		Connection conn = getConnection();
+		int result = memberDao.checkId(conn, memberId);
+		close(conn);
+		return result;
+	}
+
 	
 }
