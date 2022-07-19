@@ -25,7 +25,6 @@
 <title>ICODI</title>
 <link rel="stylesheet"
 	href="<%=request.getContextPath() %>/css/style.css" />
-<link rel="stylesheet" href="<%= request.getContextPath() %>/css/codiBoard.css" />
 <script src="<%= request.getContextPath() %>/js/jquery-3.6.0.js"></script>
 <script>
 window.onload = () => {
