@@ -49,7 +49,7 @@ const getPage = (cPage) => {
 			const content = document.querySelector(".content-wrap");
 			
 			response.forEach((codi) => {
-				console.log(codi);
+				//console.log(codi);
 				const {codiBoardNo, memberId, codiBoardContent, likeCount, useProduct, regDate, likedMember, filename} = codi;
 
 				const list = `

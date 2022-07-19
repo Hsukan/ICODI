@@ -87,6 +87,7 @@ create table alarm(
 create sequence seq_alarm_no;
 
 select * from alarm;
+--delete from alarm;
 --insert into alarm (no,member_id,alarm_date,alarm_message) values(0,'eedongha1',default,'ㅎㅇㅎㅇ');
 --insert into alarm (no,member_id,alarm_date,alarm_message) values(seq_alarm_no.nextval,'eedongha1',default,'ㅎㅇㅎㅇ2');
 --select alarm_message, alarm_date from alarm where member_id = 'eedongha1';

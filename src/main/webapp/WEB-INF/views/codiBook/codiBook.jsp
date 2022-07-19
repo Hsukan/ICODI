@@ -6,6 +6,7 @@
 <script
 	src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
 <script src="https://unpkg.com/html2canvas@1.4.1/dist/html2canvas.js"></script>
+
 <style>
 .item img {
 	width: 110px;
@@ -37,22 +38,90 @@
 	width: 100px;
 	height: 100px;
 }
+#modal.modal-overlay {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            backdrop-filter: brightness(0.5);
+            /* border: 1px solid rgba(255, 255, 255, 0.18); */
+        }
+        #modal.modal-overlay1 {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            backdrop-filter: brightness(0.5);
+            /* border: 1px solid rgba(255, 255, 255, 0.18); */
+        }
+        #modal .modal-window {
+            background: rgba( 255, 255, 255 );
+            border-radius: 4px;
+            /* border: 1px solid rgba( 255, 255, 255, 0.18 ); */
+            width: 400px;
+            height: 400px;
+            position: relative;
+            top: 0px;
+            padding: 10px;   
+        }
+        #modal .modal-window1 {
+            background: rgba( 255, 255, 255 );
+            /* backdrop-filter: blur( 13.5px );
+            -webkit-backdrop-filter: blur( 13.5px ); */
+            border-radius: 4px;
+            /* border: 1px solid rgba( 255, 255, 255, 0.18 ); */
+            width: 200px;
+            height: 200px;
+            position: relative;
+            top: 356px;
+            padding: 10px;
+        }
+        #modal .title {
+            padding-top: 10px;
+            padding-left: 10px;
+            display: inline;
+            color: gray;
+            
+        }
+        #modal .title h4 {
+            display: inline;
+        }
+        #modal .close-area {
+            display: inline;
+            float: right;
+            padding-right: 10px;
+            cursor: pointer;
+            /* text-shadow: 1px 1px 2px gray; */
+            color: #000;
+        }
+        
+        #modal .content {
+            margin-top: 20px;
+            padding: 0px 10px;
+            text-shadow: 1px 1px 2px gray;
+            color: white;
+        }
+        #btnModal{
+        	display: none;
+        }
 </style>
 <main>
 	<section>
 		<article>
-			<div class="codiArea-wrap">
-				<div class="codiAreaMenu">
-					<div id="saveBtn">저장</div>
-				</div>
-				<div class="canvas-wrap"></div>
-			</div>
-		</article>
-		<article>
-		<form action="<%= request.getContextPath()%>/codi/myCodi">
-		<input type="hidden" name="memberId" value="<%= loginMember.getMemberId() %>" />
-		<button>내코디보기</button>
-		</form>
 			<div class="codiProductArea-wrap">
 				<ul id="category">
 					<li value="<%= CategoryNo.stringOf("TOP") %>">TOP</li>
@@ -68,6 +137,8 @@
 				<div id="div3" class="canvasDiv" ondragover="allowDrop(event)"></div>
 			</div>
 			<input type="button" value="저장" id="btnSave"/>
+			<button type="button" id="btnModal" ></button>
+			<input type="button" id="btn_reset" value="Reset" onclick="reset();"></button>
 		<div id="container_img" class="div" ondragover="allowDrop(event)" ondrop="drop(event)">
 			<ul>
 
@@ -153,62 +224,54 @@
             console.log(arr);
 
         }
-
-        
-
-    }
+    };
+    
     btnSave.onclick = (e) => {
     	partShot();
+    	document.querySelector("#btnModal").click();
     };
     
     function partShot() {
        //특정부분 스크린샷
-        html2canvas(document.getElementById("canvas"))
-        //id container 부분만 스크린샷
-         .then(function (canvas) {
-
+      
+        html2canvas(document.getElementById("canvas")).then(function (canvas) {
         //이미지 저장
-        	 var myImg = canvas.toDataURL('image/jpeg', 0.5);
+        	var myImg = canvas.toDataURL('image/jpeg', 1);
  			myImg = myImg.replace("data:image/jpeg;base64,", "");
-        	//console.log(myImg);
-        	
-        	$.ajax({
-        		type : "POST",
-				data : {
-					"imgSrc" : myImg,
-					"memberId" : "<%= loginMember.getMemberId() %>",
-					"codiArr" : arr2
-				},
-				dataType : "text",
-				url : '<%= request.getContextPath() %>/canvas',
-				success(data) {
-					console.log("이미지 저장 성공!");
-				},
-				error : function(a, b, c) {
-					alert("error");
-				}
-        	});
-
-        	}).catch(function (err) {
-       			 console.log(err);
-        	}); 
-
+ 			document.querySelector("[name=imgSrc]").value = myImg;
+        }).catch(function (err) {
+       		console.log(err);
+        }); 
         const codiArr = new Set(arr);
-        console.log(codiArr);
-        
-		const arr2 = [...codiArr].join(", ");
-		  
+		const useProductArr = [...codiArr].join(", ");		
+		const memberId = "<%= loginMember.getMemberId() %>";
+
+		document.querySelector("[name=memberId]").value = memberId;
+		document.querySelector("[name=useProductArr]").value = useProductArr;
     };
 
+    const reset = () => {
+
+        [...document.querySelectorAll("#canvas div")].forEach((div) => {
+                [...div.childNodes].forEach((img) => {
+                	const categoryNum = img.dataset.categoryCode;
+                	
+                    img.remove();
+        			productLoad(categoryNum);
+                    return;
+                });
+
+        });
+};
 	</script>
 </main>
 <script>
-	document.querySelector("#category").addEventListener('click', (e) => {
+	const productLoad = (target) => {
 		$.ajax({
 			url : '<%= request.getContextPath()%>/codibook/create',
 			method : 'POST',
 			dataType : 'json',
-			data : {categoryNo : e.target.value},
+			data : {categoryNo : target},
 			success(products) {
 				const ul = document.querySelector("#container_img ul");
 				ul.innerHTML = '';
@@ -228,7 +291,7 @@
 								<img src="<%= request.getContextPath() %>/upload/admin/\${codiRenamedFilename}"
 								id="\${productCode}" class="img" draggable="true" ondragstart="drag(event)"
 									data-product-code="\${productCode}" data-product-price="\${productPrice}"
-										data-category-code="\${e.target.value}"/>
+										data-category-code="\${target}"/>
 								<div class="productPrice">\${productPrice}원</div>
 							</li>			
 							`;
@@ -238,10 +301,69 @@
 			},
 			error : console.log
 		});
+		
+	}
+
+	document.querySelector("#category").addEventListener('click', (e) => {
+		const target = e.target.value;
+		console.log(target);
+		productLoad(target);
 	});
 	
+	</script>
+<form action="<%= request.getContextPath() %>/canvas" 
+	name="codiBoardInsert"
+	method="POST">
+  <div id="modal" class="modal-overlay">
+      <div class="modal-window">
+          <div class="title">
+              <h4>코디 저장하기</h4>
+          </div>
+          <div class="close-area">X</div>
+          <div class="content">
+          	<textarea id="content" cols="60" rows="10" name="content" placeholder="생성한 코디에 대한 간단한 설명을 적어주세요."></textarea>
+ 			<input type="submit" value="저장" />
+          	<input type="checkbox" name="isOpen" id="isOpen" value="N"/>
+          	<label for="isOpen">비공개 저장</label>
+          	<input type="hidden" name="imgSrc" />
+          	<input type="hidden" name="memberId" />
+          	<input type="hidden" name="useProductArr" />
+          </div>
+      </div>
+  </div>
+	</form>
+	<script>
     
-    
+	const modal = document.getElementById("modal")
+    function modalOn() {
+        modal.style.display = "flex";
+    }
+    function isModalOn() {
+        return modal.style.display === "flex"
+    }
+    function modalOff() {
+        modal.style.display = "none"
+    }
+    const btnModal = document.getElementById("btnModal")
+    btnModal.addEventListener("click", e => {
+      modalOn()
+      const momodal = document.getElementById("momodal")
+    })
+    const closeBtn = modal.querySelector(".close-area")
+    closeBtn.addEventListener("click", e => {
+        modalOff()
+    })
+    modal.addEventListener("click", e => {
+        const evTarget = e.target
+        if(evTarget.classList.contains("modal-overlay")) {
+            modalOff()
+        }
+    })
+    window.addEventListener("keyup", e => {
+        if(isModalOn() && e.key === "Escape") {
+            modalOff()
+        }
+    })
 </script>
 </body>
 </html>

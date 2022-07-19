@@ -70,6 +70,25 @@ public class CodiBoardService {
 		}
 		return likeCount;
 	}
+
+	public int updateContent(String content, String isOpen) {
+		Connection conn = getConnection();
+		int result = 0;
+		try {
+			
+			int codiBoardNo = codiBoardDao.getLastBoardNo(conn);
+			System.out.println("coidBoardNo = " + codiBoardNo);
+			
+			result = codiBoardDao.updateContent(codiBoardNo, content, isOpen, conn);
+			commit(conn);
+		} catch (Exception e) {
+			rollback(conn);
+			throw e; // controller에 예외던짐.
+		} finally {
+			close(conn);
+		}
+		return result;
+	}
 	
 	
 }

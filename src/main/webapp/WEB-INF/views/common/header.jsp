@@ -46,7 +46,7 @@ window.onload = () => {
             <div id="header_of_header">
                 <div class="btn_wrapper_right">
                     <a class="create btn" href="<%= request.getContextPath() %>/codibook/create">· 코디 만들기</a>
-                    <a class="cscenter btn" href="/cs_center">· 고객센터</a>
+                   <a class="cscenter btn" href="<%=request.getContextPath() %>/cs_center">· 고객센터</a>
                 </div>
             </div>
         </div>
@@ -60,13 +60,14 @@ window.onload = () => {
                 <a href="<%= request.getContextPath()%>/member/memberLogin">LOGIN</a>
                 <% } else {%>
 				<a href="#"><%= loginMember.getMemberId() %>님, 환영합니다.</a> 
-				<form action="<%=request.getContextPath()%>/alarm">
+				<a href="<%= request.getContextPath()%>/member/memberLogout">LOGOUT</a>
+				<form action="<%=request.getContextPath()%>/alarm" id="header_alert">
 					<input type="hidden" name="alarmMemberId" value="<%=loginMember.getMemberId() %>" />
 					<button id="btn-alarm"><i id="notification" class="fa-solid fa-bell"></i></button>
 				</form>         
-				<a href="<%= request.getContextPath()%>/member/memberLogout">LOGOUT</a>
                 <% } %>
             </div>
+            
             <form class="search_wrapper hide_for_mobile" action="/search/">
                 <input class="search" type="text" placeholder="검색어를 입력하세요" value="">
             </form>

@@ -1,7 +1,6 @@
 package com.kh.icodi.codiBoard.model.dao;
 
 import static com.kh.icodi.common.JdbcTemplate.close;
-
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
@@ -180,20 +179,58 @@ public class CodiBoardDao {
 
 	private CodiBoardExt handleCodiBoardResultSet(ResultSet rset) throws SQLException {
 		CodiBoardExt codiBoard = new CodiBoardExt();
-		String file;
 		codiBoard.setCodiBoardNo(rset.getInt("codi_board_no"));
 		codiBoard.setMemberId(rset.getString("member_id"));
 		codiBoard.setCodiBoardContent(rset.getString("codi_board_content"));
 		codiBoard.setLikeCount(rset.getInt("like_count"));
-		String file1 = rset.getString("filename_1");
-		String file2 = rset.getString("filename_2");
-		String file3 = rset.getString("filename_3");
-		String file4 = rset.getString("filename_4");
-		file = file1 + file2 + file3 + file4;
-		codiBoard.setFilename(file);
+		codiBoard.setFilename(rset.getString("filename"));
 		codiBoard.setIsOpen(rset.getString("is_open"));
 		codiBoard.setUseProduct(rset.getString("use_product"));
 		codiBoard.setRegDate(rset.getDate("reg_date"));
 		return codiBoard;
+	}
+
+	public int getLastBoardNo(Connection conn) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		int boardNo = 0;
+		String sql = prop.getProperty("getLastBoardNo");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			rset = pstmt.executeQuery();
+			if(rset.next()) {
+				boardNo = rset.getInt(1); // 첫번째 컬럼값
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close(rset);
+			close(pstmt);
+		}
+		
+		
+		return boardNo;
+	}
+
+	public int updateContent(int codiBoardNo, String content, String isOpen, Connection conn) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String sql = prop.getProperty("updateBoard");
+		//update codi_board set codi_board_content = ?, is_open = ? where codi_board_no = ?
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, content);
+			pstmt.setString(2, isOpen);
+			pstmt.setInt(3, codiBoardNo);
+			
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close(pstmt);
+		}
+		
+		return result;
 	}
 }
