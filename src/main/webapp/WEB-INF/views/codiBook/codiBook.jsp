@@ -18,7 +18,12 @@
         	height: 111px;
         	border: 1px solid black;
         	float : left;
-        	
+        	margin: 13px;
+        	position : relative;
+        }
+        .productPrice{
+        	position: absolute;
+        	bottom: -20px;
         }
 
         #canvas {
@@ -36,7 +41,8 @@
         .canvasDiv{
             height: 130px;
             padding: 10px;
-            /* border: 1px solid black; */
+            position : relative;
+
         }
         .div{
             border: 1px solid black;
@@ -172,31 +178,42 @@
         #btnModal{
         	display: none;
         }
-        #div4{width: 200px; height: 200px; border: 1px solid black;}
+        
+        .divReset{
+        	position: absolute;
+        	right: 5px;
+        	top:5px;
+        }
 </style>
 <main>
 	</header>
         <article>
             <div class="codiProductArea-wrap">
 				<ul id="category">
-					<li value="<%= CategoryNo.stringOf("TOP") %>">TOP</li>
-					<li value="<%= CategoryNo.stringOf("BOTTOM") %>">BOTTOM</li>
-					<li value="<%= CategoryNo.stringOf("SHOES") %>">SHOES</li>
-					<li value="<%= CategoryNo.stringOf("ACC") %>">ACC</li>
+					<li value="<%= CategoryNo.stringOf("TOP") %>" id="top">TOP</li>
+					<li value="<%= CategoryNo.stringOf("BOTTOM") %>" id="bottom">BOTTOM</li>
+					<li value="<%= CategoryNo.stringOf("SHOES") %>" id="shoes">SHOES</li>
+					<li value="<%= CategoryNo.stringOf("ACC") %>" id="acc">ACC</li>
 				</ul>
 				<input type="button" value="저장" id="btnSave" />
 				<button type="button" id="btnModal" ></button>
                 <input type="button" id="btn_reset" value="Reset" onclick="reset();"></button>
 			</div>
-		<div id="container_img" class="div" ondragover="allowDrop(event)" ondrop="drop(event)">
+		<div id="container_img" class="div">
 			<ul>
 
 			</ul>
 		</div>
 			<div id="canvas">
-				<div id="div1" class="canvasDiv" ondragover="allowDrop(event)"></div>
-				<div id="div2" class="canvasDiv" ondragover="allowDrop(event)"></div>
-				<div id="div3" class="canvasDiv" ondragover="allowDrop(event)"></div>
+				<div id="div1" class="canvasDiv" ondragover="allowDrop(event)">
+					<span id="topReset" class="divReset">x</span>
+				</div>
+				<div id="div2" class="canvasDiv" ondragover="allowDrop(event)">
+					<span id="bottomReset" class="divReset">x</span>
+				</div>
+				<div id="div3" class="canvasDiv" ondragover="allowDrop(event)">
+					<span id="shoesReset" class="divReset">x</span>
+				</div>
 			</div>
 		</article>
 	</section>
@@ -275,8 +292,11 @@
                     arr.splice(i, 1);
                 }
             }
+            //ev.target.innerHTML = " ";
             console.log(arr);
-	
+            
+            //document.querySelector()
+			
         }
     };
     
@@ -306,7 +326,15 @@
 
     const reset = () => {
 
-        [...document.querySelectorAll("#canvas div")].forEach((div) => {
+    	[...document.querySelectorAll("#canvas img")].forEach((img) => {
+    		const categoryNum = img.dataset.categoryCode;
+    		
+    		 img.remove();
+ 			productLoad(categoryNum);
+             return;
+    	});
+    	
+        /* [...document.querySelectorAll("#canvas .canvasDiv")].forEach((div) => {
                 [...div.childNodes].forEach((img) => {
                 	const categoryNum = img.dataset.categoryCode;
                 	
@@ -315,8 +343,29 @@
                     return;
                 });
 
-        });
+        }); */
 };
+	//상의 리셋
+	const topReset = document.querySelector("#topReset");
+	topReset.addEventListener('click', () => {
+		document.querySelector("#div1 img").remove();
+		productLoad(1);
+    }); 
+	
+	//하의 리셋
+	const bottomReset = document.querySelector("#bottomReset");
+	bottomReset.addEventListener('click', () => {
+		document.querySelector("#div2 img").remove();
+		productLoad(2);
+    }); 
+	
+	//신발 리셋
+	const shoesReset = document.querySelector("#shoesReset");
+	shoesReset.addEventListener('click', () => {
+		document.querySelector("#div3 img").remove();
+		productLoad(3);
+    }); 
+
 	</script>
 </main>
 <script>
@@ -346,9 +395,9 @@
 								id="\${productCode}" class="img" draggable="true" ondragstart="drag(event)"
 									data-product-code="\${productCode}" data-product-price="\${productPrice}"
 										data-category-code="\${target}"/>
+								<div class="productPrice">\${productPrice}원</div>
 							</li>			
 							`;
-								/* <div class="productPrice">\${productPrice}원</div> */
 						ul.insertAdjacentHTML('afterbegin', li);
 					});
 				})
