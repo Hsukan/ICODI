@@ -154,4 +154,20 @@ public class AdminService {
 		return productList;
 	}
 
+	public List<ProductExt> newProduct() {
+		Connection conn = getConnection();
+		List<ProductExt> productList = adminDao.newProduct(conn);
+		if(productList != null && !productList.isEmpty()) {
+			for(ProductExt product : productList) {
+				List<ProductAttachment> attachments = adminDao.findAttachmentByProductCode(conn, product.getProductCode());
+				if(attachments != null && !attachments.isEmpty()) {
+					for(ProductAttachment attach : attachments) {
+						product.addAttachment(attach);
+					}
+				}
+			}
+		}
+		return productList;
+	}
+
 }

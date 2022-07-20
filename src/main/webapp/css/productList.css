@@ -7,9 +7,17 @@ main {
     margin: 0;
     padding: 0;
 }
-
+a {
+	text-decoration: none;
+	color: black;
+}
 div{
 	display: block;
+}
+
+h2 {
+	text-align: center;
+	margin-bottom: 30px;
 }
 
 .productList{
@@ -21,10 +29,40 @@ ul{
     flex-direction: row;
     align-items: flex-start;
     flex-wrap: wrap;
+    height: 100%;
 }
 
 li{
-	width: 24.25%;
-	margin-right: 50px;
+	width: 20%;
+	margin : 20px 25px;
+	list-style: none;
+	cursor: pointer;
+	
+}
+Img{
+	width: 100%;
+	height: 300px;
+	object-fit: cover;
+	box-sizing: border-box;
+	vertical-align: middle;
+	border: none;
 }
 
+.product-info{
+	text-align: left;
+	margin: 0 auto;
+	padding: 0;
+	font-size: 15px;
+}
+
+a #productName{
+	font-size: 14px;
+	font-weight: bold;
+	margin-top: 5px;
+}
+a #productPrice {
+	color: #333;
+}
+.product-info {
+	cursor: pointer;
+}

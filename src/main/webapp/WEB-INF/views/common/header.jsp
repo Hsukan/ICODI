@@ -1,3 +1,4 @@
+<%@page import="com.kh.icodi.member.model.dto.MemberRole"%>
 <%@page import="com.kh.icodi.member.model.dto.Member"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
@@ -29,6 +30,11 @@
 <script src="<%= request.getContextPath() %>/js/jquery-3.6.0.js"></script>
 <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
+<style>
+	.ui-menu-item{width:308px; background-color : #fff;}
+	#ui-id-1{height: 0px;  border:1px solid black;}
+	.search-btn{width:30px; height: 30px;}
+</style>
 <script>
 window.onload = () => {
 	<% if(msg != null) { %>	
@@ -72,12 +78,14 @@ window.onload = () => {
             <form class="search_wrapper hide_for_mobile" action="<%=request.getContextPath()%>/product/productFind">
                 <input id="productAuto" class="search" type="text" placeholder="검색어를 입력하세요" value=""
                 name="searchFrm">
-                <button>검색</button>
+                <button class="search-btn" type="submit">
+ 			 	<i class="fas fa-search"></i>
+				</button>
             </form>
             <script>
             $("#productAuto").autocomplete({
                 source(request, response){
-              	  console.log(request);  //{term : 'a'} 키업이벤트
+              	  console.log(request);
               	  const {term} = request;
               	  if(!/.+/.test(term)) return;
               	  
@@ -102,7 +110,7 @@ window.onload = () => {
               	  });
                 },
                 focus(e, select){
-              	  return false; //focus가 일어나도 선택되지않음
+              	  return false;
                 }
               });
             </script>
@@ -115,7 +123,9 @@ window.onload = () => {
                 <div class="main_menu"><a href="<%= request.getContextPath() %>/product/bottoms?categoryNo=2" data-alter="bottoms">Bottoms</a></div>
                 <div class="main_menu"><a href="<%= request.getContextPath() %>/product/shoes?categoryNo=3" data-alter="shoes">Shoes</a></div>
                 <div class="main_menu"><a href="<%= request.getContextPath() %>/product/acc?categoryNo=4" data-alter="accessories">Accessories</a></div>
+                <% if(loginMember != null && loginMember.getMemberRole() == MemberRole.A){ %>
                 <div class="main_menu"><a href="<%= request.getContextPath() %>/admin/adminPage" data-alter="admin">Admin</a></div>
+                <% } %>
             </div>
         </div>
     </div>
