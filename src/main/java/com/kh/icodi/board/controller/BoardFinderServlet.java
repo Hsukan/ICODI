@@ -56,7 +56,7 @@ public class BoardFinderServlet extends HttpServlet {
 		String pagebar = IcodiMvcUtils.getPagebar(cPage, numPerPage, totalContent, url);
 		System.out.println("pagebar = " + pagebar);
 		
-		
+		request.setAttribute("searchKetword", searchKeyword);
 		request.setAttribute("list", list);
 		request.setAttribute("pagebar", pagebar);
 		request.getRequestDispatcher("/WEB-INF/views/board/boardList.jsp")
