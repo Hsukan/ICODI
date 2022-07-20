@@ -1,4 +1,4 @@
-package com.kh.icodi.codiBoard.controller;
+package com.kh.icodi.member.controller;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -17,10 +17,10 @@ import com.kh.icodi.codiBoard.model.service.CodiBoardService;
 import com.kh.icodi.member.model.dto.Member;
 
 /**
- * Servlet implementation class HotCodiMoreServlet
+ * Servlet implementation class MemberMyCodiMorePageServlet
  */
-@WebServlet("/codi/newCodiMore")
-public class NewCodiMoreServlet extends HttpServlet {
+@WebServlet("/member/memberMyCodiMore")
+public class MemberMyCodiMorePageServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private CodiBoardService codiBoardService = new CodiBoardService();
 
@@ -35,14 +35,14 @@ public class NewCodiMoreServlet extends HttpServlet {
 			int end = cPage * numPerPage;
 			Member loginMember = (Member)request.getSession().getAttribute("loginMember");
 			String memberId = loginMember != null ? loginMember.getMemberId() : null;
-					
+			
 			Map<String, Object> param = new HashMap<>();
+			param.put("memberId", memberId);
 			param.put("start", start);
 			param.put("end", end);
-			param.put("memberId", memberId);
 			
-			List<CodiBoardExt> codiBoardList = codiBoardService.findCodiBoard(param);
-
+			System.out.println("memberId = " + memberId);
+			List<CodiBoardExt> codiBoardList = codiBoardService.findCodiBoardByMe(param);
 			response.setContentType("application/json; charset=utf-8");
 			new Gson().toJson(codiBoardList, response.getWriter());
 		} catch(Exception e) {

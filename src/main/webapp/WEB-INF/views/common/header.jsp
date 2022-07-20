@@ -52,7 +52,7 @@ window.onload = () => {
         <div id="header_wrapper">
             <a href="<%= request.getContextPath()%>/"><img src="<%=request.getContextPath() %>/images/logo.png" alt="" id="logo" style="width: 200px; height: 100px; position: absolute; left:100px; bottom: -15px;"></a>
             <div class="userMenu">
-                <a href="<%= request.getContextPath()%>/member/memberMyPage">마이페이지</a>
+                <a href="<%= request.getContextPath()%>/member/memberMyCodiList">마이페이지</a>
                 <a href="#">마이쇼핑</a>
                 <a href="#">카트</a>
                 <%if (loginMember == null){ %>

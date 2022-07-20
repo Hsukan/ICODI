@@ -254,11 +254,10 @@ public class BoardService {
 		return list;
 	}
 
-	public int getTotalContentByMe(String loginMemberId) {
+	public int getTotalContentByMe(String writer) {
 		Connection conn = getConnection();
-		int totalContent = boardDao.getTotalContentByMe(conn, loginMemberId);
+		int totalContent = boardDao.getTotalContentByMe(conn, writer);
 		close(conn);
-		System.out.println(totalContent);
 		return totalContent;
 	}
 
