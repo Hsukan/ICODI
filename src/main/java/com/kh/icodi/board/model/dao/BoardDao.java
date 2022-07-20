@@ -529,14 +529,14 @@ public class BoardDao {
 		return list;
 	}
 
-	public int getTotalContentByMe(Connection conn, String loginMemberId) {
+	public int getTotalContentByMe(Connection conn, String writer) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		int totalContent = 0;
 		String sql = prop.getProperty("getTotalContentByMe");
 		try {
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, loginMemberId);
+			pstmt.setString(1, writer);
 			
 			rset = pstmt.executeQuery();
 			if(rset.next())

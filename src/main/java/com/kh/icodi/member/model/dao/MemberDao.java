@@ -294,7 +294,6 @@ public class MemberDao {
 		return result;
 	}
 
-
 	public int updateMember(Connection conn, Member member) {
 		PreparedStatement pstmt = null;
 		int result = 0;
@@ -319,7 +318,6 @@ public class MemberDao {
 		return result;
 	}
 
-
 	public int deleteMember(Connection conn, String memberId) {
 		int result = 0;
 		PreparedStatement pstmt = null;
@@ -338,7 +336,6 @@ public class MemberDao {
 		
 		return result;
 	}
-
 
 	public int updatePassword(Connection conn, String memberId, String newPassword) {
 		PreparedStatement pstmt = null;
@@ -362,7 +359,6 @@ public class MemberDao {
 		return result;
 	}
 
-
 	public int checkId(Connection conn, String memberId) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
@@ -381,15 +377,56 @@ public class MemberDao {
 			} else {
 				result = 1;
 			}
-			
 		} catch (SQLException e) {
 			throw new MemberException("회원 중복 검사 오류!", e);
 		} finally {
 			close(rset);
 			close(pstmt);
 		}
+		return result;
+	}
+	
+	// 장바구니 추가
+	// insertCart = insert into cart values (seq_cart_no.nextval, ?, ?, ?)
+	public int insertCart(Connection conn, Map<String, Object> data) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String sql = prop.getProperty("insertCart");
 		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, (String)data.get("productCode"));
+			pstmt.setString(2, (String)data.get("memberId"));
+			pstmt.setInt(3, (int)data.get("productCount"));
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new MemberException("장바구니 추가 오류!", e);
+		} finally {
+			close(pstmt);
+		}
 		return result;
 	}
 
+	// 최근 추가된 장바구니 번호 찾기
+	// findCartNoBySeq = select seq_cart_no.currval from dual
+	public int findCartNoBySeq(Connection conn) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		int cartNo = 0;
+		String sql = prop.getProperty("findCartNoBySeq");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			rset = pstmt.executeQuery();
+			if(rset.next()) {
+				cartNo = rset.getInt(1);
+			}
+		} catch (SQLException e) {
+			throw new MemberException("장바구니 번호 찾기 오류!", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		return cartNo;
+	}
 }
