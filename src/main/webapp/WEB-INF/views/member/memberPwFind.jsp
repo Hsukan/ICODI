@@ -56,6 +56,7 @@
 			return false;
 		}
 			
+		
 	
 		$.ajax({
 			url : '<%= request.getContextPath()%>/member/memberPwFind',
@@ -70,6 +71,7 @@
 				console.log("memberPw", memberPw);
 				if(memberPw !== null){
 					$(".newPw").text(newPwd);
+					
 				}
 				else{
 					alert("잘못입력하셨습니다");
