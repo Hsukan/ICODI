@@ -8,6 +8,7 @@
 <%
 	List<Board> list = (List<Board>) request.getAttribute("list"); 
 	System.out.println("list@boardList = " + list);
+	String searchKetword = (String) request.getAttribute("searchKetword");
 %>
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/css/board.css" />
@@ -26,10 +27,6 @@ div#search-container {
 }
 </style>
 <section id="board-container">
-	<% if(loginMember != null){ %>
-	<input type="button" value="글쓰기" id="btn-add"
-		onclick="location.href='<%= request.getContextPath() %>/board/boardEnroll';" />
-	<% } %>
 	<table id="tbl-board">
 		<tr id="menuHeader">
 			<th>번호</th>
@@ -39,6 +36,11 @@ div#search-container {
 			<th>작성일</th>
 			<th>조회수</th>
 		</tr>
+		
+		<% if(searchKetword != null) {%>
+			<span>'<%= searchKetword %>' 에 대한 검색 결과 입니다.</span>
+			<br /><br />
+		<% } %>
 		<% 
 			if(list != null && !list.isEmpty()){ 
 				for(Board _board : list){
@@ -69,6 +71,12 @@ div#search-container {
 		</tr>
 		<% } %>
 	</table>
+	<% if(loginMember != null){ %>
+	<br />
+	<input type="button" value="글쓰기" id="btn-add"
+		onclick="location.href='<%= request.getContextPath() %>/board/boardEnroll';" />
+	<br />
+	<% } %>
 	<br /><br />
 	<div id="search-container">
 		<select id='selSearchOption' onchange="test(this);">
