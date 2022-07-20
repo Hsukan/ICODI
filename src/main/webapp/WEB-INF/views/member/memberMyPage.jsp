@@ -19,6 +19,7 @@
 	if(phone != null){
 	phoneList = Arrays.asList(phones);
 	}
+
 %>
 <style>
     #modal.modal-overlay {
@@ -161,15 +162,15 @@
 
 <!-- 내 코디 확인 -->
 
-<span id="my-codi-selected">내 코디 확인</span>
-<form name="myBoardFrm" action="<%= request.getContextPath() %>/member/memberMyBoardList" method="GET">
+<form name="myCodiFrm" action="<%= request.getContextPath() %>/member/memberMyCodiList">
 	<input type="hidden" name="memberId" value="<%= loginMember.getMemberId() %>" />
 </form>
-<span onclick="myBoard();">내 게시글 확인</span>
+<span id="my-codi-selected" onclick="myCodi();">내 코디 확인</span>
+<form name="myBoardFrm" action="<%= request.getContextPath() %>/member/memberMyBoardList">
+	<input type="hidden" name="memberId" value="<%= loginMember.getMemberId() %>" />
+</form>
+<span id="my-board-selected" onclick="myBoard();">내 게시글 확인</span>
 
-<div id="my-codi-container">
-
-</div>
 
 
 
@@ -244,10 +245,15 @@ const deleteMember = () => {
 	if(confirm("정말로 탈퇴하시겠습니까?"))
 		document.memberDelFrm.submit();
 };   
-  
+/**
+ * 내 코디/게시글 확인
+ */
 const myBoard = () => {
 	document.myBoardFrm.submit();
-	
+};
+
+const myCodi = () => {
+	document.myCodiFrm.submit();
 };
 /**
  * 폼 유효성 검사

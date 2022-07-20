@@ -1,0 +1,30 @@
+@charset "UTF-8";
+main {
+    max-width: 1024px;
+    margin: 0 auto;
+}
+* {
+    margin: 0;
+    padding: 0;
+}
+
+div{
+	display: block;
+}
+
+.productList{
+	width: 100%; 
+}
+ul{
+	position: relative; 
+	display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+li{
+	width: 24.25%;
+	margin-right: 50px;
+}
+

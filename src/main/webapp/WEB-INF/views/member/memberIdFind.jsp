@@ -1,25 +1,22 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
+<link rel="stylesheet" href="<%=request.getContextPath()%>/css/idfind.css" />    
 <script src="<%= request.getContextPath()%>/js/jquery-3.6.0.js"></script>
-<body>
-	<h2>아이디 찾기</h2>
-	<form name="idFindFrm">
-		<table id="tbl-idFind">
-			<thead>
-				<tr>
-					<th>이름</th>
-					<td><input type="text" name="memberName" id="memberName" required /></td>
-				</tr>
-				<tr>
-					<th>전화번호</th>
-					<td><input type="text" oninput="autoHyphen(this)" id="memberPhone" required maxlength="13"/></td>
-				</tr>
-				<tr id="tbl-idFindTr"></tr>
-			</thead>
- 		</table>
- 		<button id="findIdBtn">아이디찾기</button>
-	</form>
+<main>
+	<div class="idFind">
+        <h1>아이디 찾기</h1>
+            <form name="idFindFrm">
+                <div class="inputInfo">
+                    <input type="text" name="memberName" id="memberName" placeholder="이름" required />
+                    <input type="text" oninput="autoHyphen(this)" id="memberPhone" placeholder="전화번호" required maxlength="13"/>
+                </div>
+                <button class="findIdBtn">아이디찾기</button>
+                <div class="resultId">
+                </div>
+            </form>
+    </div>
+</main>
 <script>
 	const autoHyphen = (target) => {
 		target.value = target.value.replace(/[^0-9]/g, '')
@@ -52,10 +49,10 @@
 				memberPhone : e.target.memberPhone.value
 			},
 			success(memberId) {
-				const tr = document.querySelector("#tbl-idFindTr");
-				tr.innerHTML = '';
+				const div = document.querySelector(".resultId");
+				div.innerHTML = '';
 				if(memberId !== null) {		
-					tr.append(memberId);					
+					div.append(memberId);					
 				} else {
 					alert("존재하지 않는 회원입니다.");
 				}
