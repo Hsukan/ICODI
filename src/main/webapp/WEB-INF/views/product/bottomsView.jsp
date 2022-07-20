@@ -35,19 +35,18 @@
 				
 				response.forEach((product) => {
 					const {productRenamedFilename} = product.attachmentList[0];
-					console.log(productRenamedFilename);
 					const {productCode, productName, productPrice} = product;
 					
 					const li = `
-					<a href="<%= request.getContextPath()%>/product/detail?product_name=\${productName}">					
 						<li class="product">
-							<img src="<%= request.getContextPath()%>/upload/admin/\${productRenamedFilename}" alt="" />
-							<div class="product-info">
-								<div id="productName">\${productName}</div>
-								<div id="productPrice">\${productPrice}</div>
-							</div>
+							<a href="<%= request.getContextPath()%>/product/detail?product_name=\${productName}">					
+								<img src="<%= request.getContextPath()%>/upload/admin/\${productRenamedFilename}" alt="" />
+								<div class="product-info">
+									<div id="productName">\${productName}</div>
+									<div id="productPrice">\${productPrice}</div>
+								</div>
+							</a>	
 						</li>
-					</a>
 					`;
 					ul.insertAdjacentHTML('beforeend', li);
 				})

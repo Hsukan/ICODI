@@ -15,7 +15,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import com.kh.icodi.admin.model.dto.ProductExt;
+import com.kh.icodi.admin.model.dto.ProductSize;
+import com.kh.icodi.common.MemberProductManager;
 import com.kh.icodi.member.model.dto.Member;
+import com.kh.icodi.member.model.dto.MemberCart;
 import com.kh.icodi.member.model.dto.MemberRole;
 import com.kh.icodi.member.model.exception.MemberException;
 
@@ -392,7 +396,7 @@ public class MemberDao {
 		PreparedStatement pstmt = null;
 		int result = 0;
 		String sql = prop.getProperty("insertCart");
-		
+		System.out.println("productCode@dao = " + (String)data.get("productCode"));
 		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, (String)data.get("productCode"));
@@ -428,5 +432,66 @@ public class MemberDao {
 			close(pstmt);
 		}
 		return cartNo;
+	}
+
+	// 장바구니 번호로 주문내역 가져오기
+	// orderCartView = select m.*, p.*, c.* from member m, product p, cart c where m.member_id = ( select member_id from cart where cart_no = ? ) and p.product_code = ( select product_code from cart where cart_no = ? ) and c.cart_no = ?
+	public MemberProductManager orderCartView(Connection conn, int cartNo) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		MemberProductManager order = null;
+		String sql = prop.getProperty("orderCartView");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, cartNo);
+			pstmt.setInt(2, cartNo);
+			pstmt.setInt(3, cartNo);
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				order = handleMemberProductManagerResultSet(rset);
+			}
+ 		} catch (SQLException e) {
+ 			throw new MemberException("주문내역 가져오기 오류!", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		return order;
+	}
+
+	private MemberProductManager handleMemberProductManagerResultSet(ResultSet rset) throws SQLException {
+		MemberProductManager manager = new MemberProductManager();
+		Member member = new Member();
+		member.setMemberId(rset.getString("member_id"));
+		member.setMemberName(rset.getString("member_name"));
+		member.setPassword(rset.getString("member_pwd"));
+		member.setEmail(rset.getString("member_email"));
+		member.setPhone(rset.getString("member_phone"));
+		member.setEnrollDate(rset.getTimestamp("member_enroll_date"));
+		member.setMemberRole(MemberRole.valueOf(rset.getString("member_role")));
+		member.setPoint(rset.getInt("member_point"));
+		member.setAddress(rset.getString("member_address"));
+		member.setAddressEx(rset.getString("member_address_extra"));
+		ProductExt product = new ProductExt();
+		product.setProductCode(rset.getString("product_code"));
+		product.setCategoryCode(rset.getInt("category_code"));
+		product.setProductName(rset.getString("product_name"));
+		product.setProductPrice(rset.getInt("product_price"));
+		product.setProductRegDate(rset.getTimestamp("product_reg_date"));
+		product.setProductStock(rset.getInt("product_stock"));
+		product.setProductSize(ProductSize.valueOf(rset.getString("product_size")));
+		product.setProductColor(rset.getString("product_color"));
+		product.setProductInfo(rset.getString("product_info"));
+		product.setProductPluspoint(rset.getDouble("product_pluspoint"));
+		MemberCart cart = new MemberCart();
+		cart.setCartNo(rset.getInt("cart_no"));
+		cart.setProductCode(rset.getString("product_code"));
+		cart.setMemberId(rset.getString("member_id"));
+		cart.setCartAmount(rset.getInt("cart_amount"));
+		manager.setMember(member);
+		manager.setProductExt(product);
+		manager.setMemberCart(cart);
+		return manager;
 	}
 }

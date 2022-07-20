@@ -2,6 +2,8 @@ package com.kh.icodi.member.model.dto;
 
 import java.sql.Timestamp;
 
+import com.kh.icodi.admin.model.dto.ProductExt;
+
 public class Member {
 	private String memberId;
 	private String memberName;

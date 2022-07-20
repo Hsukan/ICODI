@@ -1,7 +1,9 @@
 package com.kh.icodi.product.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -10,6 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.kh.icodi.common.MemberProductManager;
 import com.kh.icodi.member.model.dto.Member;
 import com.kh.icodi.member.model.service.MemberService;
 
@@ -31,7 +34,8 @@ public class ProductOrderServlet extends HttpServlet {
 			int[] productCount = new int[_productCount.length];
 			Member loginMember = (Member)request.getSession().getAttribute("loginMember");
 			String memberId = loginMember.getMemberId();
-			int cartNo = 0;
+			
+			List<MemberProductManager> order = new ArrayList<>();
 
 			for(int i = 0; i < _productCount.length; i++) {
 				productCount[i] = Integer.parseInt(_productCount[i]);
@@ -42,9 +46,10 @@ public class ProductOrderServlet extends HttpServlet {
 				data.put("productCode", productCode[i]);
 				data.put("productCount", productCount[i]);
 				data.put("memberId", memberId);
-				cartNo = memberService.insertCart(data);
+				order.add(memberService.insertCart(data));
 			}
-			
+			request.setAttribute("order", order);
+			request.getRequestDispatcher("/WEB-INF/views/member/memberOrder.jsp").forward(request, response);
 		} catch(Exception e) {
 			e.printStackTrace();
 			throw e;

@@ -6,9 +6,11 @@ import static com.kh.icodi.common.JdbcTemplate.getConnection;
 import static com.kh.icodi.common.JdbcTemplate.rollback;
 
 import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.kh.icodi.common.MemberProductManager;
 import com.kh.icodi.member.model.dao.MemberDao;
 import com.kh.icodi.member.model.dto.Member;
 import com.kh.icodi.member.model.exception.MemberException;
@@ -158,12 +160,14 @@ public class MemberService {
 		return result;
 	}
 
-	public int insertCart(Map<String, Object> data) {
+	public MemberProductManager insertCart(Map<String, Object> data) {
 		Connection conn = getConnection();
 		int cartNo = 0;
+		MemberProductManager order = null;
 		try {
 			int result = memberDao.insertCart(conn, data);
 			cartNo = memberDao.findCartNoBySeq(conn);
+			order = memberDao.orderCartView(conn, cartNo);
 			commit(conn);
 		} catch(Exception e) {
 			rollback(conn);
@@ -171,6 +175,6 @@ public class MemberService {
 		} finally {
 			close(conn);
 		}
-		return cartNo;
+		return order;
 	}
 }
