@@ -1,6 +1,9 @@
 package com.kh.icodi.product.controller;
 
+import static com.kh.icodi.common.JdbcTemplate.getConnection;
+
 import java.io.IOException;
+import java.sql.Connection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
+import com.kh.icodi.admin.model.dto.ProductAttachment;
 import com.kh.icodi.admin.model.dto.ProductExt;
 import com.kh.icodi.admin.model.service.AdminService;
 
