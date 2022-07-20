@@ -39,7 +39,7 @@
 					const {productCode, productName, productPrice} = product;
 					
 					const li = `
-					<a href="<%= request.getContextPath()%>/product/detail?product_code=\${productCode}">					
+					<a href="<%= request.getContextPath()%>/product/detail?product_name=\${productName}">					
 						<li class="product">
 							<img src="<%= request.getContextPath()%>/upload/admin/\${productRenamedFilename}" alt="" />
 							<div class="product-info">
