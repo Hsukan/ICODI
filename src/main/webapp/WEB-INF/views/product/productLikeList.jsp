@@ -3,6 +3,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
+<link rel="stylesheet" href="<%=request.getContextPath()%>/css/productList.css" />
 <%
 	int totalPage = (int)request.getAttribute("totalPage");
 	String searchKeyword = (String) request.getAttribute("searchKeyword");
@@ -25,6 +26,9 @@
 </main>
 <style>	
 	.productList img{width:150px; height:150px;}
+	#productName{width:150px;}
+	.ui-menu-item{width:300px; background-color : #fff;}
+	#ui-id-1{height: 0px;}
 </style>
 <script>
 	document.querySelector("#btn-more").addEventListener('click', (e) => {
