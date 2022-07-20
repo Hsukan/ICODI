@@ -11,7 +11,7 @@ main {
 	max-width: 1024px;
 	margin: 0 auto;
 }
-.content-wrap {
+.product-wrap {
 	display:flex;
 }
 #product-img {
@@ -53,7 +53,7 @@ th,td {
     flex-wrap:wrap;
     margin-right: 10px;
 }
-#essential {
+.essential {
 	font-size: 13px;
 	color:gray;
 }
@@ -131,4 +131,24 @@ button {
 	color:rgb(22, 160, 133);
 	border:1px solid rgb(26, 188, 156);
 	height:50px;
+}
+.product-detail-wrap {
+	width:100%;
+	margin-top: 80px;
+}
+#detail-header {
+	display:flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 50px;
+}
+#detail-header > span {
+	height:34px;
+	border-bottom: 2px solid lightgrey;
+	font-weight :bold;
+	color:gray;
+}
+#detail-content {
+	display:flex;
+	justify-content: center;
 }

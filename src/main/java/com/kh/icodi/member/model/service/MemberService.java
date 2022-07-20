@@ -158,5 +158,19 @@ public class MemberService {
 		return result;
 	}
 
-	
+	public int insertCart(Map<String, Object> data) {
+		Connection conn = getConnection();
+		int cartNo = 0;
+		try {
+			int result = memberDao.insertCart(conn, data);
+			cartNo = memberDao.findCartNoBySeq(conn);
+			commit(conn);
+		} catch(Exception e) {
+			rollback(conn);
+			throw e;
+		} finally {
+			close(conn);
+		}
+		return cartNo;
+	}
 }

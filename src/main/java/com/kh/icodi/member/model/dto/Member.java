@@ -13,12 +13,11 @@ public class Member {
 	private int point;
 	private String address;
 	private String addressEx;
+	
 	public Member() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
-	
 	
 	public Member(String memberId, String memberName, String password, String email, String phone, Timestamp enrollDate,
 			MemberRole memberRole, int point, String address, String addressEx) {
