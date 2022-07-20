@@ -27,6 +27,8 @@
 <link rel="stylesheet"
 	href="<%=request.getContextPath() %>/css/style.css" />
 <script src="<%= request.getContextPath() %>/js/jquery-3.6.0.js"></script>
+<script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
 <script>
 window.onload = () => {
 	<% if(msg != null) { %>	
@@ -67,9 +69,43 @@ window.onload = () => {
                 <% } %>
             </div>
             
-            <form class="search_wrapper hide_for_mobile" action="/search/">
-                <input class="search" type="text" placeholder="검색어를 입력하세요" value="">
+            <form class="search_wrapper hide_for_mobile" action="<%=request.getContextPath()%>/product/productFind">
+                <input id="productAuto" class="search" type="text" placeholder="검색어를 입력하세요" value=""
+                name="searchFrm">
+                <button>검색</button>
             </form>
+            <script>
+            $("#productAuto").autocomplete({
+                source(request, response){
+              	  console.log(request);  //{term : 'a'} 키업이벤트
+              	  const {term} = request;
+              	  if(!/.+/.test(term)) return;
+              	  
+              	  $.ajax({
+              		  url : "<%= request.getContextPath()%>/productNameList",
+              		  method: "GET",
+              		  data : {term},
+              		  success(csv){
+              			  console.log(csv);
+              			  const arr = csv.split(",").map((classmate) => ({
+              				 label : classmate,
+              				 value : classmate
+              			  }));
+              			  console.log(arr);
+              			  response(arr);
+              			  
+              		  },
+              		  error(jqxhr, statusText, err){
+              			  console.log(jqxhr, statusText, err);
+              		  }
+              		  
+              	  });
+                },
+                focus(e, select){
+              	  return false; //focus가 일어나도 선택되지않음
+                }
+              });
+            </script>
         </div>
         <div id="main_menu_container">
             <div id="main_menu">

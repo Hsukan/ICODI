@@ -8,7 +8,7 @@
 <%
 	List<Board> list = (List<Board>) request.getAttribute("list"); 
 	System.out.println("list@boardList = " + list);
-	String searchKetword = (String) request.getAttribute("searchKetword");
+	String searchKeyword = (String) request.getAttribute("searchKetword");
 %>
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/css/board.css" />
@@ -37,8 +37,8 @@ div#search-container {
 			<th>조회수</th>
 		</tr>
 		
-		<% if(searchKetword != null) {%>
-			<span>'<%= searchKetword %>' 에 대한 검색 결과 입니다.</span>
+		<% if(searchKeyword != null) {%>
+			<span>'<%= searchKeyword %>' 에 대한 검색 결과 입니다.</span>
 			<br /><br />
 		<% } %>
 		<% 
