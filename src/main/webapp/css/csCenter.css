@@ -1,0 +1,23 @@
+@charset "UTF-8";
+li,ul {list-style : none;}
+input[type=button], #btn-inquireList{ color : green; background-color : white; border : 1px solid green; margin-bottom : 10px; width : 250px; height : 50px;}
+#csCenter{display : flex;}
+#csInfo{background-color : #CDF0E9;}
+#buttonContainer{display : flex; flex-direction : column;}
+#csCenterLeft{margin : 10px 10px 10px 30px;}
+#csInfo{width:230px; border-radius: 5px; padding:10px;}
+#csCenterRight{display:flex; flex-direction : column; margin-left : 250px; width : 800px;}
+.alert{background-color : #EBEBEB; padding : 15px; text-align:center; width:800px; margin : 10px 0 10px 0;}
+td,th{border-top: 1px solid rgb(173, 173, 173); border-bottom: 1px solid rgb(173, 173, 173);}
+#tbl-inquire-list tr td, #tbl-inquireView td:not(.first){border-top:none;} 
+td{width:600px; height:40px;}
+th{width:200px; height:40px;}
+#inquireDelFrm{display:flex;}
+#tbl-inquireView,#tbl-inquire,#tbl-alarm{display: flex; justify-content: center;}
+[name=inquireFrm],[name=inquireAnswerFrm],#inquireDelFrm{display: flex; justify-content: center; align-items: center; flex-direction: column;}
+textarea{width:800px;height:300px;}
+input[type=submit],#btn-answer-enroll{color:white; background-color:#FF5695; width:100px; height:40px; border:none; border-radius: 5px; margin-top:20px;}
+#tbl-inquire-list{text-align:center; }
+li a{text-decoration: none;}
+li a:hover {color :#FF5695; }
+#tbl-inquire{}

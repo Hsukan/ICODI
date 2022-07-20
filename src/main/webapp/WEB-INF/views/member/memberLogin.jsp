@@ -5,7 +5,6 @@
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/login.css" />    
 
 <script>
-
 // 로그인 유효성
 window.onload = () => {
 	
