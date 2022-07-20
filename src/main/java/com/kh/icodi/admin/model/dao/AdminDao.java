@@ -353,4 +353,26 @@ public class AdminDao {
 		return attachments;
 	}
 
+	public List<ProductExt> newProduct(Connection conn) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		List<ProductExt> productList = new ArrayList<>();
+		String sql = prop.getProperty("newProduct");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				productList.add(handleProductResultSet(rset));
+			}
+		} catch (SQLException e) {
+			throw new AdminException("상품 조회 실패!", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		return productList;
+	}
+
 }
