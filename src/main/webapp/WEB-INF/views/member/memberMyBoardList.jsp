@@ -10,7 +10,7 @@
 %>
 
 <!-- 내 게시글 확인 -->
-<section id="my-board-container">
+<section id="my-board-wrapper">
 	<h2> 내가 작성한 게시글 </h2>
 	<table id="tbl-my-board">
 		<tr>

@@ -45,10 +45,8 @@ public class MemberMyBoardListServlet extends HttpServlet {
 			List<Board> list = boardService.findAllByMe(param);
 			
 			int totalContent = boardService.getTotalContentByMe(writer);
-			String url = request.getRequestURI() + "?memberId=" + writer; // /mvc/board/boradList?memberid=
-			System.out.println(url);
+			String url = request.getRequestURI() + "?memberId=" + writer;
 			String pagebar = IcodiMvcUtils.getPagebar(cPage, numPerPage, totalContent, url);
-			System.out.println(writer);
 			
 			request.setAttribute("list", list);
 			request.setAttribute("pagebar", pagebar);
