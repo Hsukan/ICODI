@@ -36,8 +36,9 @@
 				
 				response.forEach((product) => {
 					const {productRenamedFilename} = product.attachmentList[0];
-					//console.log(productRenamedFilename);
+
 					const {productCode, productName, productPrice} = product;
+					console.log(productCode, product.attachmentList[0]);
 					
 					const li = `
 						<li class="product">

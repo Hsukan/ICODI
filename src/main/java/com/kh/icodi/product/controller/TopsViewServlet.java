@@ -24,7 +24,7 @@ public class TopsViewServlet extends HttpServlet {
 			System.out.println("totalCOntent = " +totalContent);
 			int numPerPage = 12;
 			int totalPage = (int)Math.ceil((double)totalContent / numPerPage);
-			
+			System.out.println("totalPage = " + totalPage);
 			
 			request.setAttribute("totalPage", totalPage);
 			request.setAttribute("categoryNo", categoryNo);
