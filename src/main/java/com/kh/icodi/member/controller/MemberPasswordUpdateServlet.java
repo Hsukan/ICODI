@@ -20,7 +20,7 @@ import com.kh.icodi.member.model.service.MemberService;
  * Servlet implementation class memberPasswordUpdateServlet
  */
 @WebServlet("/member/memberPasswordUpdate")
-public class memberPasswordUpdateServlet extends HttpServlet {
+public class MemberPasswordUpdateServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private MemberService memberService = new MemberService();   
 

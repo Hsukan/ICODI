@@ -14,6 +14,7 @@ import com.kh.icodi.admin.model.dto.Product;
 import com.kh.icodi.admin.model.dto.ProductAttachment;
 import com.kh.icodi.admin.model.dto.ProductExt;
 import com.kh.icodi.admin.model.dto.ProductIO;
+import com.kh.icodi.board.model.dto.BoardExt;
 
 public class AdminService {
 	private AdminDao adminDao = new AdminDao();
@@ -121,4 +122,36 @@ public class AdminService {
 		}
 		return productList;
 	}
+
+	public List<String> findProducAll() {
+		Connection conn = getConnection();
+		List<String> list = adminDao.findProductAll(conn);
+		
+		close(conn);
+		return list;
+	}
+
+	public int getTotalContentBySearchKeyword(String searchKeyword) {
+		Connection conn = getConnection();
+		int totalContent = adminDao.getTotalContentBySearchKeyword(conn, searchKeyword);
+		close(conn);
+		return totalContent;
+	}
+
+	public List<ProductExt> findProductLike(Map<String, Object> param) {
+		Connection conn = getConnection();
+		List<ProductExt> productList = adminDao.findProductLike(conn, param);
+		if(productList != null && !productList.isEmpty()) {
+			for(ProductExt product : productList) {
+				List<ProductAttachment> attachments = adminDao.findAttachmentLike(conn, product.getProductCode());
+				if(attachments != null && !attachments.isEmpty()) {
+					for(ProductAttachment attach : attachments) {
+						product.addAttachment(attach);
+					}
+				}
+			}
+		}
+		return productList;
+	}
+
 }
