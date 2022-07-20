@@ -27,9 +27,6 @@
         }
 
         #canvas {
-        	background-image: url(<%=request.getContextPath()%>/upload/codibook/마네킹.png);
-        	background-size: 100% 100%;
-            background-repeat: no-repeat;
         	border: 1px solid black;
 			text-align: center;
             width: 390px;
