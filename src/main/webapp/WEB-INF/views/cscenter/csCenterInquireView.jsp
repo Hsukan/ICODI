@@ -21,7 +21,7 @@
 		<h1>SUPPORT CENTER</h1>
 	<hr />
 	</div>
-	<h2>문의내용확인</h2>
+	<h2 id="inquireView-h2">문의내용확인</h2>
 	<table id="tbl-inquireView">
 		<tr>
 			<th>등록일</th>

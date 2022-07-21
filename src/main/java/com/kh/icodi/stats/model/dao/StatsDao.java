@@ -21,7 +21,7 @@ public class StatsDao {
 	private Properties prop =  new Properties();
 	
 	public StatsDao() {
-		String filename = StatsDao.class.getResource("/sql/stat/stat-query.properties").getPath();
+		String filename = StatsDao.class.getResource("/sql/stats/stat-query.properties").getPath();
 		try {
 			prop.load(new FileReader(filename));
 		} catch (IOException e) {

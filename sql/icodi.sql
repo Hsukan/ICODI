@@ -14,11 +14,7 @@ insert into notice (notice_no, notice_title, notice_content,notice_date,notice_w
 코디북에서 사용하시는 아이디/비밀번호로 로그인 하더라도 주문 내역이 확인되지 않으며 주문은 정상적으로 접수 되었기 때문에 이후의 배송 상황은 네이버에서 확인 부탁 드릴게요.
 감사합니다.',default,'관리자');
 
-insert into notice (notice_no, notice_title, notice_content,notice_date,notice_writer) values(3,'네이버페이로 구매 시 주문 확인 안내','안녕하세요? 코디북입니다.\n
-코디북에서 네이버페이로 구매 할 경우 구매내역을 확인하기 위해서는 네이버에서 확인하셔야 합니다. :)<br>
-네이버 아이디로 로그인 후 구매하시게 되기 때문에 코디북에서는 비회원으로 구매하신 것으로 인식되기 때문이랍니다.<br>
-코디북에서 사용하시는 아이디/비밀번호로 로그인 하더라도 주문 내역이 확인되지 않으며 주문은 정상적으로 접수 되었기 때문에 이후의 배송 상황은 네이버에서 확인 부탁 드릴게요.
-감사합니다.',default,'관리자');
+insert into notice (notice_no, notice_title, notice_content,notice_date,notice_writer) values(8,'포인트와 적립금은 어떻게 다른가요?',' 포인트는 다음 등급으로 올라가기 위한 점수이며 적립금은 쇼핑할 때 보태어 현금처럼 사용할 수 있습니다.',default,'관리자');
 commit;
 
 
@@ -35,6 +31,9 @@ constraint fk_inquire_writer foreign key(writer) references member(member_id) on
 constraint ck_inquire_type check(inquire_type in ('A','B','C','D','E','F'))
 );
 
+select * from inquire;
+select * from notice;
+delete from notice where notice_no = 3;
 
 
 create sequence seq_inquire_no;

@@ -43,44 +43,57 @@
 		<li>공지사항이 없습니다.</li>
 	<%}else{
 		for(CsCenter c : list){%>
+		<%if(c.getNoticeNo() == 1) {%>
 		<li><a href="<%=request.getContextPath()%>/csCenter/csCenterView?no=<%=c.getNoticeNo()%>"><%= c.getNoticeTitle() %></a></li>
-		<%
-		}
-	} %>
+		<div id="faq">
+		<br />
+		<hr />
+		<br />
+		<h2>자주 묻는 FAQ</h2>
+		<ul>
+		<%} }%>
+			<h3>배송관련</h3>
+		<%for(CsCenter a : list){ %>
+		<% if(a.getNoticeNo() == 2 || a.getNoticeNo() == 3){%>
+			<li><a href="<%=request.getContextPath()%>/csCenter/csCenterView?no=<%=a.getNoticeNo()%>"><%= a.getNoticeTitle() %></a></li>
+		<%} }%>
+		</ul>
+		<ul>
+			<h3>주문관련</h3>
+		<%for(CsCenter b : list){ %>
+		<%if(b.getNoticeNo() == 4 || b.getNoticeNo() == 5){%>
+			<li><a href="<%=request.getContextPath()%>/csCenter/csCenterView?no=<%=b.getNoticeNo()%>"><%= b.getNoticeTitle() %></a></li>
+		<%} }%>
+		</ul>
+		<ul>
+			<h3>계정관련</h3>
+		<%for(CsCenter d : list){ %>
+			<%if(d.getNoticeNo() == 6 || d.getNoticeNo() == 7){%>
+			<li><a href="<%=request.getContextPath()%>/csCenter/csCenterView?no=<%=d.getNoticeNo()%>"><%= d.getNoticeTitle() %></a></li>
+		<%} }%>
+		</ul>
+		<ul>
+			<h3>적립금 관련</h3>
+		<%for(CsCenter e : list){ %>
+			<%if(e.getNoticeNo() == 8){%>
+			<li><a href="<%=request.getContextPath()%>/csCenter/csCenterView?no=<%=e.getNoticeNo()%>"><%= e.getNoticeTitle() %></a></li>
+		<%} }%>
+		</ul>
+	</div>	
+	</div>
+	</div>
+		
+		<%}%>
 	<br />
 	<hr />
 </ul>
 	
-	<div id="faq">
-		<h2>자주 묻는 FAQ</h2>
-		<ul>
-			<h3>배송관련</h3>
-			<li><a href="">배송은 얼마나 걸리나요?</a></li>
-			<li><a href="">현재 배송상태를 알고 싶어요</a></li>
-		</ul>
-		<ul>
-			<h3>주문관련</h3>
-			<li><a>교환/반품/AS안내</a></li>
-			<li><a>주문 방법을 알려주세요</a></li>
 	
-		</ul>
-		<ul>
-			<h3>계정관련</h3>
-			<li><a>아이디/비밀번호를 잊어버렸어요.</a></li>
-			<li><a>회원 탈퇴하는 방법</a></li>
-		</ul>
-		
-		<ul>
-			<h3>적립금 관련</h3>
-			<li><a>구매 적립금은 언제 지급되나요?</a></li>
-		</ul>
-	</div>	
-	</div>
-</div>
+
 <script>
 	const inquireInput = document.querySelector("#inquireInput");
 	inquireInput.addEventListener('click',(e)=>{
-	if(<%=loginMember == null%>){
+	if(<%= loginMember == null%>){
 			alert('로그인후 이용하세요');
 	}
 		})

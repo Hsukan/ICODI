@@ -43,7 +43,7 @@ $(document).ready(function(){
 		success(response){
 			console.log(response);
 			const span = document.querySelector("#codiCnt");
-			span.innerHTML = "<font color=red>"+response+"</font>";
+			span.innerHTML = "<font color=green>"+response+"</font>";
 		},
 		error(xhr,textStatus,err){
 			console.log('err');
