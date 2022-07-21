@@ -1,4 +1,4 @@
-package com.kh.icodi.product.controller;
+package com.kh.icodi.member.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ import com.kh.icodi.member.model.service.MemberService;
  * Servlet implementation class ProductOrderServlet
  */
 @WebServlet("/product/order")
-public class ProductOrderServlet extends HttpServlet {
+public class MemberOrderServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private MemberService memberService = new MemberService();
 	
@@ -46,8 +46,9 @@ public class ProductOrderServlet extends HttpServlet {
 				data.put("productCode", productCode[i]);
 				data.put("productCount", productCount[i]);
 				data.put("memberId", memberId);
-				order.add(memberService.insertCart(data));
+				order.add(memberService.buyItNow(data));
 			}
+			
 			request.setAttribute("order", order);
 			request.getRequestDispatcher("/WEB-INF/views/member/memberOrder.jsp").forward(request, response);
 		} catch(Exception e) {
