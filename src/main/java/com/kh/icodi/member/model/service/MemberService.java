@@ -6,10 +6,10 @@ import static com.kh.icodi.common.JdbcTemplate.getConnection;
 import static com.kh.icodi.common.JdbcTemplate.rollback;
 
 import java.sql.Connection;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.kh.icodi.admin.model.dto.ProductAttachment;
 import com.kh.icodi.common.MemberProductManager;
 import com.kh.icodi.member.model.dao.MemberDao;
 import com.kh.icodi.member.model.dto.Member;
@@ -168,6 +168,13 @@ public class MemberService {
 			int result = memberDao.insertCart(conn, data);
 			cartNo = memberDao.findCartNoBySeq(conn);
 			order = memberDao.orderCartView(conn, cartNo);
+			String productCode = order.getProductExt().getProductCode();
+			List<ProductAttachment> attachments = memberDao.findAttachmentByProductCode(conn, productCode);
+			if(attachments != null && !attachments.isEmpty()) {
+				for(ProductAttachment attach : attachments) {
+					order.getProductExt().addAttachment(attach);
+				}
+			}
 			commit(conn);
 		} catch(Exception e) {
 			rollback(conn);

@@ -1,3 +1,5 @@
+<%@page import="com.kh.icodi.admin.model.dto.ProductAttachment"%>
+<%@page import="java.text.DecimalFormat"%>
 <%@page import="com.kh.icodi.admin.model.dto.ProductExt"%>
 <%@page import="java.util.List"%>
 <%@page import="com.kh.icodi.member.model.dto.MemberRole"%>
@@ -10,6 +12,8 @@
 <%
 	List<MemberProductManager> orderList = (List<MemberProductManager>)request.getAttribute("order");
 	Member member = orderList.get(0).getMember();
+	List<ProductAttachment> attachment = orderList.get(0).getProductExt().getAttachmentList();
+	DecimalFormat numFormat = new DecimalFormat("#,###");
 %>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/order.css" />
 <main>
@@ -23,7 +27,7 @@
 					<span class="strong"><%= member.getMemberName() %>님</span>은, <%= member.getMemberRole() == MemberRole.U ? "[일반]" : "[관리자]" %>회원이십니다.
 				</div>
 				<div class="mileage">
-					적립금 : <span class="strong"><%= member.getPoint() %></span>원
+					적립금 : <span class="strong"><%= numFormat.format(member.getPoint()) %></span>원
 				</div>
 			</div>
 			<div class="help-wrap">상품의 옵션 및 수량 변경은 상품상세 또는 장바구니에서 가능합니다.</div>
@@ -32,7 +36,7 @@
 				<table class="order-product">
 					<thead>
 						<tr>
-							<!-- <th>이미지</th> -->
+							<th>이미지</th>
 							<th>상품정보</th>
 							<th>판매가</th>
 							<th>수량</th>
@@ -50,15 +54,18 @@
 	
 					%>
 							<tr>
+								<td id="productImg">
+									<img src="<%= request.getContextPath() %>/upload/admin/<%=attachment.get(0).getProductRenamedFilename() %>" alt="" />
+								</td>
 								<td id="productInfo">
 									<div class="productName"><%= orderProduct.getProductName() %></div>
 									<div class="productOption">[옵션:<%=orderProduct.getProductColor() %>/<%= orderProduct.getProductSize() %>]</div>
 								</td>
-								<td><span><%= orderProduct.getProductPrice() %>원</span></td>
+								<td><span><span id="productPrice"><%= numFormat.format(orderProduct.getProductPrice()) %></span>원</span></td>
 								<td><span><%= orderCart.getCartAmount() %></span></td>
-								<td><span><%= orderProduct.getProductPrice() * orderProduct.getProductPluspoint() %></span></td>
-								<td><span>주문 당 2500원</span></td>
-								<td><span><%= orderProduct.getProductPrice() * orderCart.getCartAmount() %>원</span></td>
+								<td><span><%= numFormat.format((int)(orderProduct.getProductPrice() * orderProduct.getProductPluspoint())) %></span></td>
+								<td><span>[기본]</span></td>
+								<td><span><%= numFormat.format(orderProduct.getProductPrice() * orderCart.getCartAmount()) %>원</span></td>
 							</tr>
 					<%
 						}
@@ -68,7 +75,7 @@
 					<tfoot>
 						<tr>
 							<td>[기본배송]</td>
-							<td colspan="5" id="orderProductPrice">상품구매금액 <span id="productTotalPrice"></span> 원+배송비2,500=합계:<span id="totalPrice"></span>원</td>
+							<td colspan="6" id="orderProductPrice">상품구매금액 <span id="productTotalPrice"></span>원 + 배송비 2,500 = 합계 : <span id="totalPrice"></span>원</td>
 						</tr>
 					</tfoot>
 				</table>
@@ -113,9 +120,9 @@
 						</thead>
 						<tbody>
 							<tr>
-								<td><span id="productTotalPrice"></span>원</td>
-								<td><span id="discount">-0</span>원</td>
-								<td>= <span id="totalPrice"></span>원</td>
+								<td><span class="display"><span id="orderPrice"></span>원</span></td>
+								<td><span class="display">-<span id="discount">0</span>원</span></td>
+								<td><span class="display">= <span id="total"></span>원</span></td>
 							</tr>
 						</tbody>
 					</table>
@@ -147,7 +154,7 @@
 						<div class="final-wrap">
 							<span id="total-payment">무통장입금</span>
 							<span>최종결제금액</span>
-							<div id="totalPrice"></div>원
+							<div id="total"></div>원
 							<input type="checkbox" name="orderAgree" id="orderAgree" />
 							<label for="orderAgree">결제 정보를 확인하였으며, 구매진행에 동의합니다.</label>
 							<button id="orderBtn">결제</button>
@@ -157,26 +164,41 @@
 			</div>
 		</article>
 	</section>
-	<br />
-	<br />
-	<br />
-	<br />
-	<br />
-	<br />
-	<br />
-	<br />
-	<br />
-	<br />
-	<br />
-	<br />
-	<br />
-	<br />
-	<br />
-	<br />
-	<br />
-	<br />
-	<br />
-	<br />
 </main>
 </body>
+<script>
+	window.addEventListener('load', (e) => {
+		const productPrice = document.querySelectorAll("#productPrice");
+		const productTotalPrice = document.querySelector("#productTotalPrice");
+		const totalPrice= document.querySelector("#totalPrice");
+		
+		const price = [...productPrice].map((span) => Number(span.innerHTML.replace(",",""))).reduce((total, price) => total + price);
+		
+		productTotalPrice.innerHTML = price.toLocaleString('ko-KR');
+		totalPrice.innerHTML = (price + 2500).toLocaleString('ko-KR');
+		
+		const orderPrice = document.querySelector("#orderPrice");
+		const discount = document.querySelector("#discount");
+		const total = document.querySelectorAll("#total");
+		orderPrice.innerHTML = totalPrice.innerHTML;
+		[...total].forEach((div) => div.innerHTML = totalPrice.innerHTML);
+	});
+	
+	document.querySelector("#point").addEventListener('change', (e) => {
+		const point = e.target;
+		const memberPoint = <%= member.getPoint()%>;
+		const discount = document.querySelector("#discount");
+		const total = document.querySelectorAll("#total");
+		
+		if(memberPoint < point.value) {
+			alert('사용가능한 적립금보다 많습니다.');
+			point.value = 0;
+			point.focus();
+			return;
+		}
+		
+		discount.innerHTML = (point.value).toLocaleString('ko-KR');
+		total.forEach((div) => div.innerHTML = (Number(div.innerHTML.replace(",","")) - Number(discount.innerHTML.replace(",",""))).toLocaleString('ko-KR'));
+	});
+</script>
 </html>
