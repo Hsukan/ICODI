@@ -91,4 +91,28 @@ public class CodiBoardService {
 	}
 	
 	
+	/**
+	 * 날짜별 코디 수 통계
+	 * @param codiWhen
+	 * @return
+	 */
+	public int countCodiByDate(String codiWhen) {
+		Connection conn = getConnection();
+		int result = codiBoardDao.countCodiByDate(conn,codiWhen);
+		close(conn);
+		return result;
+	}
+
+	/**
+	 * 코디 총 개수 구하기
+	 * @return
+	 */
+	public int findAllCodiCnt() {
+		Connection conn = getConnection();
+		int result = codiBoardDao.findAllCodiCnt(conn);
+		close(conn);
+		return result;
+	}
+	
+	
 }

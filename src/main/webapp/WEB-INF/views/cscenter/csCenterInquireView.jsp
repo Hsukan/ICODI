@@ -17,8 +17,10 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h1>SUPPORT CENTER</h1>
+	<div id="titleContainer">
+		<h1>SUPPORT CENTER</h1>
 	<hr />
+	</div>
 	<h2>문의내용확인</h2>
 	<table id="tbl-inquireView">
 		<tr>

@@ -18,7 +18,7 @@
 							<li><a href="#">회원 정보 관리</a></li>
 							<li><a href="#">상품 관리</a></li>
 							<li><a href="#">주문/배송 관리</a></li>
-							<li><a href="#">통계</a></li>
+							<li><a href="<%=request.getContextPath()%>/stats">통계</a></li>
 							<li><a href="#">고객센터</a></li>
 						</ul>
 					</div>

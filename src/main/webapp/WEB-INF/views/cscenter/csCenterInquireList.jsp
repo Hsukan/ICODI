@@ -18,20 +18,19 @@
 <body>
 	<h1>SUPPORT CENTER</h1>
 	<hr />
-	<h2>문의내역확인</h2>
+	
+	<h2 id="inquire-list-h2">문의내역확인</h2>
 	<table id="tbl-inquire-list">
-	<thead>
-	<tr>
-	<th>작성자</th>
-	<th>문의명</th>
-	<th>등록일</th>
-	</tr>
-	</thead>
 	<tbody>
+		<tr>
+		<th>작성자</th>
+		<th>문의명</th>
+		<th>등록일</th>
+		</tr>
 	<%for(CsCenterInquire c : list) {%>
 		<tr>
 		<td>
-			<%=c.getMemberId() %>				
+			<%=c.getMemberId() %>	
 		</td>
 		<td>
 		<a href="<%=request.getContextPath()%>/csCenter/inquireView?no=<%= c.getNo()%>">

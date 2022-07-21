@@ -1,0 +1,22 @@
+@charset "UTF-8";
+/*테이블 위쪽 */
+h1{margin : 20px 0 20px 0;}
+
+#space {justify-content: center;
+    display: flex;}
+
+/*통계전체 box*/
+#stats-container {
+	    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: flex-start;
+    margin: 50px 0 20px 0;
+    border: 1px solid black;
+    width: 500px;
+    height: 500px;
+}
+
+/*통계테이블*/
+#search-container {margin: 20px 0 30px 20px;}
+#search-codi-cnt {margin: 20px 0 30px 20px;}

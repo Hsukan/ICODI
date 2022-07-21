@@ -16,8 +16,8 @@
 <body>
 <div id="titleContainer">
 		<h1>SUPPORT CENTER</h1>
+	<hr />
 	</div>
-<hr />
 	<div id="csCenter">
 	<div id="csCenterLeft">
 	<div id="buttonContainer">
@@ -38,7 +38,7 @@
 	<div id="csCenterRight">
 	<div class="alert"><span>고객센터 안내 : 구매하신 상품 및 I COD I 이용에 편의를 돕기 위해 전용 고객센터를 운영하고 있으니, 아래 내용 확인 부탁드립니다.</span></div>
 	<h2>공지사항</h2>
-<ul>
+	<ul>
 	<% if(list == null || list.isEmpty()){ %>
 		<li>공지사항이 없습니다.</li>
 	<%}else{
@@ -47,11 +47,11 @@
 		<%
 		}
 	} %>
-	
+	<br />
+	<hr />
 </ul>
 	
 	<div id="faq">
-	<hr />
 		<h2>자주 묻는 FAQ</h2>
 		<ul>
 			<h3>배송관련</h3>

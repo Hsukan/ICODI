@@ -1,23 +1,48 @@
 @charset "UTF-8";
+/*csCenter 공통*/
+body{margin: 0 20px 0 20px;}
 li,ul {list-style : none;}
 input[type=button], #btn-inquireList{ color : green; background-color : white; border : 1px solid green; margin-bottom : 10px; width : 250px; height : 50px;}
+input[type=button]:hover,#btn-inquireList:hover{background-color: rgb(22, 160, 133); color:white;}
 #csCenter{display : flex;}
 #csInfo{background-color : #CDF0E9;}
 #buttonContainer{display : flex; flex-direction : column;}
-#csCenterLeft{margin : 10px 10px 10px 30px;}
+#csCenterLeft{margin : 10px 0 10px 30px;}
 #csInfo{width:230px; border-radius: 5px; padding:10px;}
-#csCenterRight{display:flex; flex-direction : column; margin-left : 250px; width : 800px;}
-.alert{background-color : #EBEBEB; padding : 15px; text-align:center; width:800px; margin : 10px 0 10px 0;}
+#csCenterRight{display:flex; flex-direction : column; margin-left : 450px; width : 700px;}
+.alert{background-color : #EBEBEB; padding : 15px; text-align:center; width:800px; margin : 10px 0 30px 0;}
 td,th{border-top: 1px solid rgb(173, 173, 173); border-bottom: 1px solid rgb(173, 173, 173);}
-#tbl-inquire-list tr td, #tbl-inquireView td:not(.first){border-top:none;} 
 td{width:600px; height:40px;}
 th{width:200px; height:40px;}
+
+
 #inquireDelFrm{display:flex;}
 #tbl-inquireView,#tbl-inquire,#tbl-alarm{display: flex; justify-content: center;}
-[name=inquireFrm],[name=inquireAnswerFrm],#inquireDelFrm{display: flex; justify-content: center; align-items: center; flex-direction: column;}
+[name=inquireFrm],[name=inquireAnswerFrm],#inquireDelFrm{display: flex; justify-content: center; align-items: center; flex-direction: column; margin: 40px 0 20px 0;}
 textarea{width:800px;height:300px;}
-input[type=submit],#btn-answer-enroll{color:white; background-color:#FF5695; width:100px; height:40px; border:none; border-radius: 5px; margin-top:20px;}
-#tbl-inquire-list{text-align:center; }
+input[type=submit],#btn-answer-enroll{color:white; background-color:#A6E2CE; width:100px; height:40px; border:none; border-radius: 5px; margin-top:20px;}
+input[type=submit]:hover {background-color:#66CDAA;}
 li a{text-decoration: none;}
-li a:hover {color :#FF5695; }
-#tbl-inquire{}
+li a:hover {color : rgb(22, 160, 133); }
+h1 {padding: 20px 0 20px 0;}
+/*csCenter홈*/
+#titleContainer{margin-bottom:40px;}
+h2,ul{margin-bottom : 20px;}
+
+/*csCenterView 공지사항 세부정보 보기 페이지*/
+
+
+/*inquireList*/
+#inquire-list-h2{margin : 100px 0 30px 352px;}
+table {
+    margin-left:auto; 
+    margin-right:auto;
+}
+#tbl-inquire-list tr td, #tbl-inquireView td:not(.first){border-top:none;} 
+#tbl-inquire-list{
+	display: flex;
+    justify-content: center;
+    text-align: center;
+    margin-top : 40px;
+    width : 1500px;}
+#tbl-inquire-list a:hover{color : green;}

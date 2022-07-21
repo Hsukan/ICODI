@@ -93,3 +93,32 @@ select * from alarm;
 --select alarm_message, alarm_date from alarm where member_id = 'eedongha1';
 commit;
 
+create table stat(
+    visit_member_id varchar2(50),
+    visit_date date default sysdate,
+    constraint fk_visit_member_id foreign key(visit_member_id) references member(member_id) on delete cascade
+);
+--drop table stat;
+select * from stat;
+-- 중복 아이디 제거
+select distinct visit_member_id from stat;
+select
+    *
+from(
+select 
+    row_number() over(order by visit_member_id desc) rnum,
+    m.*
+    from stat m 
+    ) m
+where
+    to_char(visit_date,'YYYY-MM-DD') = '2022-07-19';
+    
+select distinct (visit_member_id) from stat where to_char(visit_date, 'YYYY-MM-DD') = '2022-07-19';
+
+-- 특정날짜 조희
+SELECT count(distinct (visit_member_id))cnt FROM stat WHERE TO_CHAR(visit_date, 'YYYYMMDD') = '20220719';
+
+select * from codi_board;
+-- 날짜별 코디 개수 조회 쿼리
+select count(*) from codi_board where to_char(reg_date,'YYYY-MM-DD' )= '2022-07-19';
+select count(*) from codi_board;
