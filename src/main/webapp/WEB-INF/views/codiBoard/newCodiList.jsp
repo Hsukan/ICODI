@@ -54,8 +54,8 @@ const getPage = (cPage) => {
 				const {codiBoardNo, memberId, codiBoardContent, likeCount, useProduct, regDate, likedMember, filename} = codi;
 
 				const list = `
-				<div class="myCodi">
-					<img src="data:image/jpeg;base64,\${filename}" id="myCodiImg"/>
+				<div class="myCodi" id="myCodi">
+					<img src="data:image/jpeg;base64,\${filename}" id="myCodiImg" data-product="\${useProduct}"/>
 					<div class="icodi-info">
                         <img src="<%= request.getContextPath()%>/upload/codiboard/defaultProfile.png">
 
@@ -93,6 +93,14 @@ const getPage = (cPage) => {
 					likeIt(e);
 				}
 			});
+			[...document.querySelectorAll("#myCodi")].forEach((img) => {
+				img.onclick = (e) => {
+					//console.log(img.firstElementChild.dataset.product);
+					location.href = "<%= request.getContextPath()%>/codiBoard/codiDetail?useProduct="+`\${img.firstElementChild.dataset.product}`;
+				};
+			});
+			
+
 		}
 	});
 };

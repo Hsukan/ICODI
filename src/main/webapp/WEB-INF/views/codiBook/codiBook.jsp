@@ -326,14 +326,6 @@
 
             }
         });
-		if([...document.querySelectorAll("#canvas img")].length > 0){
-        	document.getElementById("canvas").style.background = "url()";
-			
-		}
-		if([...document.querySelectorAll("#canvas img")].length == 0){
-		document.getElementById("canvas").style.background = "url(<%=request.getContextPath()%>/upload/codibook/마네킹.png)";
-			
-		}
         //드랍된 이미지 태그,data 다 가져옴
 
         [...div].forEach((div) => {
