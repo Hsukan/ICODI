@@ -56,6 +56,9 @@ table {
 	border-collapse: collapse;
 	width:100%;
 }
+.order-product tr {
+	border-bottom: 1px solid #d3d3d385;
+}
 .order-product th, .total th {
 	height:70px;
 	border-bottom: 0.1px solid lightgray;
@@ -70,7 +73,7 @@ table {
     align-items: center;
 }
 #productInfo {
-	height:150px;
+	height:100px;
 	padding-left: 10px;
 	width:400px;
 }
@@ -122,10 +125,6 @@ table {
 	height:100px;
 	border-bottom: 1px solid lightgray;
 }
-.total td span {
-	display:flex;
-	justify-content: center;
-}
 .discount-info-wrap th{
 	height:80px;
 	text-align: left;
@@ -156,5 +155,16 @@ table {
 	background-color:rgb(26, 188, 156);
 	border:none;
 	font-weight: bold;
-
+}
+.display {
+	display:flex;
+	justify-content: center;
+}
+#productImg {
+	display:flex;
+	justify-content: center;
+	padding:5px;
+}
+#productImg img {
+	width:100px;
 }
