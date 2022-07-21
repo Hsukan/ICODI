@@ -27,7 +27,7 @@ public class NewCodeListServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			int totalContent = codiBoardService.getTotalContentNewCodi();
-			int numPerPage = 15;
+			int numPerPage = 10;
 			int totalPage = (int)Math.ceil((double)totalContent / numPerPage);
 			Member loginMember = (Member)request.getSession().getAttribute("loginMember");
 			String loginMemberId = null;

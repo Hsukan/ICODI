@@ -436,4 +436,119 @@ public class BoardDao {
 		return result;
 	}
 
+	public List<BoardExt> findLike(Connection conn, Map<String, Object> param) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		List<BoardExt> list = new ArrayList<>();
+		String sql = prop.getProperty("findLike");
+		//select * from (select row_number () over (order by reg_date desc) rnum, b.*  from board b where # like ?) b where rnum between ? and ?
+		
+		String col = (String) param.get("searchType");
+		String val = (String) param.get("searchKeyword");
+		int start = (int) param.get("start");
+		int end = (int) param.get("end");
+		sql = sql.replace("#", col);
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, "%" + val + "%");
+			pstmt.setInt(2, start);
+			pstmt.setInt(3, end);
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				list.add(handleBoardResultSet(rset));
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close(rset);
+			close(pstmt);
+		}
+		return list;
+	}
+
+	public int getTotalContentLike(Connection conn, Map<String, Object> param) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		int totalContent = 0;
+		String sql = prop.getProperty("getTotalContentLike");
+		String col = (String) param.get("searchType");
+		String val = (String) param.get("searchKeyword");
+		sql = sql.replace("#", col);
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, "%" + val + "%");
+			rset = pstmt.executeQuery();
+			if(rset.next()) {
+				totalContent = rset.getInt(1);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close(rset);
+			close(pstmt);
+		}
+		
+		
+		
+		return totalContent;
+	}
+	
+	public List<Board> findAllByMe(Connection conn, Map<String, Object> param) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		List<Board> list = new ArrayList<>();
+		String sql = prop.getProperty("findAllByMe");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, (String) param.get("writer"));
+			pstmt.setInt(2, (int) param.get("start"));
+			pstmt.setInt(3, (int) param.get("end"));
+			
+			rset = pstmt.executeQuery();
+			
+			while(rset.next()) {
+				BoardExt board = handleBoardResultSet(rset);
+				board.setAttachCount(rset.getInt("attach_count"));
+				board.setCommentCount(rset.getInt("comment_count"));
+				
+				list.add(board);
+			}
+			
+		} catch (SQLException e) {
+			throw new BoardException("내가 쓴 게시글 목록 조회 오류!", e);
+		}finally {
+			close(rset);
+			close(pstmt);
+		}
+		
+		
+		return list;
+	}
+
+	public int getTotalContentByMe(Connection conn, String writer) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		int totalContent = 0;
+		String sql = prop.getProperty("getTotalContentByMe");
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, writer);
+			
+			rset = pstmt.executeQuery();
+			if(rset.next())
+				totalContent = rset.getInt(1);
+		} catch (SQLException e) {
+			throw new BoardException("내가 쓴 게시물수 조회 오류!", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		
+		return totalContent;
+	}
+
 }

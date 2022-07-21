@@ -42,7 +42,7 @@ public class MemberDeleteServlet extends HttpServlet {
 			c.setMaxAge(0);
 			response.addCookie(c);
 			
-			session.setAttribute("msg", "회원을 성공적으로 삭제했습니다.");
+			session.setAttribute("msg", "회원 탈퇴를 완료했습니다.");
 			response.sendRedirect(request.getContextPath() + "/");
 		}
 		catch (Exception e) {

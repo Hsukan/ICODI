@@ -19,6 +19,7 @@ import com.kh.icodi.admin.model.dto.ProductExt;
 import com.kh.icodi.admin.model.dto.ProductIO;
 import com.kh.icodi.admin.model.dto.ProductSize;
 import com.kh.icodi.admin.model.exception.AdminException;
+import com.kh.icodi.board.model.dto.BoardExt;
 
 public class AdminDao {
 	private Properties prop = new Properties();
@@ -218,7 +219,31 @@ public class AdminDao {
 		}
 		return productList;
 	}
-
+	
+	// 상품코드로 상품 찾기 (상품상세페이지)
+	// findProductByProductName = select * from product where product_name = ?
+	public List<ProductExt> findProductByProductName(Connection conn, String productName) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		List<ProductExt> productList = new ArrayList<>();
+		String sql = prop.getProperty("findProductByProductName");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, productName);
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				productList.add(handleProductResultSet(rset));
+			}
+		} catch (SQLException e) {
+			throw new AdminException("상품상세페이지 조회 오류!", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		return productList;
+	}
+	
 	private ProductExt handleProductResultSet(ResultSet rset) throws SQLException {
 		ProductExt productExt = new ProductExt();
 		productExt.setProductCode(rset.getString("product_code"));
@@ -233,4 +258,121 @@ public class AdminDao {
 		productExt.setProductPluspoint(rset.getDouble("product_pluspoint"));
 		return productExt;
 	}
+
+	public List<String> findProductAll(Connection conn) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		List<String> list = new ArrayList<>();
+		String sql = prop.getProperty("findProductAll");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				list.add(rset.getString("product_name"));
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return list;
+	}
+
+	public int getTotalContentBySearchKeyword(Connection conn, String searchKeyword) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		int totalContent = 0;
+		String sql = prop.getProperty("getTotalContentBySearchKeyword");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, "%" + searchKeyword + "%");
+			rset = pstmt.executeQuery();
+			while(rset.next()) 
+				totalContent = rset.getInt(1);
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		
+		return totalContent;
+	}
+
+	public List<ProductExt> findProductLike(Connection conn, Map<String, Object> param) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		List<ProductExt> productList = new ArrayList<>();
+		String sql = prop.getProperty("findProductLikeList");
+		//select p.* from ( select row_number() over (order by product_reg_date) rnum, 
+		//p.* from product p where product_name like ?) p where rnum between ? and ?
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, "%" + (String) param.get("searchKeyword") + "%");
+			pstmt.setInt(2, (int)param.get("start"));
+			pstmt.setInt(3, (int)param.get("end"));
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				productList.add(handleProductResultSet(rset));
+			}
+		} catch (SQLException e) {
+			throw new AdminException("상품 조회 실패!", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		return productList;
+	}
+
+	public List<ProductAttachment> findAttachmentLike(Connection conn, String productCode) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		List<ProductAttachment> attachments = new ArrayList<>();
+		String sql = prop.getProperty("findAttachmentByProductCode");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, productCode);
+			rset = pstmt.executeQuery();
+			while(rset.next())
+				attachments.add(handleAttachmentResultSet(rset));
+		}
+		catch (SQLException e) {
+			throw new AdminException("게시글별 첨부파일 조회 오류", e);
+		}
+		finally {
+			close(rset);
+			close(pstmt);			
+		}
+		
+		return attachments;
+	}
+
+	public List<ProductExt> newProduct(Connection conn) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		List<ProductExt> productList = new ArrayList<>();
+		String sql = prop.getProperty("newProduct");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				productList.add(handleProductResultSet(rset));
+			}
+		} catch (SQLException e) {
+			throw new AdminException("상품 조회 실패!", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		return productList;
+	}
+
 }

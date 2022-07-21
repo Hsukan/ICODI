@@ -2,6 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/common/header.jsp"%>
+<link rel="stylesheet" href="<%=request.getContextPath()%>/css/productDelete.css" />
 <main>
 	<div class="content-wrap">
 		<div class="header-wrap">
@@ -21,9 +22,22 @@
 						<input type="submit" value="삭제"/>
 					</div>
 					<div class="codiProduct">
-						<ul>
-								
-						</ul>
+						<table id="productTable">
+							<thead>
+								<tr>
+									<th></th>
+									<th>상품이미지</th>
+									<th>상품코드</th>
+									<th>상품이름</th>
+									<th>상품가격</th>
+									<th>상품사이즈</th>
+									<th>상품색상</th>
+								</tr>
+							</thead>		
+							<tbody>
+							
+							</tbody>					
+						</table>
 					</div>	
 				</form>			
 			</article>
@@ -39,8 +53,9 @@
 			dataType : 'json',
 			data : {categoryNo},
 			success(products){
-				const ul = document.querySelector(".codiProduct ul");
-				ul.innerHTML = '';
+				//const ul = document.querySelector(".codiProduct ul");
+				const tbody = document.querySelector("#productTable tbody");
+				tbody.innerHTML = '';
 				
 				products.forEach((product) => {
 					if(product == '') return;
@@ -53,18 +68,18 @@
 						} 
 						const li =
 							`
-							<li>
-								<img src="<%= request.getContextPath()%>/upload/admin/\${productRenamedFilename}"
-									id="\${productCode}" class="img"/>
-								<input type="checkbox" id="pdCode" value="\${productCode}" name="pdCode" />
-								<label for="pdCode">\${productCode}</label>
-								<div id="productName">\${productName}</div>
-								<div id="productPrice">\${productPrice}</div>
-								<div id="productSize">\${productSize}</div>
-								<div id="productColor">\${productColor}</div>
-							</li>
+							<tr>
+								<td><input type="checkbox" id="pdCode" value="\${productCode}" name="pdCode" /></td>
+								<td><img src="<%= request.getContextPath()%>/upload/admin/\${productRenamedFilename}"
+									id="\${productCode}" class="img"/></td>
+								<td><label for="pdCode">\${productCode}</label></td>
+								<td id="productName">\${productName}</td>
+								<td id="productPrice">\${productPrice}</td>
+								<td id="productSize">\${productSize}</td>
+								<td id="productColor">\${productColor}</td>
+							</tr>
 							`;
-						ul.insertAdjacentHTML('afterbegin', li);
+						tbody.insertAdjacentHTML('afterbegin', li);
 					});
 				})
 			},

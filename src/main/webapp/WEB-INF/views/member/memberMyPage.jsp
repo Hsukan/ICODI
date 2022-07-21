@@ -3,6 +3,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
+<link rel="stylesheet"
+	href="<%=request.getContextPath() %>/css/member.css" />
 <%
 	String memberId = loginMember.getMemberId();
 	String memberName = loginMember.getMemberName();
@@ -17,6 +19,7 @@
 	if(phone != null){
 	phoneList = Arrays.asList(phones);
 	}
+
 %>
 <style>
     #modal.modal-overlay {
@@ -77,7 +80,8 @@
 
 }
 </style>
-<div id="container">
+<!-- 정보수정 -->
+<div id="myPage-container">
 	<h2>마이페이지</h2>
 	<input type="button" value="정보수정" id="btn-modal-memberUpdate" />
 </div>
@@ -154,9 +158,24 @@
 <form name="memberDelFrm" action="<%= request.getContextPath() %>/member/memberDelete" method="POST">
 	<input type="hidden" name="memberId" value="<%= loginMember.getMemberId() %>" />
 </form>
+
+
+<!-- 내 코디 확인 -->
+
+<form name="myCodiFrm" action="<%= request.getContextPath() %>/member/memberMyCodiList">
+	<input type="hidden" name="memberId" value="<%= loginMember.getMemberId() %>" />
+</form>
+<span id="my-codi-selected" onclick="myCodi();">내 코디 확인</span>
+<form name="myBoardFrm" action="<%= request.getContextPath() %>/member/memberMyBoardList">
+	<input type="hidden" name="memberId" value="<%= loginMember.getMemberId() %>" />
+</form>
+<span id="my-board-selected" onclick="myBoard();">내 게시글 확인</span>
+
+
+
+
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
-
 /** 모달창 띄우기 */
 const modal = document.getElementById("modal");
 function modalOn() {
@@ -226,7 +245,16 @@ const deleteMember = () => {
 	if(confirm("정말로 탈퇴하시겠습니까?"))
 		document.memberDelFrm.submit();
 };   
-   
+/**
+ * 내 코디/게시글 확인
+ */
+const myBoard = () => {
+	document.myBoardFrm.submit();
+};
+
+const myCodi = () => {
+	document.myCodiFrm.submit();
+};
 /**
  * 폼 유효성 검사
  */

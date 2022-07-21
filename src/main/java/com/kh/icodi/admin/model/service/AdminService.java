@@ -6,7 +6,6 @@ import static com.kh.icodi.common.JdbcTemplate.getConnection;
 import static com.kh.icodi.common.JdbcTemplate.rollback;
 
 import java.sql.Connection;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +14,7 @@ import com.kh.icodi.admin.model.dto.Product;
 import com.kh.icodi.admin.model.dto.ProductAttachment;
 import com.kh.icodi.admin.model.dto.ProductExt;
 import com.kh.icodi.admin.model.dto.ProductIO;
+import com.kh.icodi.board.model.dto.BoardExt;
 
 public class AdminService {
 	private AdminDao adminDao = new AdminDao();
@@ -93,12 +93,81 @@ public class AdminService {
 	public List<ProductExt> findProductList(Map<String, Object> param) {
 		Connection conn = getConnection();
 		List<ProductExt> productList = adminDao.findProductList(conn, param);
-		for(ProductExt product : productList) {
-			List<ProductAttachment> attachments = adminDao.findAttachmentByProductCode(conn, product.getProductCode());
-			for(ProductAttachment attach : attachments) {
-				product.addAttachment(attach);
+		// 채은 if문 추가 - 도훈 conflict나면 if문 있는 걸로 저장해주세여
+		if(productList != null && !productList.isEmpty()) {
+			for(ProductExt product : productList) {
+				List<ProductAttachment> attachments = adminDao.findAttachmentByProductCode(conn, product.getProductCode());
+				if(attachments != null && !attachments.isEmpty()) {
+					for(ProductAttachment attach : attachments) {
+						product.addAttachment(attach);
+					}
+				}
 			}
 		}
 		return productList;
 	}
+
+	public List<ProductExt> findProductByProductName(String productName) {
+		Connection conn = getConnection();
+		List<ProductExt> productList = adminDao.findProductByProductName(conn, productName);
+		if(productList != null && !productList.isEmpty()) {
+			for(ProductExt product : productList) {
+				List<ProductAttachment> attachments = adminDao.findAttachmentByProductCode(conn, product.getProductCode());
+				if(attachments != null && !attachments.isEmpty()) {
+					for(ProductAttachment attach : attachments) {
+						product.addAttachment(attach);
+					}
+				}
+			}
+		}
+		return productList;
+	}
+
+	public List<String> findProducAll() {
+		Connection conn = getConnection();
+		List<String> list = adminDao.findProductAll(conn);
+		
+		close(conn);
+		return list;
+	}
+
+	public int getTotalContentBySearchKeyword(String searchKeyword) {
+		Connection conn = getConnection();
+		int totalContent = adminDao.getTotalContentBySearchKeyword(conn, searchKeyword);
+		close(conn);
+		return totalContent;
+	}
+
+	public List<ProductExt> findProductLike(Map<String, Object> param) {
+		Connection conn = getConnection();
+		List<ProductExt> productList = adminDao.findProductLike(conn, param);
+		if(productList != null && !productList.isEmpty()) {
+			for(ProductExt product : productList) {
+				List<ProductAttachment> attachments = adminDao.findAttachmentLike(conn, product.getProductCode());
+				if(attachments != null && !attachments.isEmpty()) {
+					for(ProductAttachment attach : attachments) {
+						product.addAttachment(attach);
+					}
+				}
+			}
+		}
+		return productList;
+	}
+
+	public List<ProductExt> newProduct() {
+		Connection conn = getConnection();
+		List<ProductExt> productList = adminDao.newProduct(conn);
+		if(productList != null && !productList.isEmpty()) {
+			for(ProductExt product : productList) {
+				List<ProductAttachment> attachments = adminDao.findAttachmentByProductCode(conn, product.getProductCode());
+				if(attachments != null && !attachments.isEmpty()) {
+					for(ProductAttachment attach : attachments) {
+						product.addAttachment(attach);
+					}
+				}
+			}
+		}
+		return productList;
+	}
+
 }

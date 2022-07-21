@@ -2,6 +2,8 @@ package com.kh.icodi.member.model.dto;
 
 import java.sql.Timestamp;
 
+import com.kh.icodi.admin.model.dto.ProductExt;
+
 public class Member {
 	private String memberId;
 	private String memberName;
@@ -13,12 +15,11 @@ public class Member {
 	private int point;
 	private String address;
 	private String addressEx;
+	
 	public Member() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
-	
 	
 	public Member(String memberId, String memberName, String password, String email, String phone, Timestamp enrollDate,
 			MemberRole memberRole, int point, String address, String addressEx) {

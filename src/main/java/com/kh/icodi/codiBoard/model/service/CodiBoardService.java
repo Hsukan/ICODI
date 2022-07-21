@@ -89,6 +89,23 @@ public class CodiBoardService {
 		}
 		return result;
 	}
+
+	public int getTotalContentByMe(String loginMemberId) {
+		Connection conn = getConnection();
+		int totalContent = codiBoardDao.getTotalContentByMe(conn, loginMemberId);
+		close(conn);
+		return totalContent;
+	}
+
+	public List<CodiBoardExt> findCodiBoardByMe(Map<String, Object> param) {
+		Connection conn = getConnection();
+		List<CodiBoardExt> codiBoardList =  codiBoardDao.findCodiBoardByMe(conn, param);
+		close(conn);
+		return codiBoardList;
+	}
+
+
+
 	
 	
 	/**

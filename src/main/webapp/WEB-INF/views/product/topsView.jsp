@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
+<link rel="stylesheet" href="<%=request.getContextPath()%>/css/productList.css" />
 <%
 	int categoryNo = (int)request.getAttribute("categoryNo");
 	int totalPage = (int)request.getAttribute("totalPage");
@@ -9,9 +10,9 @@
 	<section>
 		<article>
 			<h2>TOP</h2>
-			<ul class="productList">
-			
-			</ul>
+				<ul class="productList">
+				
+				</ul>
 			<div id='btn-more-container'>
 				<button id="btn-more" value="">더보기(<span id="cPage"></span>/<span id="totalPage"><%= totalPage%></span>)</button>
 			</div>
@@ -35,19 +36,20 @@
 				
 				response.forEach((product) => {
 					const {productRenamedFilename} = product.attachmentList[0];
-					console.log(productRenamedFilename);
+
 					const {productCode, productName, productPrice} = product;
+					console.log(productCode, product.attachmentList[0]);
 					
 					const li = `
-					<a href="<%= request.getContextPath()%>/product/detail?product_code=\${productCode}">					
 						<li class="product">
-							<img src="<%= request.getContextPath()%>/upload/admin/\${productRenamedFilename}" alt="" />
-							<div class="product-info">
-								<div id="productName">\${productName}</div>
-								<div id="productPrice">\${productPrice}</div>
-							</div>
+							<a href="<%= request.getContextPath()%>/product/detail?product_name=\${productName}">					
+								<img src="<%= request.getContextPath()%>/upload/admin/\${productRenamedFilename}" alt="" />
+								<div class="product-info">
+									<div id="productName">\${productName}</div>
+									<div id="productPrice">\${productPrice}</div>
+								</div>
+							</a>
 						</li>
-					</a>
 					`;
 					ul.insertAdjacentHTML('beforeend', li);
 				})

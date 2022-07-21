@@ -2,25 +2,21 @@
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 <script src="<%= request.getContextPath()%>/js/jquery-3.6.0.js"></script>
-<body>
-	<h2>비밀번호 찾기</h2>
-	<form name="pwFindFrm">
-		<table id="tbl-pwFind">
-			<thead>
-				<tr>
-					<th>아이디</th>
-					<td><input type="text" name="memberId" id="memberId" required/></td>
-				</tr>
-				<tr>
-					<th>전화번호</th>
-					<td><input type="text" oninput="autoHyphen(this)" name="memberPhone" required maxlength="13"/></td>
-				</tr>
-				<tr id="tbl-pwFindTr"></tr>
-			</thead>
-		</table>
-		<button id="findPwBtn">임시번호 발급</button>
-		<div id="newPw"></div>
-	</form>
+<link rel="stylesheet" href="<%=request.getContextPath()%>/css/pwfind.css" />    
+<main>
+	<div class="pwFind">
+        <h1>비밀번호 찾기</h1>
+            <form name="pwFindFrm">
+                <div class="inputInfo">
+                    <input type="text" name="memberId" id="memberId" placeholder="ID" required/>
+                    <input type="text" oninput="autoHyphen(this)" name="memberPhone" id="memberPhone" placeholder="전화번호" required maxlength="13"/>
+                </div>
+                <button class="findPwBtn">임시번호 발급</button>
+                <div class="newPw">
+                </div>
+            </form>
+    </div>
+</main>
 <script>	
 		
 	const autoHyphen = (target) => {
@@ -54,12 +50,13 @@
 		}
 		
 		const phone = document.querySelector("#memberPhone");
-		if(!/^010[0-9]{8}$/.test(phone.value)){
+		if(!/^010-[0-9]{4}-[0-9]{4}$/.test(phone.value)){
 			alert("유효한 전화번호를 입력해주세요");
 			phone.select();
 			return false;
 		}
 			
+		
 	
 		$.ajax({
 			url : '<%= request.getContextPath()%>/member/memberPwFind',
@@ -73,9 +70,8 @@
 			success(memberPw) {
 				console.log("memberPw", memberPw);
 				if(memberPw !== null){
+					$(".newPw").text(newPwd);
 					
-					
-					$("#newPw").text(newPwd);
 				}
 				else{
 					alert("잘못입력하셨습니다");

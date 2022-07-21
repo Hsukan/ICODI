@@ -4,6 +4,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
+<link rel="stylesheet" href="<%=request.getContextPath() %>/css/codiBoard.css" />
 <%
 	int totalPage = (int) request.getAttribute("totalPage");
 	String loginMemberId = (String)request.getAttribute("loginMemberId");
@@ -53,8 +54,8 @@ const getPage = (cPage) => {
 				const {codiBoardNo, memberId, codiBoardContent, likeCount, useProduct, regDate, likedMember, filename} = codi;
 
 				const list = `
-				<div class="myCodi">
-					<img src="data:image/jpeg;base64,\${filename}" id="myCodiImg"/>
+				<div class="myCodi" id="myCodi">
+					<img src="data:image/jpeg;base64,\${filename}" id="myCodiImg" data-product="\${useProduct}"/>
 					<div class="icodi-info">
                         <img src="<%= request.getContextPath()%>/upload/codiboard/defaultProfile.png">
 
@@ -92,6 +93,14 @@ const getPage = (cPage) => {
 					likeIt(e);
 				}
 			});
+			[...document.querySelectorAll("#myCodi")].forEach((img) => {
+				img.onclick = (e) => {
+					//console.log(img.firstElementChild.dataset.product);
+					location.href = "<%= request.getContextPath()%>/codiBoard/codiDetail?useProduct="+`\${img.firstElementChild.dataset.product}`;
+				};
+			});
+			
+
 		}
 	});
 };

@@ -15,7 +15,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import com.kh.icodi.admin.model.dto.ProductExt;
+import com.kh.icodi.admin.model.dto.ProductSize;
+import com.kh.icodi.common.MemberProductManager;
 import com.kh.icodi.member.model.dto.Member;
+import com.kh.icodi.member.model.dto.MemberCart;
 import com.kh.icodi.member.model.dto.MemberRole;
 import com.kh.icodi.member.model.exception.MemberException;
 
@@ -294,7 +298,6 @@ public class MemberDao {
 		return result;
 	}
 
-
 	public int updateMember(Connection conn, Member member) {
 		PreparedStatement pstmt = null;
 		int result = 0;
@@ -319,7 +322,6 @@ public class MemberDao {
 		return result;
 	}
 
-
 	public int deleteMember(Connection conn, String memberId) {
 		int result = 0;
 		PreparedStatement pstmt = null;
@@ -338,7 +340,6 @@ public class MemberDao {
 		
 		return result;
 	}
-
 
 	public int updatePassword(Connection conn, String memberId, String newPassword) {
 		PreparedStatement pstmt = null;
@@ -362,4 +363,135 @@ public class MemberDao {
 		return result;
 	}
 
+	public int checkId(Connection conn, String memberId) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		int result = 0;
+		String sql = prop.getProperty("findById");	
+		// select * from member where member_id = ?
+	
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, memberId);
+			
+			rset = pstmt.executeQuery();
+			
+			if(rset.next() || memberId.equals("")) {
+				result = 0;
+			} else {
+				result = 1;
+			}
+		} catch (SQLException e) {
+			throw new MemberException("회원 중복 검사 오류!", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		return result;
+	}
+	
+	// 장바구니 추가
+	// insertCart = insert into cart values (seq_cart_no.nextval, ?, ?, ?)
+	public int insertCart(Connection conn, Map<String, Object> data) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String sql = prop.getProperty("insertCart");
+		System.out.println("productCode@dao = " + (String)data.get("productCode"));
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, (String)data.get("productCode"));
+			pstmt.setString(2, (String)data.get("memberId"));
+			pstmt.setInt(3, (int)data.get("productCount"));
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new MemberException("장바구니 추가 오류!", e);
+		} finally {
+			close(pstmt);
+		}
+		return result;
+	}
+
+	// 최근 추가된 장바구니 번호 찾기
+	// findCartNoBySeq = select seq_cart_no.currval from dual
+	public int findCartNoBySeq(Connection conn) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		int cartNo = 0;
+		String sql = prop.getProperty("findCartNoBySeq");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			rset = pstmt.executeQuery();
+			if(rset.next()) {
+				cartNo = rset.getInt(1);
+			}
+		} catch (SQLException e) {
+			throw new MemberException("장바구니 번호 찾기 오류!", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		return cartNo;
+	}
+
+	// 장바구니 번호로 주문내역 가져오기
+	// orderCartView = select m.*, p.*, c.* from member m, product p, cart c where m.member_id = ( select member_id from cart where cart_no = ? ) and p.product_code = ( select product_code from cart where cart_no = ? ) and c.cart_no = ?
+	public MemberProductManager orderCartView(Connection conn, int cartNo) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		MemberProductManager order = null;
+		String sql = prop.getProperty("orderCartView");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, cartNo);
+			pstmt.setInt(2, cartNo);
+			pstmt.setInt(3, cartNo);
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				order = handleMemberProductManagerResultSet(rset);
+			}
+ 		} catch (SQLException e) {
+ 			throw new MemberException("주문내역 가져오기 오류!", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		return order;
+	}
+
+	private MemberProductManager handleMemberProductManagerResultSet(ResultSet rset) throws SQLException {
+		MemberProductManager manager = new MemberProductManager();
+		Member member = new Member();
+		member.setMemberId(rset.getString("member_id"));
+		member.setMemberName(rset.getString("member_name"));
+		member.setPassword(rset.getString("member_pwd"));
+		member.setEmail(rset.getString("member_email"));
+		member.setPhone(rset.getString("member_phone"));
+		member.setEnrollDate(rset.getTimestamp("member_enroll_date"));
+		member.setMemberRole(MemberRole.valueOf(rset.getString("member_role")));
+		member.setPoint(rset.getInt("member_point"));
+		member.setAddress(rset.getString("member_address"));
+		member.setAddressEx(rset.getString("member_address_extra"));
+		ProductExt product = new ProductExt();
+		product.setProductCode(rset.getString("product_code"));
+		product.setCategoryCode(rset.getInt("category_code"));
+		product.setProductName(rset.getString("product_name"));
+		product.setProductPrice(rset.getInt("product_price"));
+		product.setProductRegDate(rset.getTimestamp("product_reg_date"));
+		product.setProductStock(rset.getInt("product_stock"));
+		product.setProductSize(ProductSize.valueOf(rset.getString("product_size")));
+		product.setProductColor(rset.getString("product_color"));
+		product.setProductInfo(rset.getString("product_info"));
+		product.setProductPluspoint(rset.getDouble("product_pluspoint"));
+		MemberCart cart = new MemberCart();
+		cart.setCartNo(rset.getInt("cart_no"));
+		cart.setProductCode(rset.getString("product_code"));
+		cart.setMemberId(rset.getString("member_id"));
+		cart.setCartAmount(rset.getInt("cart_amount"));
+		manager.setMember(member);
+		manager.setProductExt(product);
+		manager.setMemberCart(cart);
+		return manager;
+	}
 }

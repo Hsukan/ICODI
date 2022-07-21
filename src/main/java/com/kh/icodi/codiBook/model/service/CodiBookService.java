@@ -39,6 +39,4 @@ public class CodiBookService {
 		}
 		return result;
 	}
-
-	
 }
