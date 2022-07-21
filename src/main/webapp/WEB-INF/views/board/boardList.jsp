@@ -7,7 +7,7 @@
 <%@ include file="/WEB-INF/views/common/header.jsp"%>
 <%
 	List<Board> list = (List<Board>) request.getAttribute("list"); 
-	System.out.println("list@boardList = " + list);
+	//System.out.println("list@boardList = " + list);
 	String searchKeyword = (String) request.getAttribute("searchKetword");
 %>
 <link rel="stylesheet"

@@ -33,6 +33,7 @@ public class CodiBookDao {
 	
 	// 상품 가져오기
 	// findAllByCategoryNo = select * from product where categoryNo = ?
+	//select * from (select rownum rnum, p.* from (select * from product where category_code = ? order by product_reg_date desc) p ) p where rnum between ? and ?
 	public List<ProductExt> findAllByCategoryNo(Connection conn, int categoryNo) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
