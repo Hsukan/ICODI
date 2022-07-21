@@ -3,6 +3,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
+<link rel="stylesheet" href="<%=request.getContextPath()%>/css/productList.css" />
 <%
 	int totalPage = (int)request.getAttribute("totalPage");
 	String searchKeyword = (String) request.getAttribute("searchKeyword");
@@ -13,7 +14,7 @@
 <main>
 	<section>
 		<article>
-			<span>'<%= searchKeyword %>'에 대한 검색 결과</span>
+			<h2>'<%= searchKeyword %>'에 대한 검색 결과</h2>
 			<ul class="productList">
 			
 			</ul>
@@ -24,7 +25,8 @@
 	</section>
 </main>
 <style>	
-	.productList img{width:150px; height:150px;}
+	/* .productList img{width:150px; height:150px;} */
+	/* #productName{width:150px;} */
 </style>
 <script>
 	document.querySelector("#btn-more").addEventListener('click', (e) => {
@@ -40,16 +42,16 @@
 			data : {cPage, searchKeyword},
 			success(response){
 				const ul = document.querySelector(".productList");
-				console.log('response',response);
+				//console.log('response',response);
 				response.forEach((product) => {
 					const {productRenamedFilename} = product.attachmentList[0];
-					console.log(productRenamedFilename);
+					//console.log(productRenamedFilename);
 					const {productCode, productName, productPrice} = product;
 					
 					const li = `
-					<a href="<%= request.getContextPath()%>/product/detail?product_name=\${productName}">					
 						<li class="product">
-							<img src="<%= request.getContextPath()%>/upload/admin/\${productRenamedFilename}" alt="" />
+							<a href="<%= request.getContextPath()%>/product/detail?product_name=\${productName}">					
+							<img src="<%= request.getContextPath()%>/upload/admin/\${productRenamedFilename}" alt="" id="productImg"/>
 							<div class="product-info">
 								<div id="productName">\${productName}</div>
 								<div id="productPrice">\${productPrice}</div>
