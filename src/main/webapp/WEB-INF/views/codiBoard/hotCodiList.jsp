@@ -18,7 +18,7 @@
 		<section>
 			<article>
 				<nav class="ootdMenu">
-					<div id="hot">인기</div>
+					<div id="hot" style="font-weight: bold;">인기</div>
 					<div id="new" onclick="goToNewCodi();">최신</div>
                 </nav>
 				<div class="content-wrap"></div>
@@ -55,7 +55,8 @@ const getPage = (cPage) => {
 
 				const list = `
 				<div class="myCodi" id="myCodi">
-					<img src="data:image/jpeg;base64,\${filename}" id="myCodiImg" data-product="\${useProduct}"/>
+					<img src="data:image/jpeg;base64,\${filename}" id="myCodiImg" data-product="\${useProduct}"  data-codiBoardNo="\${codiBoardNo}" 
+					data-likeCount="\${likeCount}"/>
 					<div class="icodi-info">
                         <img src="<%= request.getContextPath()%>/upload/codiboard/defaultProfile.png">
 
@@ -95,8 +96,9 @@ const getPage = (cPage) => {
 			});
 			[...document.querySelectorAll("#myCodiImg")].forEach((img) => {
 				img.onclick = (e) => {
-					//console.log(img.dataset.product);
-					location.href = "<%= request.getContextPath()%>/codiBoard/codiDetail?useProduct="+`\${img.dataset.product}`;
+					//console.log(img.dataset.codiboardno);
+					location.href = "<%= request.getContextPath()%>/codiBoard/codiDetail?useProduct="+`\${img.dataset.product}`+"&codiBoardNo="+`\${img.dataset.codiboardno}`+
+					"&likeCount="+`\${img.dataset.likecount}`;
 				};
 			});
 			

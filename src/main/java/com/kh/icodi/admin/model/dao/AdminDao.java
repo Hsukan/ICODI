@@ -375,4 +375,27 @@ public class AdminDao {
 		return productList;
 	}
 
+	//select * from codi_board where codi_board_no = ?
+	public String getCodiImg(Connection conn, String codiBoardNo) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		String codiImg = null;
+		String sql = prop.getProperty("getCodiImg");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, codiBoardNo);
+
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				codiImg = rset.getString("filename");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return codiImg;
+	}
+
 }
