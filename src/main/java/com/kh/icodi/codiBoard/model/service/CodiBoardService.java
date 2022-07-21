@@ -31,6 +31,12 @@ public class CodiBoardService {
 		close(conn);
 		return codiBoardList;
 	}
+	public List<CodiBoardExt> findHotCodiBoard(Map<String, Object> param) {
+		Connection conn = getConnection();
+		List<CodiBoardExt> codiBoardList =  codiBoardDao.findHotCodiBoard(conn, param);
+		close(conn);
+		return codiBoardList;
+	}
 
 	public LikeThat checkLiked(Map<String, Object> data) {
 		Connection conn = getConnection();

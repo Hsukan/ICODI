@@ -140,7 +140,7 @@ window.onload = () => {
         </div>
         <div id="main_menu_container">
             <div id="main_menu">
-                <div class="main_menu"><a href="<%= request.getContextPath()%>/codi/newCodiList">ootd</a></div>
+                <div class="main_menu"><a href="<%= request.getContextPath()%>/codi/hotCodiList">ootd</a></div>
                 <div class="main_menu"><a href="<%= request.getContextPath() %>/board/boardList">Community</a></div>
                 <div class="main_menu"><a href="<%= request.getContextPath() %>/product/tops?categoryNo=1" data-alter="tops">Tops</a></div>
                 <div class="main_menu"><a href="<%= request.getContextPath() %>/product/bottoms?categoryNo=2" data-alter="bottoms">Bottoms</a></div>

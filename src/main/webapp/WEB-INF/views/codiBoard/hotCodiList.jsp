@@ -18,8 +18,8 @@
 		<section>
 			<article>
 				<nav class="ootdMenu">
-					<div id="hot" onclick="goToHotCodi();">인기</div>
-					<div id="new">최신</div>
+					<div id="hot">인기</div>
+					<div id="new" onclick="goToNewCodi();">최신</div>
                 </nav>
 				<div class="content-wrap"></div>
 				<div id="btn-more-content">
@@ -30,8 +30,8 @@
 	</main>
 <script>
 // 최신코디 보기
-const goToHotCodi = () => {
-	location.href = "<%= request.getContextPath()%>/codi/hotCodiList"
+const goToNewCodi = () => {
+	location.href = "<%= request.getContextPath()%>/codi/newCodiList"
 }
 
 const paging = (e) => {
@@ -42,7 +42,7 @@ const paging = (e) => {
 
 const getPage = (cPage) => {
 	$.ajax({
-		url : '<%= request.getContextPath()%>/codi/newCodiMore',
+		url : '<%= request.getContextPath()%>/codi/hotCodiMore',
 		method : 'GET',
 		dataType : 'json',
 		data : {cPage},

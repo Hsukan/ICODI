@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import com.kh.icodi.admin.model.dto.ProductAttachment;
 import com.kh.icodi.admin.model.dto.ProductExt;
 import com.kh.icodi.admin.model.dto.ProductSize;
 import com.kh.icodi.common.MemberProductManager;
@@ -459,6 +460,42 @@ public class MemberDao {
 		}
 		return order;
 	}
+	
+	// 상품 코드로 첨부파일 가져오기
+	// findAttachmentByProductCode = select * from product_attachment where product_code = ?
+	public List<ProductAttachment> findAttachmentByProductCode(Connection conn, String productCode) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		List<ProductAttachment> attachments = new ArrayList<>();
+		String sql = prop.getProperty("findAttachmentByProductCode");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, productCode);
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				attachments.add(handleProductAttachmentResultSet(rset));
+			}
+		} catch (SQLException e) {
+			throw new MemberException("주문페이지 첨부파일 조회 오류!", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		return attachments;
+	}
+
+	private ProductAttachment handleProductAttachmentResultSet(ResultSet rset) throws SQLException {
+		ProductAttachment attachments = new ProductAttachment();
+		attachments.setProductAttachNo(rset.getInt("product_attach_no"));
+		attachments.setProductCode(rset.getString("product_code"));
+		attachments.setProductOriginalFilename(rset.getString("product_original_filename"));
+		attachments.setProductRenamedFilename(rset.getString("product_renamed_filename"));
+		attachments.setCodiOriginalFilename(rset.getString("codi_original_filename"));
+		attachments.setCodiRenamedFilename(rset.getString("codi_renamed_filename"));
+		return attachments;
+	}
+
 
 	private MemberProductManager handleMemberProductManagerResultSet(ResultSet rset) throws SQLException {
 		MemberProductManager manager = new MemberProductManager();
