@@ -170,4 +170,12 @@ public class AdminService {
 		return productList;
 	}
 
+	public String getCodiImg(String codiBoardNo) {
+		Connection conn = getConnection();
+		String codiImg = adminDao.getCodiImg(conn, codiBoardNo);
+		
+		close(conn);
+		return codiImg;
+	}
+
 }
