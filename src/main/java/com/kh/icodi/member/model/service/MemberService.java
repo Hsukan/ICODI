@@ -6,10 +6,12 @@ import static com.kh.icodi.common.JdbcTemplate.getConnection;
 import static com.kh.icodi.common.JdbcTemplate.rollback;
 
 import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import com.kh.icodi.admin.model.dto.ProductAttachment;
+import com.kh.icodi.common.MemberCartProductManager;
 import com.kh.icodi.common.MemberProductManager;
 import com.kh.icodi.member.model.dao.MemberDao;
 import com.kh.icodi.member.model.dto.Member;
@@ -160,14 +162,14 @@ public class MemberService {
 		return result;
 	}
 
-	public MemberProductManager insertCart(Map<String, Object> data) {
+	public MemberProductManager buyItNow(Map<String, Object> data) {
 		Connection conn = getConnection();
 		int cartNo = 0;
 		MemberProductManager order = null;
 		try {
 			int result = memberDao.insertCart(conn, data);
 			cartNo = memberDao.findCartNoBySeq(conn);
-			order = memberDao.orderCartView(conn, cartNo);
+			order = memberDao.findOrderListByCartNo(conn, cartNo);
 			String productCode = order.getProductExt().getProductCode();
 			List<ProductAttachment> attachments = memberDao.findAttachmentByProductCode(conn, productCode);
 			if(attachments != null && !attachments.isEmpty()) {
@@ -175,12 +177,89 @@ public class MemberService {
 					order.getProductExt().addAttachment(attach);
 				}
 			}
+			order.getMemberCart().setCartNo(cartNo);
 			commit(conn);
 		} catch(Exception e) {
 			rollback(conn);
 			throw e;
 		} finally {
 			close(conn);
+		}
+		return order;
+	}
+
+	public int insertCart(Map<String, Object> data) {
+		Connection conn = getConnection();
+		int result = 0;
+		try {
+			result = memberDao.insertCart(conn, data);
+			commit(conn);
+		} catch(Exception e) {
+			rollback(conn);
+			throw e;
+		} finally {
+			close(conn);
+		}
+		return result;
+	}
+
+	public int insertProductOrder(Map<String, Object> data) {
+		Connection conn = getConnection();
+		String orderNo = (String)data.get("orderNo");
+		
+		int result = 0;
+		try {
+			result = memberDao.insertProductOrder(conn, data);
+			result = memberDao.insertMemberOrder(conn, data, orderNo);
+			result = memberDao.insertOrderProduct(conn, data, orderNo);
+			result = memberDao.updateMemberPoint(conn, data);
+			result = memberDao.deleteOrderCartNo(conn, data);
+			commit(conn);
+		} catch(Exception e) {
+			rollback(conn);
+			throw e;
+		} finally {
+			close(conn);
+		}
+		return result;
+	}
+
+	public List<MemberCartProductManager> findCartListByMemberId(String memberId) {
+		Connection conn = getConnection();
+		List<MemberCartProductManager> cartList = memberDao.findCartListByMemberId(conn, memberId);
+		close(conn);
+		return cartList;
+	}
+
+	public int deleteCart(int[] cartNo) {
+		Connection conn = getConnection();
+		int result = 0;
+		try {
+			for(int no : cartNo) {
+				result = memberDao.deleteCart(conn, no);
+			}
+			commit(conn);
+		} catch(Exception e) {
+			rollback(conn);
+			throw e;
+		}
+		return result;
+	}
+
+	public List<MemberProductManager> findOrderListByCartNo(int[] cartNo) {
+		Connection conn = getConnection();
+		List<MemberProductManager> order = new ArrayList<>();
+		for(int no : cartNo) {
+			order.add(memberDao.findOrderListByCartNo(conn, no));
+			for(MemberProductManager manager : order) {
+				String productCode = manager.getProductExt().getProductCode();
+				List<ProductAttachment> attachments = memberDao.findAttachmentByProductCode(conn, productCode);
+				if(attachments != null && !attachments.isEmpty()) {
+					for(ProductAttachment attach : attachments) {
+						manager.getProductExt().addAttachment(attach);
+					}
+				}
+			}
 		}
 		return order;
 	}
