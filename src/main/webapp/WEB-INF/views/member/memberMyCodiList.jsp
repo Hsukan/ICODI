@@ -9,7 +9,6 @@
 %>
 <script src="<%= request.getContextPath()%>/js/jquery-3.6.0.js"></script>
 <section id="my-codi-wrapper">
-	<h2> 내가 만든 코디 </h2>
 	<div id="my-codi-container"></div>
 	<hr />
 	<div id='btn-more-container'>
@@ -26,28 +25,37 @@ const getPage = (cPage) => {
 	$.ajax({
 		url : '<%= request.getContextPath() %>/member/memberMyCodiMore',
 		data : {cPage},
-		success(response) {
-			console.log(response);
+		success(codiList) {
+			console.log(codiList);
+			console.log(codiList.length);
 			const container = document.querySelector("#my-codi-container");
-			
-			response.forEach((codiList) => {
-				console.log(codiList);
-				const {codiBoardContent, codiBoardNo, filename, isOpen, likeCount, memberId, regDate, useProduct} = codiList;
+			if(codiList.length === 0) {
+				const nonHtml = `
+					<div class="codi-info-container">
+						<div id="non-codi">등록하신 코디가 없습니다.</div>
+					</div>
+					`;
+				container.insertAdjacentHTML('beforeend', nonHtml);
+			} else {
+				codiList.forEach((codiList) => {
+					const {codiBoardNo, memberId, codiBoardContent, likeCount, filename, isOpen, regDate, useProduct} = codiList;
+					console.log(codiList);
+					
 				const html = `
 					<div class="codi-info-container">
-						<img src="data:image/jpeg;base64,\${filename}" id="myCodiImg"/>
-						<div clss="liked-wrap">
-							받은 좋아요 <span id="likeCount">\${likeCount}</span>
-							<span id="Checkheart">
-							\${likeCount === 0 ? '♡' : '♥'}
-							</span>
+						<div class="codi-img-container">
+							<img src="data:image/jpeg;base64,\${filename}" id="myCodiImg"/>
+						</div>
+						<br />
+						<div class="liked-wrap">
+							<span id="likeCount">받은 좋아요   \${likeCount}</span>
+							<span id="Checkheart">\${likeCount === 0 ? '♡' : '♥'}</span>
 						</div>
 					</div>
 					`;
-					container.insertAdjacentHTML('beforeend', html);
-				
-			});
-			
+				container.insertAdjacentHTML('beforeend', html);
+				});
+			}
 		},
 		error : console.log,
 		complete() {
