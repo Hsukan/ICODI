@@ -19,6 +19,7 @@ public class AdminProductDeleteView extends HttpServlet {
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.getRequestDispatcher("/WEB-INF/views/admin/productDelete.jsp").forward(request, response);
+		
 	}
 
 }
