@@ -5,6 +5,7 @@
 <%@include file = "/WEB-INF/views/common/header.jsp" %>
 <%
 	List<Alarm> list = (List<Alarm>)request.getAttribute("alarmList");
+
 %>
 <!DOCTYPE html>
 <html>
@@ -18,10 +19,19 @@
 <table id="tbl-alarm">
 	<%for(Alarm a : list) {%>
 	<tr>
-		<td><a href="<%=request.getContextPath()%>/csCenter/inquireList?memberId=<%=a.getMemberId()%>"><%=a.getAlarmMessage() %></a></td>
+		<td>
+		<%if(a.getAlarmMessage().contains("게시글")) {%>
+		<a href="<%=request.getContextPath()%>/board/boardView?no=<%=a.getBoardNo()%>"><%=a.getAlarmMessage() %></a>
+		<%}else{ %>
+		<a href="<%=request.getContextPath()%>/csCenter/inquireList?memberId=<%=a.getMemberId()%>"><%=a.getAlarmMessage() %></a>
+		<%} %>
+		</td>
 		<td><%=a.getAlarmDate()%></td>
 	</tr>
 	<%} %>
 </table>
+
+
+
 </body>
 </html>

@@ -14,7 +14,7 @@
 				
 				</ul>
 			<div id='btn-more-container'>
-				<button id="btn-more" value="">더보기(<span id="cPage"></span>/<span id="totalPage"><%= totalPage%></span>)</button>
+				<button id="btn-more" value=""><span id="cPage"></span>/<span id="totalPage"><%= totalPage%></span></button>
 			</div>
 		</article>
 	</section>
@@ -59,12 +59,15 @@
 				document.querySelector('#cPage').innerHTML = cPage;	
 
 				if(cPage == <%= totalPage %>){
-					document.querySelector("#btn-more").disabled = true;
+					const btn = document.querySelector("#btn-more")
+					btn.disabled = true;
+					btn.style.transform='none';
 				}
 			}
 		})
 	};
 	getPage(1);
+	
 </script>
 </body>
 </html>

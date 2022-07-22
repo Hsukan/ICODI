@@ -3,6 +3,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/common/header.jsp"%>
+<script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
 
 <main>
 	<div class="content-wrap">
@@ -102,8 +104,8 @@
 					<table>
 						<tbody>
 							<tr>
-								<th>상품명</th> <%-- 검색기능으로 구현하기 --%>
-								<td><input type="text" name="productName"/></td>
+								<th>상품코드</th> <%-- 검색기능으로 구현하기 --%>
+								<td><input type="text" id="productCode"/></td>
 							</tr>
 							<tr>
 								<th>입/출고 여부</th>
@@ -125,6 +127,31 @@
 			</article>
 		</section>
 	</div>
+	<script>
+	$("#productCode").autocomplete({
+        source(request, response){
+      	  const {term} = request;
+      	  if(!/.+/.test(term)) return;
+      	  
+      	  $.ajax({
+      		  url : "<%= request.getContextPath()%>/productCodeList",
+      		  method: "GET",
+      		  data : {term},
+      		  success(csv){
+      			  const arr = csv.split(",").map((classmate) => ({
+      				 label : classmate,
+      				 value : classmate
+      			  }));
+      			  response(arr);
+      		  },
+      		  error : console.log
+      	  });
+        },
+        focus(e, select){
+      	  return false;
+        }
+      });
+	</script>
 </main>
 </body>
 </html>

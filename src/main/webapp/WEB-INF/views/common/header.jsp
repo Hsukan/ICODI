@@ -25,8 +25,8 @@
 <meta charset="UTF-8">
 <title>ICODI</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-<link rel="stylesheet"
-	href="<%=request.getContextPath() %>/css/style.css" />
+<link rel="stylesheet" href="<%=request.getContextPath() %>/css/style.css" />
+<link rel="stylesheet" href="<%= request.getContextPath() %>/css/codiBoard.css" />
 <script src="<%= request.getContextPath() %>/js/jquery-3.6.0.js"></script>
 <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
@@ -36,11 +36,33 @@
 	.search-btn{width:30px; height: 30px;}
 </style>
 <script>
+$(document).ready(function(){
+	$.ajax({
+		url : "<%=request.getContextPath()%>/viewCodiCnt",
+		method : "POST",
+		success(response){
+			console.log(response);
+			const span = document.querySelector("#codiCnt");
+			span.innerHTML = "<font color=green>"+response+"</font>";
+		},
+		error(xhr,textStatus,err){
+			console.log('err');
+			console.log(xhr, textStatus, err);
+		}
+		
+	})
+});
+
 window.onload = () => {
+
 	<% if(msg != null) { %>	
 		alert("<%= msg %>");
 	<% } %>
+	
+	
 }
+
+	
 </script>
 
 <% if(loginMember != null) {%>
@@ -51,6 +73,7 @@ window.onload = () => {
 	<div id="header">
         <div id="header_of_header_wrapper">
             <div id="header_of_header">
+            	<div class="wrapper_left">총 코디 수 : <span id="codiCnt"></span></div>    	
                 <div class="btn_wrapper_right">
                     <a class="create btn" href="<%= request.getContextPath() %>/codibook/create">· 코디 만들기</a>
                    <a class="cscenter btn" href="<%=request.getContextPath() %>/cs_center">· 고객센터</a>

@@ -17,9 +17,11 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h1>SUPPORT CENTER</h1>
+	<div id="titleContainer">
+		<h1>SUPPORT CENTER</h1>
 	<hr />
-	<h2>문의내용확인</h2>
+	</div>
+	<h2 id="inquireView-h2">문의내용확인</h2>
 	<table id="tbl-inquireView">
 		<tr>
 			<th>등록일</th>
@@ -60,7 +62,7 @@
 			<input type="hidden" name="inquireNo" value="<%=csCenterInquire.getNo()%>"/>
 			<input type="hidden" name="answerNo" value=""/>
 			<input type="hidden" name="answerWriter" value="<%=loginMember != null && loginMember.getMemberRole() == MemberRole.A ? loginMember.getMemberId() : ""%>"/>
-			<textarea name="answerContent"  cols="60" rows="3" value="문의답변을 입력하세요"></textarea>
+			<textarea name="answerContent"  cols="60" rows="3" value="문의답변을 입력하세요" required></textarea>
 			<button id="btn-answer-enroll">등록</button>
 		</form>
 	<%} %>

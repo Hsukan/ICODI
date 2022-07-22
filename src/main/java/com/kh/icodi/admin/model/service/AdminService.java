@@ -170,6 +170,14 @@ public class AdminService {
 		return productList;
 	}
 
+
+	public List<String> findProductList() {
+		Connection conn = getConnection();
+		List<String> list = adminDao.findProductList(conn);
+		close(conn);
+		return list;
+	}
+
 	public String getCodiImg(String codiBoardNo) {
 		Connection conn = getConnection();
 		String codiImg = adminDao.getCodiImg(conn, codiBoardNo);

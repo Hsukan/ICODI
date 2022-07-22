@@ -29,7 +29,7 @@
 												for(ProductAttachment attach : attachments) {
 													if(attach.getProductRenamedFilename() == null) break;
 								%> --%>
-									<img src="<%= request.getContextPath() %>/upload/admin/<%= productList.get(0).getAttachmentList().get(1)%>" />
+									<img src="<%= request.getContextPath() %>/upload/admin/<%= productList.get(0).getAttachmentList().get(0)%>" />
 								<%-- <%
 												}
 											}

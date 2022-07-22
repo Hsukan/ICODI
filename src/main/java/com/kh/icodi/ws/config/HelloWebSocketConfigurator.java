@@ -23,5 +23,7 @@ public class HelloWebSocketConfigurator extends Configurator{
 		userProperties.put("memberId", memberId);
 		System.out.println("[helloWebSocketConfigurator#modifyHandShake] memberId= " + memberId);
 		
+		
+		
 	}
 }
