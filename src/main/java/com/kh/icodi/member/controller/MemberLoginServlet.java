@@ -1,6 +1,7 @@
 package com.kh.icodi.member.controller;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
@@ -12,6 +13,8 @@ import javax.servlet.http.HttpSession;
 import com.kh.icodi.common.IcodiMvcUtils;
 import com.kh.icodi.member.model.dto.Member;
 import com.kh.icodi.member.model.service.MemberService;
+import com.kh.icodi.stats.model.dto.Stats;
+import com.kh.icodi.stats.model.exception.StatsService;
 
 /**
  * Servlet implementation class MemberLoginServlet
@@ -20,7 +23,7 @@ import com.kh.icodi.member.model.service.MemberService;
 public class MemberLoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private MemberService memberService = new MemberService();
-
+	private StatsService statsService = new StatsService();
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.getRequestDispatcher("/WEB-INF/views/member/memberLogin.jsp")
@@ -54,7 +57,10 @@ public class MemberLoginServlet extends HttpServlet {
 				Cookie cookie = new Cookie("saveId", memberId);
 				cookie.setPath(request.getContextPath()); // /icodi -> /icodi로 시작하는 요청주소에 cookie를 함께 전송
 				
-				
+				// 방문자 통계조회 시작
+				Stats stats = new Stats(memberId, null, 0);
+				int result = statsService.insertVisitMember(stats);
+				// 방문자 통계조회 끝
 				
 				if(saveId != null) {
 					cookie.setMaxAge(7 * 24 * 60 * 60); // 7일 유지

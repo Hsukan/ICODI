@@ -48,10 +48,11 @@
 		</tr>
 		<td colspan="2"><textarea class="content" name="content" placeholder="문의내용을 입력해주세요" required></textarea></td>
 	</table>
+	<br />
 	<div>
 		<ol>
-			<li>주말 및 공휴일에는 고객센터 답변이 지연 될 수 있습니다.</li>
-			<li>고객센터 운영시간 : 월-금: 11AM~6PM.</li>
+			<li>※ 주말 및 공휴일에는 고객센터 답변이 지연 될 수 있습니다.</li>
+			<li>※ 고객센터 운영시간 : 월-금: 11AM~6PM.</li>
 		</ol>
 	</div>
 		<input type="submit" value="문의하기"/>

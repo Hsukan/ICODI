@@ -309,4 +309,47 @@ public class CodiBoardDao {
 		}
 		return codiBoardList;
 	}
+	
+	public int countCodiByDate(Connection conn, String codiWhen) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		ResultSet rset = null;
+		String sql = prop.getProperty("countCodiByDate");
+		//select count(*) from codi_board where to_char(reg_date,'YYYYMMDD' )= ?
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, codiWhen);
+			rset = pstmt.executeQuery();
+			if(rset.next())
+				result = rset.getInt(1);
+		} catch (SQLException e) {
+			throw new CodiBoardException("코디수 조회 오류!",e);
+		}finally {
+			close(pstmt);
+		}
+		
+		return result;
+	}
+
+	public int findAllCodiCnt(Connection conn) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		int result = 0;
+		String sql = prop.getProperty("findAllCodiCnt");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			rset = pstmt.executeQuery();
+			if(rset.next()) 
+				result = rset.getInt(1);
+			
+		} catch (SQLException e) {
+			throw new CodiBoardException("코디수 조회 오류!",e);
+		}finally {
+			close(rset);
+			close(pstmt);
+		}
+		
+		return result;
+	}
 }
