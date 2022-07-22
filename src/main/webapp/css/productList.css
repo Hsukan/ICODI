@@ -46,7 +46,7 @@ li{
 .product img{
 	width: 100%;
 	height: 300px;
-	object-fit: cover;
+	object-fit: fill;
 	box-sizing: border-box;
 	vertical-align: middle;
 	border: none;
@@ -70,3 +70,31 @@ a #productPrice {
 .product-info {
 	cursor: pointer;
 }
+
+#btn-more-container {
+	text-align: center;
+	margin-bottom: 30px;
+
+}
+#btn-more-container button{
+	border: none;
+	font-family: "paybooc-Light", sans-serif;
+	font-weight: 600;
+	border-radius: 5px;
+	transition: 0.25s;
+	cursor: pointer;
+	position: relative;
+	text-decoration: none;
+    border: 3px solid #a3a1a1;
+    padding: 3px 15px;
+    color: #a3a1a1;
+
+}
+
+#btn-more-container button:hover{
+	letter-spacing: 2px;
+	transform: scale(1.2);
+	cursor: pointer;
+	background-color: #a3a1a1;
+	color: #e3dede;
+}	
