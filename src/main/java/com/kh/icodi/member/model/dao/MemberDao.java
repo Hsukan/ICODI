@@ -692,7 +692,7 @@ public class MemberDao {
 		return orderList;
 	}
 	
-	private MemberOrderProductManager handleMemberOrderProductResultSet(ResultSet rset) throws SQLException {
+	public static MemberOrderProductManager handleMemberOrderProductResultSet(ResultSet rset) throws SQLException {
 		MemberOrderProductManager manager = new MemberOrderProductManager();
 		Member member = handleMemberResultSet(rset);
 		ProductExt product = handleProductExtResultSet(rset);
@@ -703,8 +703,7 @@ public class MemberDao {
 		return manager;
 	}
 
-
-	private ProductOrder handleProductOrderResultSet(ResultSet rset) throws SQLException {
+	public static ProductOrder handleProductOrderResultSet(ResultSet rset) throws SQLException {
 		ProductOrder order = new ProductOrder();
 		order.setOrderNo(rset.getString("order_no"));
 		order.setOrderTotalPrice(rset.getInt("order_total_price"));
@@ -714,7 +713,6 @@ public class MemberDao {
 		order.setOrderTotalCount(rset.getInt("order_total_count"));
 		return order;
 	}
-
 
 	private MemberCartProductManager handleMemberCartProductResultSet(ResultSet rset) throws SQLException {
 		MemberCartProductManager manager = new MemberCartProductManager();
@@ -749,7 +747,7 @@ public class MemberDao {
 		return manager;
 	}
 	
-	private ProductExt handleProductExtResultSet(ResultSet rset) throws SQLException {
+	public static ProductExt handleProductExtResultSet(ResultSet rset) throws SQLException {
 		ProductExt product = new ProductExt();
 		product.setProductCode(rset.getString("product_code"));
 		product.setCategoryCode(rset.getInt("category_code"));
@@ -773,7 +771,7 @@ public class MemberDao {
 		return cart;
 	}
 	
-	private Member handleMemberResultSet(ResultSet rset) throws SQLException {
+	public static Member handleMemberResultSet(ResultSet rset) throws SQLException {
 		String memberId = rset.getString("member_id"); 
 		String memberName = rset.getString("member_name"); 
 		String password = rset.getString("member_pwd"); 
