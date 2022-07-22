@@ -62,7 +62,7 @@
 			<input type="hidden" name="inquireNo" value="<%=csCenterInquire.getNo()%>"/>
 			<input type="hidden" name="answerNo" value=""/>
 			<input type="hidden" name="answerWriter" value="<%=loginMember != null && loginMember.getMemberRole() == MemberRole.A ? loginMember.getMemberId() : ""%>"/>
-			<textarea name="answerContent"  cols="60" rows="3" value="문의답변을 입력하세요"></textarea>
+			<textarea name="answerContent"  cols="60" rows="3" value="문의답변을 입력하세요" required></textarea>
 			<button id="btn-answer-enroll">등록</button>
 		</form>
 	<%} %>

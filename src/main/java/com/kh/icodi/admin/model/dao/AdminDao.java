@@ -375,4 +375,47 @@ public class AdminDao {
 		return productList;
 	}
 
+	public List<String> findProductList(Connection conn) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		List<String> list = new ArrayList<>();
+		String sql = prop.getProperty("findProductList");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				list.add(rset.getString("product_code"));
+			}
+		} catch (SQLException e) {
+			throw new AdminException("상품 재고 관리 검색 오류", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		return list;
+	}
+	//select * from codi_board where codi_board_no = ?
+	public String getCodiImg(Connection conn, String codiBoardNo) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		String codiImg = null;
+		String sql = prop.getProperty("getCodiImg");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, codiBoardNo);
+
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				codiImg = rset.getString("filename");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return codiImg;
+	}
+
 }

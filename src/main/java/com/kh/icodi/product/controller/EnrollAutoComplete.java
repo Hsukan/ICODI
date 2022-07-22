@@ -1,6 +1,8 @@
 package com.kh.icodi.product.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -9,14 +11,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.kh.icodi.admin.model.dto.ProductExt;
 import com.kh.icodi.admin.model.service.AdminService;
 
 /**
- * Servlet implementation class ProductDetailServlet
+ * Servlet implementation class EnrollAutoComplete
  */
-@WebServlet("/product/detail")
-public class ProductDetailServlet extends HttpServlet {
+@WebServlet("/productCodeList")
+public class EnrollAutoComplete extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private AdminService adminService = new AdminService();
 
@@ -25,13 +26,28 @@ public class ProductDetailServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
-			String productName = request.getParameter("product_name");
-			List<ProductExt> productList = adminService.findProductByProductName(productName);
-			request.setAttribute("productList", productList);
-			request.getRequestDispatcher("/WEB-INF/views/product/productDetail.jsp").forward(request, response);
+			String term = request.getParameter("term");
+			
+			List<String> resultList = new ArrayList<>();
+			List<String> list = adminService.findProductList();
+
+			for(String product : list) {
+				if(product.contains(term)) {
+					resultList.add(product);
+				}
+			}
+
+			response.setContentType("text/csv; charset=utf-8");
+			PrintWriter out = response.getWriter();
+			for(int i = 0; i < resultList.size(); i++) {
+				out.print(resultList.get(i));
+				if(i != resultList.size() - 1)
+					out.print(",");
+			}
 		} catch(Exception e) {
 			e.printStackTrace();
 			throw e;
 		}
 	}
+
 }

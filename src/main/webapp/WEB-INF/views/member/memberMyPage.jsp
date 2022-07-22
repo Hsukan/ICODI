@@ -4,7 +4,7 @@
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 <link rel="stylesheet"
-	href="<%=request.getContextPath() %>/css/member.css" />
+	href="<%=request.getContextPath() %>/css/member.css?" />
 <%
 	String memberId = loginMember.getMemberId();
 	String memberName = loginMember.getMemberName();
@@ -22,67 +22,13 @@
 
 %>
 <style>
-    #modal.modal-overlay {
-        width: 100%;
-        height: 100%;
-        position: absolute;
-        left: 0;
-        top: 0;
-        display: none;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        background: rgba(255, 255, 255, 0.25);
-        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-        backdrop-filter: brightness(0.5);
-        /* border: 1px solid rgba(255, 255, 255, 0.18); */
-    }
-    #modal .modal-window {
-        background: rgba( 255, 255, 255 );
-        /* backdrop-filter: blur( 13.5px );
-        -webkit-backdrop-filter: blur( 13.5px ); */
-        border-radius: 4px;
-        /* border: 1px solid rgba( 255, 255, 255, 0.18 ); */
-        width: 400px;
-        height: 400px;
-        position: relative;
-        top: 0px;
-        padding: 10px;
-    }
-    #modal .title {
-        padding-top: 10px;
-        padding-left: 10px;
-        display: inline;
-        color: gray;
-        
-    }
-    #modal .title h4 {
-        display: inline;
-    }
-    #modal .close-area {
-        display: inline;
-        float: right;
-        padding-right: 10px;
-        cursor: pointer;
-        /* text-shadow: 1px 1px 2px gray; */
-        color: #000;
-    }
-    
-    #modal .content {
-        margin-top: 20px;
-        padding: 0px 10px;
-        text-shadow: 1px 1px 2px gray;
-        color: white;
-    }
-#memberId {
-	outline: none;
-	border: none;
 
-}
 </style>
 <!-- 정보수정 -->
 <div id="myPage-container">
 	<h2>마이페이지</h2>
+	<img src="/icodi/upload/codiboard/defaultProfile.png" id="memberProfileImg">
+	<span id="memberProfileId"><%= memberId %></span>
 	<input type="button" value="정보수정" id="btn-modal-memberUpdate" />
 </div>
 <div id="modal" class="modal-overlay">
@@ -129,8 +75,8 @@
 							<option value="018" <%= phoneChecked(phoneList, "018") %>>018</option>
 							<option value="019" <%= phoneChecked(phoneList, "019") %>>019</option>
 						</select>-
-						<input type="text" name="phone" id="phone2" maxlength="4" style="width: 30px;" value="<%= phones[1] %>" required>-
-						<input type="text" name="phone" id="phone3" maxlength="4" style="width: 30px;" value="<%= phones[2].replace(" ", "") %>" required><br>
+						<input type="text" name="phone" id="phone2" maxlength="4" value="<%= phones[1] %>" required>-
+						<input type="text" name="phone" id="phone3" maxlength="4" value="<%= phones[2].replace(" ", "") %>" required><br>
 						<span id="msgPhone"></span>
 					</td>
 				</tr>
@@ -148,8 +94,9 @@
 					</td>
 				</tr>
 			</table>
-			<input type="submit" value="저장">
-			<input type="button" onclick="deleteMember();" value="탈퇴"/>
+			<hr />
+			<input type="submit" id="btn-save" value="저장">
+			<input type="button" id="btn-delete" onclick="deleteMember();" value="탈퇴"/>
 			</form>
 		</div>
 	</div>
@@ -161,15 +108,16 @@
 
 
 <!-- 내 코디 확인 -->
-
-<form name="myCodiFrm" action="<%= request.getContextPath() %>/member/memberMyCodiList">
-	<input type="hidden" name="memberId" value="<%= loginMember.getMemberId() %>" />
-</form>
-<span id="my-codi-selected" onclick="myCodi();">내 코디 확인</span>
-<form name="myBoardFrm" action="<%= request.getContextPath() %>/member/memberMyBoardList">
-	<input type="hidden" name="memberId" value="<%= loginMember.getMemberId() %>" />
-</form>
-<span id="my-board-selected" onclick="myBoard();">내 게시글 확인</span>
+<div id="myFrm-container">
+	<form class="myFrm" name="myCodiFrm" action="<%= request.getContextPath() %>/member/memberMyCodiList">
+		<input type="hidden" name="memberId" value="<%= loginMember.getMemberId() %>" />
+	</form>
+	<div id="my-codi-selected" onclick="myCodi();">내 코디</div>
+	<form class="myFrm" name="myBoardFrm" action="<%= request.getContextPath() %>/member/memberMyBoardList">
+		<input type="hidden" name="memberId" value="<%= loginMember.getMemberId() %>" />
+	</form>
+	<div id="my-board-selected" onclick="myBoard();">내 게시글</div>
+</div>
 
 
 
@@ -179,7 +127,8 @@
 /** 모달창 띄우기 */
 const modal = document.getElementById("modal");
 function modalOn() {
-    modal.style.display = "flex"
+    modal.style.display = "flex";
+   	$('body').css("overflow", "hidden");
 }
 
 function isModalOn() {
@@ -188,6 +137,7 @@ function isModalOn() {
 
 function modalOff() {
     modal.style.display = "none"
+   	$('body').css("overflow", "scroll");
 }
 
 const btnModal = document.getElementById("btn-modal-memberUpdate")
@@ -261,7 +211,7 @@ const myCodi = () => {
 const email = document.querySelector("#email");
 email.addEventListener('blur', (e) => {
 	if(!/^([\w\.-]+)@([\w-]+)(\.[\w-]+){1,2}$/.test(email.value)) {
-		msgEmail.innerHTML = '이메일 형식이 유효하지 않습니다.';
+		msgEmail.innerHTML = '❌ 이메일 형식이 유효하지 않습니다';
 		msgEmail.style.color = 'red';
 		email.select();
 		return false;
@@ -275,7 +225,7 @@ email.addEventListener('blur', (e) => {
 const phone2 = document.querySelector("#phone2");
 phone2.addEventListener('blur', (e) => {
 	if(!/[0-9]{3,4}/.test(phone2.value)) {
-		msgPhone.innerHTML = '휴대폰 번호를 다시 확인해 주세요.';
+		msgPhone.innerHTML = '❌ 휴대폰 번호를 다시 확인해 주세요';
 		msgPhone.style.color = 'red';
 		phone2.select();
 		return false;
@@ -289,7 +239,7 @@ phone2.addEventListener('blur', (e) => {
 const phone3 = document.querySelector("#phone3");
 phone3.addEventListener('blur', (e) => {
 	if(!/[0-9]{4,}/.test(phone3.value)) {
-		msgPhone.innerHTML = '휴대폰 번호를 다시 확인해 주세요.';
+		msgPhone.innerHTML = '❌ 휴대폰 번호를 다시 확인해 주세요';
 		msgPhone.style.color = 'red';
 		phone3.select();
 		return false;
@@ -306,6 +256,8 @@ document.memberUpdateFrm.onsubmit = (e) => {
 		return false;
 	}
 };
+
+
     
 </script>
 <%!

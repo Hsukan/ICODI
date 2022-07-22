@@ -1,0 +1,228 @@
+@charset "UTF-8";
+/*
+TAB CONTROLS
+Hide radios */
+input[name=tabs] {display: none;}
+input:checked + label[class=cetegoryLabel] {
+	color: black;
+	background-color: rgba(0, 0, 0, 0);
+	transition: all 250ms;
+}
+label[class=cetegoryLabel] {
+	padding: 1em;
+	cursor: pointer;
+	transition: color 250ms;
+	text-align: center;
+	transition: all 250ms;
+	font-weight: bold;
+	color: white;
+	border-radius: 15%;
+	background-color: rgba(83, 228, 126, 0.644);
+}
+label[class=cetegoryLabel]:last-of-type {border: none; }
+label[class=cetegoryLabel]:hover {
+	color: black;
+}
+
+.item img {
+    width: 110px;
+    height: 110px;
+}
+
+.item {
+    list-style: none;
+    width: 111px;
+    height: 111px;
+    float : left;
+    margin: 13px;
+    position : relative;
+}
+#category {
+    width: 500px;
+    margin:0 auto;
+    /* border: 1px solid black; */
+    text-align:center;
+    float : left;
+    margin-top : 20px;
+}
+.label{
+	display : inline-block;
+	margin-right : 10px;
+}
+#container_img {
+    width: 500px;
+    height: 450px;
+    float: left;
+    padding:5px;
+    margin: 15px 30px 5px 0;
+    overflow-y: scroll;
+}
+#container{
+	width: 500px;
+	height: 515px;
+	border: 3px solid gray;
+	margin-top: 30px;
+	display : inline-block;
+	border-radius: 3%;
+}
+article {
+    margin : 0 auto;
+    margin-top:30px;
+    width: 1000px;
+    border: 1px solid black;
+    height: 600px;
+    position: relative;
+    padding-left: 50px;
+}
+#canvas {
+    border: 1px solid black;
+    text-align: center;
+    width: 400px;
+	float:right;
+    margin-right: 20px;
+    height: 510px;
+    margin: 30px 50px 0 0;
+}
+#canvas div{
+    /* border: 1px solid black; */
+    width: 170px;
+}
+.canvasDiv{
+    height: 130px;
+    padding: 10px;
+    position : relative;
+}
+#topReset{
+    z-index: 999;
+    text-align: center;
+    border: 1px solid black;
+    width: 10px;
+    height: 18px; 
+    position: absolute;
+    right:300px;
+    top: 50px;
+}
+#bottomReset{
+    z-index: 999;
+    text-align: center;
+    border: 1px solid black;
+    width: 10px;
+    height: 18px; 
+    position: absolute;
+    right:300px;
+    top: 205px;
+}
+#shoesReset{
+    z-index: 999;
+    text-align: center;
+    border: 1px solid black;
+    width: 10px;
+    height: 18px; 
+    position: absolute;
+    right:300px;
+    top: 375px;
+}
+#accReset{
+    z-index: 999;
+    text-align: center;
+    border: 1px solid black;
+    width: 10px;
+    height: 18px; 
+    position: absolute;
+    right:100px;
+    top: 50px;
+}
+.productPrice{
+    position: absolute;
+    bottom: -20px;
+}
+.img {
+    width: 125px;
+    height: 125px;
+}
+.target {
+   border: 1px solid red;
+}
+#content{
+    resize: none;
+}
+#btnModal{
+	display: none;
+}
+#modal.modal-overlay {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    backdrop-filter: brightness(0.5);
+    /* border: 1px solid rgba(255, 255, 255, 0.18); */
+}
+#modal.modal-overlay1 {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    backdrop-filter: brightness(0.5);
+    /* border: 1px solid rgba(255, 255, 255, 0.18); */
+}
+#modal .modal-window {
+    background: rgba( 255, 255, 255 );
+    border-radius: 4px;
+    /* border: 1px solid rgba( 255, 255, 255, 0.18 ); */
+    width: 400px;
+    height: 400px;
+    position: relative;
+    top: 0px;
+    padding: 10px;   
+}
+#modal .modal-window1 {
+    background: rgba( 255, 255, 255 );
+    /* backdrop-filter: blur( 13.5px );
+    -webkit-backdrop-filter: blur( 13.5px ); */
+    border-radius: 4px;
+    /* border: 1px solid rgba( 255, 255, 255, 0.18 ); */
+    width: 200px;
+    height: 200px;
+    position: relative;
+    top: 356px;
+    padding: 10px;
+}
+#modal .title {
+    padding-top: 10px;
+    padding-left: 10px;
+    display: inline;
+    color: gray;
+    
+}
+#modal .title h4 {
+    display: inline;
+}
+#modal .close-area {
+    display: inline;
+    float: right;
+    padding-right: 10px;
+    cursor: pointer;
+    /* text-shadow: 1px 1px 2px gray; */
+    color: #000;
+}
+
+#modal .content {
+    margin-top: 20px;
+    padding: 0px 10px;
+    text-shadow: 1px 1px 2px gray;
+    color: white;
+}

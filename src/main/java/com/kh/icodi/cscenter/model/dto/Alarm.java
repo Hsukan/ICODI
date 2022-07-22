@@ -4,6 +4,7 @@ import java.sql.Date;
 
 public class Alarm {
 	private int no;
+	private int boardNo;
 	private String memberId;
 	private Date alarmDate;
 	private String alarmMessage;
@@ -11,9 +12,10 @@ public class Alarm {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public Alarm(int no, String memberId, Date alarmDate, String alarmMessage) {
+	public Alarm(int no, int boardNo, String memberId, Date alarmDate, String alarmMessage) {
 		super();
 		this.no = no;
+		this.boardNo = boardNo;
 		this.memberId = memberId;
 		this.alarmDate = alarmDate;
 		this.alarmMessage = alarmMessage;
@@ -23,6 +25,12 @@ public class Alarm {
 	}
 	public void setNo(int no) {
 		this.no = no;
+	}
+	public int getBoardNo() {
+		return boardNo;
+	}
+	public void setBoardNo(int boardNo) {
+		this.boardNo = boardNo;
 	}
 	public String getMemberId() {
 		return memberId;
@@ -44,8 +52,8 @@ public class Alarm {
 	}
 	@Override
 	public String toString() {
-		return "Alarm [no=" + no + ", memberId=" + memberId + ", alarmDate=" + alarmDate + ", alarmMessage="
-				+ alarmMessage + "]";
+		return "Alarm [no=" + no + ", boardNo=" + boardNo + ", memberId=" + memberId + ", alarmDate=" + alarmDate
+				+ ", alarmMessage=" + alarmMessage + "]";
 	}
 	
 	

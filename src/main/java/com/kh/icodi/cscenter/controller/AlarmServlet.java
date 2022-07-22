@@ -34,7 +34,8 @@ public class AlarmServlet extends HttpServlet {
 			String memberId = request.getParameter("alarmMemberId");
 			
 			List<Alarm> alarmList = notificationService.findAlarmById(memberId);
-			System.out.println("지금확인memberId= " + memberId);
+			
+			
 			System.out.println("지금확인alarmList = " + alarmList);
 			request.setAttribute("alarmList", alarmList);
 			

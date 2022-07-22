@@ -85,7 +85,7 @@ window.onload = () => {
             <div class="userMenu">
                 <a href="<%= request.getContextPath()%>/member/memberMyCodiList">마이페이지</a>
                 <a href="#">마이쇼핑</a>
-                <a href="#">카트</a>
+                <a href="<%= request.getContextPath()%>/member/memberCart">카트</a>
                 <%if (loginMember == null){ %>
                 <a href="<%= request.getContextPath()%>/member/memberLogin">LOGIN</a>
                 <% } else {%>

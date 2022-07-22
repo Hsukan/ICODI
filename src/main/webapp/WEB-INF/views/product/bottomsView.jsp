@@ -14,7 +14,7 @@
 			
 			</ul>
 			<div id='btn-more-container'>
-				<button id="btn-more" value="">더보기(<span id="cPage"></span>/<span id="totalPage"><%= totalPage%></span>)</button>
+				<button id="btn-more" value=""><span id="cPage"></span>/<span id="totalPage"><%= totalPage%></span></button>
 			</div>
 		</article>
 	</section>
