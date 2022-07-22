@@ -61,27 +61,25 @@
 					if(product == '') return;
 					
 					const {productCode, productName, productPrice, productSize, productColor, attachmentList} = product;
-					attachmentList.forEach((attach) => {
-						const {productRenamedFilename}	= attach;
-						if(productRenamedFilename == undefined){
-							return;
-						} 
-						const li =
-							`
-							<tr>
-								<td><input type="checkbox" id="pdCode" value="\${productCode}" name="pdCode" /></td>
-								<td><img src="<%= request.getContextPath()%>/upload/admin/\${productRenamedFilename}"
-									id="\${productCode}" class="img"/></td>
-								<td><label for="pdCode">\${productCode}</label></td>
-								<td id="productName">\${productName}</td>
-								<td id="productPrice">\${productPrice}</td>
-								<td id="productSize">\${productSize}</td>
-								<td id="productColor">\${productColor}</td>
-							</tr>
-							`;
-						tbody.insertAdjacentHTML('afterbegin', li);
-					});
-				})
+					const {productRenamedFilename} = attachmentList[0];
+					if(productRenamedFilename == undefined) {
+						return;
+					}
+					const li =
+						`
+						<tr>
+							<td><input type="checkbox" id="pdCode" value="\${productCode}" name="pdCode" /></td>
+							<td><img src="<%= request.getContextPath()%>/upload/admin/\${productRenamedFilename}"
+								id="\${productCode}" class="img"/></td>
+							<td><label for="pdCode">\${productCode}</label></td>
+							<td id="productName">\${productName}</td>
+							<td id="productPrice">\${productPrice}</td>
+							<td id="productSize">\${productSize}</td>
+							<td id="productColor">\${productColor}</td>
+						</tr>
+						`;
+					tbody.insertAdjacentHTML('afterbegin', li);
+				});
 			},
 			error : console.log
 		

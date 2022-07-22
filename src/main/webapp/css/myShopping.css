@@ -1,0 +1,117 @@
+@charset "UTF-8";
+main {
+	max-width: 1024px;
+	margin:0 auto;
+}
+* {
+	margin:0;
+	padding:0;
+}
+a {
+	text-decoration: none;
+	color : black;
+}
+.strong {
+	font-weight: bold;
+}
+.title-wrap {
+	height:60px;
+	display:flex;
+	justify-content: center;
+	align-items: center;
+}
+.date-wrap {
+	height:60px;
+	border:2px solid rgb(22, 160, 133);
+	display:flex;
+	align-items: center;
+}
+.date-wrap > *:not(input){
+	margin: 0 10px;
+}
+.date-wrap > *:not(div) {
+	margin:0 5px;
+}
+.member-info-wrap {
+	height: 420px;
+    width: 24%;
+    border: 1px solid black;
+    border-radius: 5px;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+}
+.member-info-wrap > img:first-child {
+	width: 150px;
+    height: 150px;
+    border-radius: 50%;
+}
+.memerPoint-wrap {
+	display:flex;
+	align-items: center;
+}
+#memberPoint {
+	font-size:25px;
+	font-weight: bold;
+	padding-right: 5px;
+}
+hr {
+	width:90%;
+}
+.member-info-orderList {
+	display:flex;
+	justify-content: space-between;
+}
+.content {
+	width: 73%;
+    align-items: flex-end;
+    margin-top: 10px;
+}
+table {
+	width:100%;
+	border-collapse: collapse;
+}
+.content-header-wrap {
+	height:60px;
+	display:flex;
+	align-items: center;
+}
+table thead tr {
+	border-top:1px solid lightgray;
+	border-bottom: 1px solid lightgray;
+}
+table thead tr th {
+	height:50px;
+	font-weight: normal;
+}
+table tbody td > *{
+	display:flex;
+	justify-content: center;
+	align-items: center;
+}
+table tbody tr {
+	height:70px;
+	border-bottom: 1px solid lightgray;
+}
+table tbody td {
+	font-size:14px;
+}
+.nav-orderInfo-wrap {
+	margin-top:20px;
+	display:flex;
+	justify-content: space-between;
+}
+nav {
+    height: 200px;
+    width: 24%;
+    border-radius: 5px;
+    border: 1px solid black;
+}
+.orderInfo-wrap {
+	width:73%;
+}
+.orderInfo {
+	display:flex;
+}
