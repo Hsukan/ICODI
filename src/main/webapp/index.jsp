@@ -4,75 +4,35 @@
 	pageEncoding="UTF-8"%>
 <!-- src/main/webapp 부터 시작! -->
 <%@include file="/WEB-INF/views/common/header.jsp"%>
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+	<link rel="stylesheet"
+	href="<%=request.getContextPath() %>/css/main.css" />
 <br />
 <br />
-<link rel="stylesheet" type="text/css"
-	href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
-<script type="text/javascript"
-	src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
-<style>
-#newItem img {
-	width: 130px;
-	height: 140px;
-	margin: 0 15px 40px 0;
-}
-
-#newItem {
-	width: 470px;
-	position: absolute;
-	right: 0px;
-	top: 25px;
-}
-
-section {
-	width: 1024px;
-	margin: 0 auto;
-}
-
-#sliderContainer {
-	margin: 0 auto;
-	position: relative;
-}
-
-#slider {
-	width: 550px;
-	height: 400px;
-	position: absolute; left : -210px; border : 10px solid transparent;
-	padding : 0px; z-index : 100; overflow : hidden; white-space : nowrap;
-	box-sizing : border-box; margin-left : 200px;
-	position: relative;
-	left: -210px;
-	border: 10px solid transparent;
-	padding: 0px;
-	z-index: 100;
-	overflow: hidden;
-	white-space: nowrap;
-	box-sizing: border-box;
-	margin-left: 200px;
-}
-
-#slider>li {
-	width: 99.5%;
-	height: 100%;
-	border: 1px solid black;
-	display: inline-block;
-	overflow: hidden;
-	font-size: 15px;
-	font-size: initial;
-	line-height: normal;
-	transition: all 0.5s cubic-bezier(0.4, 1.3, 0.65, 1);
-	/* Slide css animation */
-	background-size: cover;
-	vertical-align: top;
-	box-sizing: border-box;
-	white-space: normal;
-}
-
-#slider img {
-	width: 100%;
-	height: 100%;
-}
-</style>
+    <style>
+        #topwrap{width: 1024px; position: relative;}
+        .topItem{width: 200px; height: 300px; border: 1px solid black; margin-right: 15px;}
+        .topItem span{margin-left: 20px;}
+        .topItem img{width: 100%; height: 60%;}
+        .slick-prev{
+            position: absolute;
+            top: 45%;
+            left: -50px;
+            width: 25px;
+            height: 27px;
+            border-radius: 50%;
+        }
+        .slick-next{
+            position: absolute;
+            top: 45%;
+            right: -50px;
+            width: 25px;
+            height: 27px;
+            border-radius: 50%;
+        }
+    </style>
 <section>
 	<div id="sliderContainer">
 		<ul id="slider">
@@ -95,6 +55,15 @@ section {
 		<div id="newItem">
 		<p style="text-align:right; margin:0 35px 20px 0">신상품</p>
 		</div>
+	</div><br><br>
+	<div id="line" style="width: 1024px; border: 2px solid lightgray;"></div><br><br>
+	<span>TOP</span>
+	<a href="<%=request.getContextPath()%>/product/tops?categoryNo=1">
+	<span style="float: right; margin-right: 15px;">더보기</span>
+	</a>
+	<br><br>
+	<div id="topwrap">
+	
 	</div>
 </section>
 <br />
@@ -107,7 +76,7 @@ section {
 				url : '<%=request.getContextPath()%>/product/newProdcut',
 				dataType: 'json',
 				success(response){
-					console.log("response@index = " + response);
+					console.log("response@newProduct = " + response);
 					const div = document.querySelector("#newItem");
 					
 					response.forEach((product) => {
@@ -141,5 +110,43 @@ section {
           // Actual slide
           dynamicSlider.firstElementChild.style.setProperty("margin-left", "-" + curSlide + "00%");
         }, slideDelay);
-  
+  	
+        const topItem = () => {
+        	$.ajax({
+        		url: '<%=request.getContextPath()%>/product/mainTopItem',
+        		dataType: 'json',
+        		success(response){
+					console.log("response@newTopItem = " + response);
+					const div = document.querySelector("#topwrap");
+					
+					response.forEach((product) => {
+						const {productRenamedFilename} = product.attachmentList[0];
+						const {productCode, productName, productPrice} = product;
+						
+						const img = `
+							<div class="topItem">
+							<a href="<%= request.getContextPath()%>/product/detail?product_name=\${productName}">					
+							<img src="<%= request.getContextPath()%>/upload/admin/\${productRenamedFilename}" alt="" /></a><br /><br />
+							<span>\${productName}</span><br /><br />
+							<span>\${productPrice}</span>
+						</div>
+						`;
+						div.insertAdjacentHTML('beforeend', img);
+					})
+        		},
+        		error: console.log,
+        		complete() {
+        			$(document).ready(function(){
+        	            $('#topwrap').slick({
+        	                infinite: true,
+        	                slidesToShow: 4,
+        	                prevArrow: "<button type='button' class='slick-next'>></button>",
+        	                nextArrow: "<button type='button' class='slick-prev'><</button>"
+        	            });
+        	        });
+        			
+        		}
+        	});
+        };
+        topItem();
 	</script>
