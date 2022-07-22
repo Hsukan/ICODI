@@ -1,5 +1,6 @@
 package com.kh.icodi.admin.model.dao;
 
+import static com.kh.icodi.member.model.dao.MemberDao.*;
 import static com.kh.icodi.common.JdbcTemplate.close;
 
 import java.io.FileReader;
@@ -20,6 +21,7 @@ import com.kh.icodi.admin.model.dto.ProductIO;
 import com.kh.icodi.admin.model.dto.ProductSize;
 import com.kh.icodi.admin.model.exception.AdminException;
 import com.kh.icodi.board.model.dto.BoardExt;
+import com.kh.icodi.common.MemberOrderProductManager;
 
 public class AdminDao {
 	private Properties prop = new Properties();
@@ -434,6 +436,76 @@ public class AdminDao {
 			result = pstmt.executeUpdate();
 		} catch (SQLException e) {
 			throw new AdminException("주문 상품 재고 삭제 오류", e);
+		} finally {
+			close(pstmt);
+		}
+		return result;
+	}
+	
+	// 주문 리스트 조회하기
+	// findOrderListByOrderStatus = select a.* from ( select p.*, a.*, b.*, row_number() over (order by p.order_date desc) rnum from product_order p, member_order m, product_order_product o, product a, member b where m.order_no = o.order_no and o.product_code = a.product_code and m.member_id = b.member_id) a where a.order_status = ? and a.rnum between ? and ? order by order_date
+	public List<MemberOrderProductManager> findOrderListByOrderStatus(Connection conn, Map<String, Object> data) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		List<MemberOrderProductManager> list = new ArrayList<>();
+		String sql = prop.getProperty("findOrderListByOrderStatus");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, (String)data.get("status"));
+			pstmt.setInt(2, (int)data.get("start"));
+			pstmt.setInt(3, (int)data.get("end"));
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				list.add(handleMemberOrderProductResultSet(rset));
+			}
+		} catch (SQLException e) {
+			throw new AdminException("관리자 주문 상태 조회 오류!", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		return list;
+	}
+	
+	// 주문 테이블 개수 조회
+	// getTotalContentOrderList = select count(*) from product_order where order_status = ?
+	public int getTotalContentByOrderStatus(Connection conn, String status) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		int totalContent = 0;
+		String sql = prop.getProperty("getTotalContentOrderList");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, status);
+			rset = pstmt.executeQuery();
+			if(rset.next()) {
+				totalContent = rset.getInt(1);
+			}
+		} catch (SQLException e) {
+			throw new AdminException("상품 개수 조회 오류!", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		return totalContent;
+	}
+	
+	// 주문 상태 변경
+	// updateOrderStatus = update product_order set order_status = ? where order_no = ?
+	public int updateOrderStatus(Connection conn, Map<String, Object> data) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String sql = prop.getProperty("updateOrderStatus");
+
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, (String)data.get("updateStatus"));
+			pstmt.setString(2, (String)data.get("orderNo"));
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new AdminException("주문 상태 변경 오류!", e);
 		} finally {
 			close(pstmt);
 		}
