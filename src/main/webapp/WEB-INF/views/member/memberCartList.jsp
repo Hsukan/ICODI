@@ -11,7 +11,6 @@
 
 <% 
 	List<MemberCartProductManager> cartList = (List<MemberCartProductManager>)request.getAttribute("cartList");
-	Member member = cartList.get(0).getMember();
 	DecimalFormat numFormat = new DecimalFormat("#,###");
 %>
 
@@ -25,10 +24,10 @@
 					</div>
 					<div class="member-info-wrap">
 						<div class="member">
-							<span class="strong"><%= member.getMemberName() %>님</span>은, <%= member.getMemberRole() == MemberRole.U ? "[일반]" : "[관리자]" %>회원이십니다.
+							<span class="strong"><%= loginMember.getMemberName() %>님</span>은, <%= loginMember.getMemberRole() == MemberRole.U ? "[일반]" : "[관리자]" %>회원이십니다.
 						</div>
 						<div class="mileage">
-							적립금 : <span class="strong"><%= numFormat.format(member.getPoint()) %></span>원
+							적립금 : <span class="strong"><%= numFormat.format(loginMember.getPoint()) %></span>원
 						</div>
 					</div>
 					<div class="cart-product-header">장바구니 내역</div>
@@ -91,7 +90,7 @@
 					</table>
 					<div class="delete-wrap">
 						<span>선택상품</span>
-						<button id="delBtn">삭제하기</button>
+						<button id="delBtn" type="button">삭제하기</button>
 					</div>
 					<div class="total-info-wrap">
 						<table class="total">
@@ -144,7 +143,7 @@ document.querySelector("#delBtn").addEventListener('click', (e) => {
 			delCartNo.push(select[i].value);
 		}
 	}
-
+	console.log(delCartNo);
 	// 비동기로 삭제
 	$.ajax({
 		url : '<%= request.getContextPath()%>/member/cartDelete',
@@ -157,6 +156,7 @@ document.querySelector("#delBtn").addEventListener('click', (e) => {
 		error : console.log
 	});
 });
+
 </script>
 </body>
 </html>

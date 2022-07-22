@@ -412,10 +412,31 @@ public class AdminDao {
 				codiImg = rset.getString("filename");
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new AdminException("코디이미지 불러오기 오류!", e);
+		} finally {
+			close(rset);
+			close(pstmt);
 		}
-		
 		return codiImg;
 	}
-
+	
+	// 주문 상품 재고 삭제
+	// deleteOrderProductStock = insert into product_io values (seq_product_io_no.nextval, ?, 'O', ?)
+	public int deleteOrderProductStock(Connection conn, Map<String, Object> product) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String sql = prop.getProperty("deleteOrderProductStock");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, (String)product.get("productCode"));
+			pstmt.setInt(2, Integer.parseInt((String)product.get("productAmount")));
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new AdminException("주문 상품 재고 삭제 오류", e);
+		} finally {
+			close(pstmt);
+		}
+		return result;
+	}
 }

@@ -6,6 +6,7 @@ import static com.kh.icodi.common.JdbcTemplate.getConnection;
 import static com.kh.icodi.common.JdbcTemplate.rollback;
 
 import java.sql.Connection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,7 +15,6 @@ import com.kh.icodi.admin.model.dto.Product;
 import com.kh.icodi.admin.model.dto.ProductAttachment;
 import com.kh.icodi.admin.model.dto.ProductExt;
 import com.kh.icodi.admin.model.dto.ProductIO;
-import com.kh.icodi.board.model.dto.BoardExt;
 
 public class AdminService {
 	private AdminDao adminDao = new AdminDao();
@@ -181,9 +181,25 @@ public class AdminService {
 	public String getCodiImg(String codiBoardNo) {
 		Connection conn = getConnection();
 		String codiImg = adminDao.getCodiImg(conn, codiBoardNo);
-		
 		close(conn);
 		return codiImg;
+	}
+
+	public int deleteOrderProductStock(List<Map<String, Object>> list) {
+		Connection conn = getConnection();
+		int result = 0;
+		try {
+			for(Map<String, Object> product : list) {
+				result = adminDao.deleteOrderProductStock(conn, product); 
+			}
+			commit(conn);
+		} catch(Exception e) {
+			rollback(conn);
+			throw e;
+		} finally {			
+			close(conn);
+		}
+		return result;
 	}
 
 }
