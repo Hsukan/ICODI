@@ -8,7 +8,6 @@
 <script src="https://unpkg.com/html2canvas@1.4.1/dist/html2canvas.js"></script>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/codiBook.css" />
 <article>
-<div id="container">
 	<div id="category">
 			<div class="label">
 			<input type="radio" value="<%= CategoryNo.stringOf("TOP") %>" id="top" name="tabs" /> 
@@ -27,6 +26,7 @@
 			<label for="acc" class="cetegoryLabel">ACC</label>
 			</div>
 	</div>
+<div id="container">
 	<div id="container_img" class="div">
 		<ul>
 		</ul>
@@ -182,7 +182,7 @@ btnSave.onclick = (e) => {
 	partShot();
 	document.querySelector("#btnModal").click();
 };
-function partShot() {
+<%-- function partShot() {
     //특정부분 스크린샷
    
      html2canvas(document.getElementById("canvas")).then(function (canvas) {
@@ -199,7 +199,7 @@ function partShot() {
 
 		document.querySelector("[name=memberId]").value = memberId;
 		document.querySelector("[name=useProductArr]").value = useProductArr;
- };
+ }; --%>
 
  const reset = () => {
 
