@@ -103,8 +103,10 @@ ul{
     width: 105%;
     height: 50px;
     color: #fff;
-    cursor: pointer;  
+    cursor: pointer;
+
 }
+
 
 .link a{
     font-size: 12px;
