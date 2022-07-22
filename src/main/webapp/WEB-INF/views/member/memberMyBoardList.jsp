@@ -40,7 +40,7 @@
 			<td><%= new SimpleDateFormat("yyyy-MM-dd HH:mm").format(board.getRegDate()) %></td>
 			<td>
 				<% if(board.getAttachCount() > 0){ %>
-				<img src="<%= request.getContextPath() %>/images/file.png" alt="" style="width: 16px;" />
+				<img src="<%= request.getContextPath() %>/images/logo.png" alt="" style="width: 16px;" />
 				<% } %>
 			</td>
 			<td><%= board.getReadCount() %></td>

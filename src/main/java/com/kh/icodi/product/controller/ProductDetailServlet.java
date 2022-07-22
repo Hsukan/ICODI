@@ -26,7 +26,6 @@ public class ProductDetailServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			String productName = request.getParameter("product_name");
-			System.out.println("productName = " + productName);
 			List<ProductExt> productList = adminService.findProductByProductName(productName);
 			request.setAttribute("productList", productList);
 			request.getRequestDispatcher("/WEB-INF/views/product/productDetail.jsp").forward(request, response);

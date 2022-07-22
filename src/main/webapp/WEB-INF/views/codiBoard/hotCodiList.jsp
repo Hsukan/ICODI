@@ -18,8 +18,8 @@
 		<section>
 			<article>
 				<nav class="ootdMenu">
-					<div id="hot" onclick="goToHotCodi();">인기</div>
-					<div id="new" style="font-weight: bold;">최신</div>
+					<div id="hot" style="font-weight: bold;">인기</div>
+					<div id="new" onclick="goToNewCodi();">최신</div>
                 </nav>
 				<div class="content-wrap"></div>
 				<div id="btn-more-content">
@@ -30,8 +30,8 @@
 	</main>
 <script>
 // 최신코디 보기
-const goToHotCodi = () => {
-	location.href = "<%= request.getContextPath()%>/codi/hotCodiList"
+const goToNewCodi = () => {
+	location.href = "<%= request.getContextPath()%>/codi/newCodiList"
 }
 
 const paging = (e) => {
@@ -42,7 +42,7 @@ const paging = (e) => {
 
 const getPage = (cPage) => {
 	$.ajax({
-		url : '<%= request.getContextPath()%>/codi/newCodiMore',
+		url : '<%= request.getContextPath()%>/codi/hotCodiMore',
 		method : 'GET',
 		dataType : 'json',
 		data : {cPage},
@@ -55,7 +55,8 @@ const getPage = (cPage) => {
 
 				const list = `
 				<div class="myCodi" id="myCodi">
-					<img src="data:image/jpeg;base64,\${filename}" id="myCodiImg" data-product="\${useProduct}" data-codiBoardNo="\${codiBoardNo}"/>
+					<img src="data:image/jpeg;base64,\${filename}" id="myCodiImg" data-product="\${useProduct}"  data-codiBoardNo="\${codiBoardNo}" 
+					data-likeCount="\${likeCount}"/>
 					<div class="icodi-info">
                         <img src="<%= request.getContextPath()%>/upload/codiboard/defaultProfile.png">
 
@@ -95,9 +96,9 @@ const getPage = (cPage) => {
 			});
 			[...document.querySelectorAll("#myCodiImg")].forEach((img) => {
 				img.onclick = (e) => {
-					console.log(e.src);
-					location.href = "<%= request.getContextPath()%>/codiBoard/codiDetail?useProduct="+`\${img.dataset.product}`+"&codiBoardNo="+`\${img.dataset.codiBoardNo}`+
-					"&likeCount="+`\${img.dataset.likecount}`;;
+					//console.log(img.dataset.codiboardno);
+					location.href = "<%= request.getContextPath()%>/codiBoard/codiDetail?useProduct="+`\${img.dataset.product}`+"&codiBoardNo="+`\${img.dataset.codiboardno}`+
+					"&likeCount="+`\${img.dataset.likecount}`;
 				};
 			});
 			

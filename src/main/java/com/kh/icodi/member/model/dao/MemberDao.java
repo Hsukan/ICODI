@@ -15,8 +15,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import com.kh.icodi.admin.model.dto.ProductAttachment;
 import com.kh.icodi.admin.model.dto.ProductExt;
 import com.kh.icodi.admin.model.dto.ProductSize;
+import com.kh.icodi.common.MemberCartProductManager;
 import com.kh.icodi.common.MemberProductManager;
 import com.kh.icodi.member.model.dto.Member;
 import com.kh.icodi.member.model.dto.MemberCart;
@@ -62,20 +64,6 @@ public class MemberDao {
 		}
 		
 		return member;
-	}
-	
-	private Member handleMemberResultSet(ResultSet rset) throws SQLException {
-		String memberId = rset.getString("member_id"); 
-		String memberName = rset.getString("member_name"); 
-		String password = rset.getString("member_pwd"); 
-		String email = rset.getString("member_email"); 
-		String phone = rset.getString("member_phone"); 
-		Timestamp enrollDate = rset.getTimestamp("member_enroll_date"); 
-		MemberRole memberRole = MemberRole.valueOf(rset.getString("member_role")); 
-		int point = rset.getInt("member_point"); 
-		String address = rset.getString("member_address");
-		String addressEx = rset.getString("member_address_extra");
-		return new Member(memberId, memberName, password, email, phone, enrollDate, memberRole, point, address, addressEx);
 	}
 	
 	public int insertMember(Connection conn, Member member) {
@@ -396,7 +384,7 @@ public class MemberDao {
 		PreparedStatement pstmt = null;
 		int result = 0;
 		String sql = prop.getProperty("insertCart");
-		System.out.println("productCode@dao = " + (String)data.get("productCode"));
+
 		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, (String)data.get("productCode"));
@@ -436,7 +424,7 @@ public class MemberDao {
 
 	// 장바구니 번호로 주문내역 가져오기
 	// orderCartView = select m.*, p.*, c.* from member m, product p, cart c where m.member_id = ( select member_id from cart where cart_no = ? ) and p.product_code = ( select product_code from cart where cart_no = ? ) and c.cart_no = ?
-	public MemberProductManager orderCartView(Connection conn, int cartNo) {
+	public MemberProductManager findOrderListByCartNo(Connection conn, int cartNo) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		MemberProductManager order = null;
@@ -459,20 +447,233 @@ public class MemberDao {
 		}
 		return order;
 	}
+	
+	// 상품 코드로 첨부파일 가져오기
+	// findAttachmentByProductCode = select * from product_attachment where product_code = ?
+	public List<ProductAttachment> findAttachmentByProductCode(Connection conn, String productCode) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		List<ProductAttachment> attachments = new ArrayList<>();
+		String sql = prop.getProperty("findAttachmentByProductCode");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, productCode);
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				attachments.add(handleProductAttachmentResultSet(rset));
+			}
+		} catch (SQLException e) {
+			throw new MemberException("주문페이지 첨부파일 조회 오류!", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		return attachments;
+	}
+	
+	// 상품 주문 테이블 추가
+	// insertProductOrder = insert into product_order values(?, ?, ?, default, default, ?)
+	public int insertProductOrder(Connection conn, Map<String, Object> data) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String sql = prop.getProperty("insertProductOrder");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, (String)data.get("orderNo"));
+			pstmt.setInt(2, (int)data.get("totalPrice"));
+			pstmt.setString(3, (String)data.get("payment"));
+			pstmt.setInt(4, (int)data.get("cartAmount"));
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new MemberException("주문 테이블 추가 오류!", e);
+		} finally {
+			close(pstmt);
+		}
+		return result;
+	}
+	
+	// 방금 추가된 주문 번호 조회
+	// findOrderNo = select seq_product_order_no.currval from dual
+	public int findOrderNo(Connection conn) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		int orderNo = 0;
+		String sql = prop.getProperty("findOrderNo");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			rset = pstmt.executeQuery();
+			if(rset.next()) {
+				orderNo = rset.getInt(1);
+			}
+		} catch (SQLException e) {
+			throw new MemberException("주문 번호 조회 오류!", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		return orderNo;
+	}
+	
+	// 회원_주문 테이블 추가
+	// insertMemberOrder = insert into member_order values (?, ?)
+	public int insertMemberOrder(Connection conn, Map<String, Object> data, String orderNo) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String sql = prop.getProperty("insertMemberOrder");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, (String)data.get("memberId"));
+			pstmt.setString(2, orderNo);
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new MemberException("회원_주문 테이블 추가 오류!", e);
+		} finally {
+			close(pstmt);
+		}
+		return result;
+	}
+	
+	// 주문_상품 테이블 추가
+	// insertOrderProduct = insert into product_order_product values(?, ?)
+	public int insertOrderProduct(Connection conn, Map<String, Object> data, String orderNo) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String sql = prop.getProperty("insertOrderProduct");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, orderNo);
+			pstmt.setString(2, (String)data.get("productCode"));
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new MemberException("주문_상품 테이블 추가 오류!", e);
+		} finally {
+			close(pstmt);
+		}
+		return result;
+	}
+	
+	// 회원 적립금 업데이트
+	// updateMemberPoint = update member set member_point = member_point + ? where member_id = ?
+	public int updateMemberPoint(Connection conn, Map<String, Object> data) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String sql = prop.getProperty("updateMemberPoint");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, (int)data.get("addPoint"));
+			pstmt.setString(2, (String)data.get("memberId"));
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new MemberException("회원 적립금 업데이트 오류!", e);
+		} finally {
+			close(pstmt);
+		}
+		return result;
+	}
+	
+	// 주문한 상품 장바구니에서 삭제
+	// deleteOrderCartNo = delete from cart where cart_no = ?
+	public int deleteOrderCartNo(Connection conn, Map<String, Object> data) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String sql = prop.getProperty("deleteOrderCartNo");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, (int)data.get("cartNo"));
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new MemberException("주문상품 장바구니 삭제 오류!", e);
+		} finally {
+			close(pstmt);
+		}
+		return result;
+	}
+	
+	// 장바구니 리스트 보여주기
+	// findCartListByMemberId = select c.*, p.*, m.* from cart c, product p, member m where c.product_code = p.product_code and c.member_id = ? and m.member_id = ?
+	public List<MemberCartProductManager> findCartListByMemberId(Connection conn, String memberId) {
+		PreparedStatement pstmt = null;
+		List<MemberCartProductManager> cartList = new ArrayList<>();
+		ResultSet rset = null;
+		String sql = prop.getProperty("findCartListByMemberId");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, memberId);
+			pstmt.setString(2, memberId);
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				cartList.add(handleMemberCartProductResultSet(rset));
+			}
+		} catch (SQLException e) {
+			throw new MemberException("장바구니 리스트 조회 오류!", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		return cartList;
+	}
+	
+	// 장바구니 상품 삭제
+	// deleteCart = delete from cart where cart_no = ?
+	public int deleteCart(Connection conn, int no) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String sql = prop.getProperty("deleteCart");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, no);
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new MemberException("장바구니 상품 삭제 오류!", e);
+		} finally {
+			close(pstmt);
+		}
+		return result;
+	}
+	
+	private MemberCartProductManager handleMemberCartProductResultSet(ResultSet rset) throws SQLException {
+		MemberCartProductManager manager = new MemberCartProductManager();
+		MemberCart cart = handleMemberCartResultSet(rset);
+		ProductExt product = handleProductExtResultSet(rset);
+		Member member = handleMemberResultSet(rset);
+		manager.setCart(cart);
+		manager.setProduct(product);
+		manager.setMember(member);
+		return manager;
+	}
+
+	private ProductAttachment handleProductAttachmentResultSet(ResultSet rset) throws SQLException {
+		ProductAttachment attachments = new ProductAttachment();
+		attachments.setProductAttachNo(rset.getInt("product_attach_no"));
+		attachments.setProductCode(rset.getString("product_code"));
+		attachments.setProductOriginalFilename(rset.getString("product_original_filename"));
+		attachments.setProductRenamedFilename(rset.getString("product_renamed_filename"));
+		attachments.setCodiOriginalFilename(rset.getString("codi_original_filename"));
+		attachments.setCodiRenamedFilename(rset.getString("codi_renamed_filename"));
+		return attachments;
+	}
 
 	private MemberProductManager handleMemberProductManagerResultSet(ResultSet rset) throws SQLException {
 		MemberProductManager manager = new MemberProductManager();
-		Member member = new Member();
-		member.setMemberId(rset.getString("member_id"));
-		member.setMemberName(rset.getString("member_name"));
-		member.setPassword(rset.getString("member_pwd"));
-		member.setEmail(rset.getString("member_email"));
-		member.setPhone(rset.getString("member_phone"));
-		member.setEnrollDate(rset.getTimestamp("member_enroll_date"));
-		member.setMemberRole(MemberRole.valueOf(rset.getString("member_role")));
-		member.setPoint(rset.getInt("member_point"));
-		member.setAddress(rset.getString("member_address"));
-		member.setAddressEx(rset.getString("member_address_extra"));
+		Member member = handleMemberResultSet(rset);
+		ProductExt product = handleProductExtResultSet(rset);
+		MemberCart cart = handleMemberCartResultSet(rset);
+		manager.setMember(member);
+		manager.setProductExt(product);
+		manager.setMemberCart(cart);
+		return manager;
+	}
+	
+	private ProductExt handleProductExtResultSet(ResultSet rset) throws SQLException {
 		ProductExt product = new ProductExt();
 		product.setProductCode(rset.getString("product_code"));
 		product.setCategoryCode(rset.getInt("category_code"));
@@ -484,14 +685,29 @@ public class MemberDao {
 		product.setProductColor(rset.getString("product_color"));
 		product.setProductInfo(rset.getString("product_info"));
 		product.setProductPluspoint(rset.getDouble("product_pluspoint"));
+		return product;
+	}
+	
+	private MemberCart handleMemberCartResultSet(ResultSet rset) throws SQLException {
 		MemberCart cart = new MemberCart();
 		cart.setCartNo(rset.getInt("cart_no"));
 		cart.setProductCode(rset.getString("product_code"));
 		cart.setMemberId(rset.getString("member_id"));
 		cart.setCartAmount(rset.getInt("cart_amount"));
-		manager.setMember(member);
-		manager.setProductExt(product);
-		manager.setMemberCart(cart);
-		return manager;
+		return cart;
+	}
+	
+	private Member handleMemberResultSet(ResultSet rset) throws SQLException {
+		String memberId = rset.getString("member_id"); 
+		String memberName = rset.getString("member_name"); 
+		String password = rset.getString("member_pwd"); 
+		String email = rset.getString("member_email"); 
+		String phone = rset.getString("member_phone"); 
+		Timestamp enrollDate = rset.getTimestamp("member_enroll_date"); 
+		MemberRole memberRole = MemberRole.valueOf(rset.getString("member_role")); 
+		int point = rset.getInt("member_point"); 
+		String address = rset.getString("member_address");
+		String addressEx = rset.getString("member_address_extra");
+		return new Member(memberId, memberName, password, email, phone, enrollDate, memberRole, point, address, addressEx);
 	}
 }

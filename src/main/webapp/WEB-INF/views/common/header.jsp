@@ -62,7 +62,7 @@ window.onload = () => {
             <div class="userMenu">
                 <a href="<%= request.getContextPath()%>/member/memberMyCodiList">마이페이지</a>
                 <a href="#">마이쇼핑</a>
-                <a href="#">카트</a>
+                <a href="<%= request.getContextPath()%>/member/memberCart">카트</a>
                 <%if (loginMember == null){ %>
                 <a href="<%= request.getContextPath()%>/member/memberLogin">LOGIN</a>
                 <% } else {%>
@@ -117,7 +117,7 @@ window.onload = () => {
         </div>
         <div id="main_menu_container">
             <div id="main_menu">
-                <div class="main_menu"><a href="<%= request.getContextPath()%>/codi/newCodiList">ootd</a></div>
+                <div class="main_menu"><a href="<%= request.getContextPath()%>/codi/hotCodiList">ootd</a></div>
                 <div class="main_menu"><a href="<%= request.getContextPath() %>/board/boardList">Community</a></div>
                 <div class="main_menu"><a href="<%= request.getContextPath() %>/product/tops?categoryNo=1" data-alter="tops">Tops</a></div>
                 <div class="main_menu"><a href="<%= request.getContextPath() %>/product/bottoms?categoryNo=2" data-alter="bottoms">Bottoms</a></div>

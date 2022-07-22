@@ -239,6 +239,18 @@ const productDelete = (e) => {
 document.querySelectorAll("button").forEach((button) => {
 	button.addEventListener('click', (e) => {
 		const frm = document.totalProductFrm;
+		const tbody = document.querySelector(".totalProductList tbody");
+		const productCode = document.querySelectorAll("[name=productCode]");
+		
+		/* <input type="hidden" name="productCode" value="\${productCode}" />
+			<input type="hidden" name="productCount" value="1"/> */
+		
+			
+		if(tbody.children.length == 0) {
+			alert("상품을 선택해주세요.");
+			return;
+		}
+		
 		if(e.target.id === 'buy') {
 			frm.action = "<%= request.getContextPath()%>/product/order";
 			frm.submit();
@@ -248,7 +260,7 @@ document.querySelectorAll("button").forEach((button) => {
 			frm.submit();
 			return;
 		}
-	});
+	})
 })
 
 </script>
