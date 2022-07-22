@@ -43,8 +43,9 @@ const getPage = (cPage) => {
 					
 				const html = `
 					<div class="codi-info-container">
-						<div class="codi-img-container">
-							<img src="data:image/jpeg;base64,\${filename}" id="myCodiImg"/>
+						<div class="codi-img-container" style="cursor: pointer;">
+							<img src="data:image/jpeg;base64,\${filename}" id="myCodiImg" data-product="\${useProduct}"  data-codiBoardNo="\${codiBoardNo}" 
+								data-likeCount="\${likeCount}"/>
 						</div>
 						<br />
 						<div class="liked-wrap">
@@ -64,6 +65,14 @@ const getPage = (cPage) => {
 			if(cPage == <%= totalPage %>){
 				document.querySelector("#btn-more").disabled = true;
 			}
+			
+			[...document.querySelectorAll("#myCodiImg")].forEach((img) => {
+				img.onclick = (e) => {
+					//console.log(img.dataset.codiboardno);
+					location.href = "<%= request.getContextPath()%>/codiBoard/codiDetail?useProduct="+`\${img.dataset.product}`+"&codiBoardNo="+`\${img.dataset.codiboardno}`+
+					"&likeCount="+`\${img.dataset.likecount}`;
+				};
+			});
 		}
 	})
 };
