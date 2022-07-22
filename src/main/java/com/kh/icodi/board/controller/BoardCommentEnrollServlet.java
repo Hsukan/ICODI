@@ -12,6 +12,8 @@ import com.kh.icodi.board.model.dto.Board;
 import com.kh.icodi.board.model.dto.BoardComment;
 import com.kh.icodi.board.model.dto.CommentLevel;
 import com.kh.icodi.board.model.service.BoardService;
+import com.kh.icodi.cscenter.model.dto.CsCenterInquire;
+import com.kh.icodi.notification.model.service.NotificationService;
 
 /**
  * 
@@ -20,6 +22,7 @@ import com.kh.icodi.board.model.service.BoardService;
 public class BoardCommentEnrollServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private BoardService boardService = new BoardService();
+	private NotificationService notificationService = new NotificationService();
 
 	/**
 	 * DML
@@ -41,6 +44,7 @@ public class BoardCommentEnrollServlet extends HttpServlet {
 			
 			// 댓글 작성시 게시글 작성자에게 알림 보내기
 			Board board = boardService.findByNo(boardNo);
+			result = notificationService.notifyBoardAnswer(board);
 			
 			//3. 응답(redirect : DML)
 			response.sendRedirect(request.getContextPath() + "/board/boardView?no=" + boardNo);

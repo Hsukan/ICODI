@@ -1,1 +1,80 @@
 @charset "UTF-8";
+/*공통*/
+ul,li {list-style: none;}
+
+section{
+	display:flex;
+	justify-content : space-between;
+	margin: 100px 0 30px 0;}
+
+
+
+/*왼쪽 박스*/
+.nav-wrap {
+	width:250px;
+	padding: 10px;
+	height : 220px;
+	box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 1px, rgba(0, 0, 0, 0.07) 0px 2px 2px, rgba(0, 0, 0, 0.07) 0px 4px 4px, rgba(0, 0, 0, 0.07) 0px 8px 8px, rgba(0, 0, 0, 0.07) 0px 16px 16px;
+}
+
+.nav-wrap ul li {
+	margin: 20px 0;
+}
+
+.nav-wrap ul li a{
+	font-size : 20px;
+}
+
+.nav-wrap ul li a:hover {
+	color :  rgb(22, 160, 133);
+}
+/*가운데 박스*/
+#content-center{
+	border : 1px solid black;
+	width : 300px;
+}
+
+/*오른쪽 박스*/
+/*상품등록/삭제 박스*/
+
+#content-wrap{
+	display: flex;
+	flex-direction: column;	
+	padding : 20px;
+	width : 250px;
+}
+
+.product-content{
+	display:flex;
+	justify-content: center;
+    text-align: center;
+    height: 250px;
+}
+.product-content span {
+	margin-top: 10px;
+}
+.product-content-icon {
+	margin : 10px 10px;
+	width: 150px;
+	padding : 10px;
+    height: 120px;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    background-color : #EEEEEE;
+    }
+
+#content-wrap h2 {
+	margin-bottom : 5px;
+	margin-left : 20px; 
+}
+
+.product-content-icon i{
+color:rgb(22, 160, 133);
+font-size: 80px;
+ }
+#btn-product-enroll, #btn-product-delete{
+	display:flex;
+	flex-direction: column;
+	}

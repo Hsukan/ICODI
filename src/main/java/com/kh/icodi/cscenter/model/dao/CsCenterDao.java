@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import com.kh.icodi.board.model.dto.Board;
 import com.kh.icodi.cscenter.model.dto.Alarm;
 import com.kh.icodi.cscenter.model.dto.CsCenter;
 import com.kh.icodi.cscenter.model.dto.CsCenterInquire;
@@ -288,12 +289,13 @@ public class CsCenterDao {
 	public int insertAlarm(Connection conn, CsCenterInquire csCenterInquire) {
 		PreparedStatement pstmt = null;
 		int result= 0;
-		//insert into alarm (no,member_id,alarm_date,alarm_message) values(seq_alarm_no.nextval,'eedongha1',default,'ㅎㅇㅎㅇ2')
+		//insert into alarm (no,member_id,alarm_date,board_no,alarm_message) values(seq_alarm_no.nextval,?,default,?,?)
 		String sql = prop.getProperty("insertAlarm");
 		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, csCenterInquire.getMemberId());
-			pstmt.setString(2, csCenterInquire.getTitle() + "에 답변이 달렸습니다.");
+			pstmt.setInt(2, 0);
+			pstmt.setString(3, csCenterInquire.getTitle() + " 문의에 답변이 달렸습니다.");
 			result = pstmt.executeUpdate();
 		} catch (SQLException e) {
 			throw new CsCenterException("알람 추가 오류!",e); 
@@ -317,10 +319,11 @@ public class CsCenterDao {
 			rset = pstmt.executeQuery();
 			
 			while(rset.next()) {
-				
+				int boardNo = rset.getInt("board_no");
 				Date alarmDate = rset.getDate("alarm_date");
 				String alarmMessage = rset.getString("alarm_message");
-				Alarm alarm = new Alarm(0, memberId, alarmDate, alarmMessage);
+				Alarm alarm = new Alarm(0, boardNo, memberId, alarmDate, alarmMessage);
+				System.out.println("alarm = " + alarm);
 				list.add(alarm);
 			}
 			
@@ -333,6 +336,32 @@ public class CsCenterDao {
 		}
 		
 		return list;
+	}
+
+	public int insertBoardAlarm(Connection conn, Board board) {
+		PreparedStatement pstmt = null;
+		int result= 0;
+		//insert into alarm (no,member_id,alarm_date,alarm_message) values(seq_alarm_no.nextval,?,default,?)
+		String sql = prop.getProperty("insertAlarm");
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, board.getWriter());
+			pstmt.setInt(2, board.getNo());
+			pstmt.setString(3, board.getTitle() + " 게시글에 답변이 달렸습니다.");
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new CsCenterException("알람 추가 오류!",e); 
+		}finally {
+			close(pstmt);
+		}
+		
+		
+		return result;
+	}
+
+	public List<Alarm> findAlarmById(Connection conn) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 

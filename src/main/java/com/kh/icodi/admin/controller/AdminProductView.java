@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 import com.kh.icodi.admin.model.dto.ProductExt;
 import com.kh.icodi.codiBook.model.service.CodiBookService;
-import com.kh.icodi.member.model.dto.Member;
 
 /**
  * Servlet implementation class AdminProductView
@@ -30,10 +29,11 @@ public class AdminProductView extends HttpServlet {
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		try {
+		try { 
 			request.setCharacterEncoding("utf-8");
 			int categoryNo = Integer.parseInt(request.getParameter("categoryNo"));
 			List<ProductExt> product = codiBookService.findAllByCategoryNo(categoryNo);
+
 			Gson gson = new Gson();
 			response.setContentType("application/json; charset=utf-8");
 			response.getWriter().print(gson.toJson(product));
