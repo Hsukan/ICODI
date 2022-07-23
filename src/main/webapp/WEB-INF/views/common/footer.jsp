@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <link rel="stylesheet" href="<%= request.getContextPath() %>/css/style.css" />
-		<main>
+		
 		<footer>
 			<div id="footer-notice">
 				<span>icodi는 통신판매중개자로서 거래당사자가 아니며 입점 판매자가 등록한 상품 거래에 대하여 icodi는 일체의 책임을 지지 않습니다.</span>
@@ -24,6 +24,5 @@
 			</div>
 			</div>
 		</footer>
-		</main>
 </body>
 </html>
