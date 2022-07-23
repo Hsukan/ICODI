@@ -32,7 +32,7 @@ public class AdminUpdateOrderStatusServlet extends HttpServlet {
 			data.put("orderNo", orderNo);
 			data.put("updateStatus", updateStatus);
 			
-			//int result = adminService.updateOrderStatus(data);
+			int result = adminService.updateOrderStatus(data);
 		} catch(Exception e) {
 			e.printStackTrace();
 			throw e;

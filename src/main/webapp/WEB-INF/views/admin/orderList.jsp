@@ -50,9 +50,9 @@
 							<td><%= member.getMemberId() %></td>
 							<td><%= member.getMemberName() %></td>
 							<td><%= order.getOrderPayments() %></td>
-							<td><%= order.getOrderStatus() %></td>
+							<td class="status"><%= order.getOrderStatus() %></td>
 							<td>
-								<% if(!order.getOrderStatus().equals("취소") || !order.getOrderStatus().equals("환불") || !order.getOrderStatus().equals("교환")) { %>
+								<% if(!order.getOrderStatus().equals("취소") && !order.getOrderStatus().equals("환불") && !order.getOrderStatus().equals("교환")) { %>
 								<button type="button" id="cancle" class="statusBtn" data-order-no="<%= order.getOrderNo() %>" value="취소">취소처리</button>
 								<button type="button" id="refund" class="statusBtn" data-order-no="<%= order.getOrderNo() %>" value="환불">환불처리</button>
 								<button type="button" id="change" class="statusBtn" data-order-no="<%= order.getOrderNo() %>" value="교환">교환처리</button>
@@ -78,6 +78,7 @@
 document.querySelector("#searchBtn").addEventListener('click', (e) => {
 	const searchKeyword = document.querySelector("#searchKeyword").value;
 	const searchValue = document.querySelector("#searchValue").value;
+	
 	$.ajax({
 		url : '<%= request.getContextPath()%>/admin/searchOrderList',
 		type : 'GET',
@@ -87,7 +88,7 @@ document.querySelector("#searchBtn").addEventListener('click', (e) => {
 			const tbody = document.querySelector("#orderListTable tbody");
 			const oldPagebar = document.querySelector("#pagebar");
 			tbody.innerHTML = '';
-			console.log(response);
+
 			list.forEach((order) => {
 				const {member, product, productOrder} = order;
 				const {memberId, memberName} = member;
@@ -100,7 +101,7 @@ document.querySelector("#searchBtn").addEventListener('click', (e) => {
 					<td>\${memberId}</td>
 					<td>\${memberName}</td>
 					<td>\${orderPayments}</td>
-					<td>\${orderStatus}</td>
+					<td class="status">\${orderStatus}</td>
 					<td>
 						<button type="button" id="cancle" class="statusBtn" data-order-no="\${orderNo}" value="취소">취소처리</button>
 						<button type="button" id="refund" class="statusBtn" data-order-no="\${orderNo}" value="환불">환불처리</button>
@@ -112,7 +113,16 @@ document.querySelector("#searchBtn").addEventListener('click', (e) => {
 				oldPagebar.innerHTML = pagebar;
 			})
 		},
-		error : console.log
+		error : console.log,
+		complete() {
+			const status = document.querySelectorAll(".status");
+			[...status].forEach((td) => {
+				if(td.innerHTML == '취소' || td.innerHTML == '환불' || td.innerHTML == '교환') {
+					td.nextElementSibling.innerHTML = '';
+				}
+				
+			})
+		}
 	})
 });
 
@@ -129,12 +139,12 @@ document.querySelectorAll(".statusBtn").forEach((btn) => {
 			type : "POST",
 			data : {updateStatus, orderNo},
 			success(response) {
-				locatin.reload();
+				location.reload();
 			},
 			error : console.log
 		});
 	}
-}) 
+});
 </script>
 </body>
 </html>
