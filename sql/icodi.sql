@@ -131,3 +131,6 @@ select * from codi_board;
 select count(*) from codi_board where to_char(reg_date,'YYYY-MM-DD' )= '2022-07-19';
 select * from codi_board;
 select * from alarm;
+
+select * from alarm where alarm_message = 'gd';
+select * from product;

@@ -15,6 +15,7 @@
 <title>Insert title here</title>
 </head>
 <body>
+<main>
 	<h1>통계</h1>
 	<hr />
 	<div id="space">
@@ -63,6 +64,7 @@
 	</div>
 	</div>
 </div>
+</main>
 <script>
 	const table = document.querySelector("#tbl-visit");
 	const totalRowCnt = table.rows.length;
