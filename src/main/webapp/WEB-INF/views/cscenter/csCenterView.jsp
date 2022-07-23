@@ -17,8 +17,8 @@
 <body>
 <div id="titleContainer">
 		<h1>SUPPORT CENTER</h1>
+	<hr />
 	</div>
-<hr />
 <div id="csCenter">
 	<div id="csCenterLeft">
 	<div id="buttonContainer">
@@ -37,7 +37,7 @@
 	</div>
 	</div>
 	<div id="csCenterRight">
-	<div id="alert"><span>고객센터 안내 : 구매하신 상품 및 I COD I 이용에 편의를 돕기 위해 전용 고객센터를 운영하고 있으니, 아래 내용 확인 부탁드립니다.</span></div>
+	<div class="alert"><span>고객센터 안내 : 구매하신 상품 및 I COD I 이용에 편의를 돕기 위해 전용 고객센터를 운영하고 있으니, 아래 내용 확인 부탁드립니다.</span></div>
 	<h1>[<%=csCenter.getNoticeTitle() %>]</h1>
 	<span><%=csCenter.getNoticeContent()%></span>
 	</div>

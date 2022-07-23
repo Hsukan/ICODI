@@ -1,6 +1,7 @@
 package com.kh.icodi.member.controller;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -30,6 +31,8 @@ public class MemberCartToOrderServlet extends HttpServlet {
 			for(int i = 0; i < cartNo.length; i++) {
 				cartNo[i] = Integer.parseInt(_cartNo[i]);
 			}
+			System.out.println("cartNo@CartToOrder = " + Arrays.toString(cartNo));
+			
 			List<MemberProductManager> order = memberService.findOrderListByCartNo(cartNo);
 			request.setAttribute("order", order);
 			request.getRequestDispatcher("/WEB-INF/views/member/memberOrder.jsp").forward(request, response);

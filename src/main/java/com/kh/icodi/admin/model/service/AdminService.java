@@ -6,6 +6,7 @@ import static com.kh.icodi.common.JdbcTemplate.getConnection;
 import static com.kh.icodi.common.JdbcTemplate.rollback;
 
 import java.sql.Connection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,7 +15,7 @@ import com.kh.icodi.admin.model.dto.Product;
 import com.kh.icodi.admin.model.dto.ProductAttachment;
 import com.kh.icodi.admin.model.dto.ProductExt;
 import com.kh.icodi.admin.model.dto.ProductIO;
-import com.kh.icodi.board.model.dto.BoardExt;
+import com.kh.icodi.common.MemberOrderProductManager;
 
 public class AdminService {
 	private AdminDao adminDao = new AdminDao();
@@ -181,9 +182,69 @@ public class AdminService {
 	public String getCodiImg(String codiBoardNo) {
 		Connection conn = getConnection();
 		String codiImg = adminDao.getCodiImg(conn, codiBoardNo);
-		
 		close(conn);
 		return codiImg;
+	}
+
+	public List<ProductExt> mainProductByCategoryNo(int no) {
+		Connection conn = getConnection();
+		List<ProductExt> productList = adminDao.mainProductByCategoryNo(conn, no);
+		if(productList != null && !productList.isEmpty()) {
+			for(ProductExt product : productList) {
+				List<ProductAttachment> attachments = adminDao.findAttachmentByProductCode(conn, product.getProductCode());
+				if(attachments != null && !attachments.isEmpty()) {
+					for(ProductAttachment attach : attachments) {
+						product.addAttachment(attach);
+					}
+				}
+			}
+		}
+		return productList;
+}
+	public int deleteOrderProductStock(List<Map<String, Object>> list) {
+		Connection conn = getConnection();
+		int result = 0;
+		try {
+			for(Map<String, Object> product : list) {
+				result = adminDao.deleteOrderProductStock(conn, product); 
+			}
+			commit(conn);
+		} catch(Exception e) {
+			rollback(conn);
+			throw e;
+		} finally {			
+			close(conn);
+		}
+		return result;
+	}
+
+	public List<MemberOrderProductManager> findOrderListByOrderStatus(Map<String, Object> data) {
+		Connection conn = getConnection();
+		List<MemberOrderProductManager> list = adminDao.findOrderListByOrderStatus(conn, data);
+		close(conn);
+		return list;
+	}
+
+	public int getTotalContentByOrderStatus(String status) {
+		Connection conn = getConnection();
+		int totalContent = adminDao.getTotalContentByOrderStatus(conn, status);
+		close(conn);
+		return totalContent;
+	}
+
+	public int updateOrderStatus(Map<String, Object> data) {
+		Connection conn = getConnection();
+		int result = 0;
+		try {
+			result = adminDao.updateOrderStatus(conn, data);
+			commit(conn);
+		} catch(Exception e) {
+			rollback(conn);
+			throw e;
+		} finally {
+			close(conn);
+		}
+		return result;
 	}
 
 }

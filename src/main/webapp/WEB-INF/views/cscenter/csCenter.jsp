@@ -16,8 +16,8 @@
 <body>
 <div id="titleContainer">
 		<h1>SUPPORT CENTER</h1>
+	<hr />
 	</div>
-<hr />
 	<div id="csCenter">
 	<div id="csCenterLeft">
 	<div id="buttonContainer">
@@ -38,49 +38,62 @@
 	<div id="csCenterRight">
 	<div class="alert"><span>고객센터 안내 : 구매하신 상품 및 I COD I 이용에 편의를 돕기 위해 전용 고객센터를 운영하고 있으니, 아래 내용 확인 부탁드립니다.</span></div>
 	<h2>공지사항</h2>
-<ul>
+	<ul>
 	<% if(list == null || list.isEmpty()){ %>
 		<li>공지사항이 없습니다.</li>
 	<%}else{
 		for(CsCenter c : list){%>
+		<%if(c.getNoticeNo() == 1) {%>
 		<li><a href="<%=request.getContextPath()%>/csCenter/csCenterView?no=<%=c.getNoticeNo()%>"><%= c.getNoticeTitle() %></a></li>
-		<%
-		}
-	} %>
-	
-</ul>
-	
-	<div id="faq">
-	<hr />
+		<div id="faq">
+		<br />
+		<hr />
+		<br />
 		<h2>자주 묻는 FAQ</h2>
 		<ul>
+		<%} }%>
 			<h3>배송관련</h3>
-			<li><a href="">배송은 얼마나 걸리나요?</a></li>
-			<li><a href="">현재 배송상태를 알고 싶어요</a></li>
+		<%for(CsCenter a : list){ %>
+		<% if(a.getNoticeNo() == 2 || a.getNoticeNo() == 3){%>
+			<li><a href="<%=request.getContextPath()%>/csCenter/csCenterView?no=<%=a.getNoticeNo()%>"><%= a.getNoticeTitle() %></a></li>
+		<%} }%>
 		</ul>
 		<ul>
 			<h3>주문관련</h3>
-			<li><a>교환/반품/AS안내</a></li>
-			<li><a>주문 방법을 알려주세요</a></li>
-	
+		<%for(CsCenter b : list){ %>
+		<%if(b.getNoticeNo() == 4 || b.getNoticeNo() == 5){%>
+			<li><a href="<%=request.getContextPath()%>/csCenter/csCenterView?no=<%=b.getNoticeNo()%>"><%= b.getNoticeTitle() %></a></li>
+		<%} }%>
 		</ul>
 		<ul>
 			<h3>계정관련</h3>
-			<li><a>아이디/비밀번호를 잊어버렸어요.</a></li>
-			<li><a>회원 탈퇴하는 방법</a></li>
+		<%for(CsCenter d : list){ %>
+			<%if(d.getNoticeNo() == 6 || d.getNoticeNo() == 7){%>
+			<li><a href="<%=request.getContextPath()%>/csCenter/csCenterView?no=<%=d.getNoticeNo()%>"><%= d.getNoticeTitle() %></a></li>
+		<%} }%>
 		</ul>
-		
 		<ul>
 			<h3>적립금 관련</h3>
-			<li><a>구매 적립금은 언제 지급되나요?</a></li>
+		<%for(CsCenter e : list){ %>
+			<%if(e.getNoticeNo() == 8){%>
+			<li><a href="<%=request.getContextPath()%>/csCenter/csCenterView?no=<%=e.getNoticeNo()%>"><%= e.getNoticeTitle() %></a></li>
+		<%} }%>
 		</ul>
 	</div>	
 	</div>
-</div>
+	</div>
+		
+		<%}%>
+	<br />
+	<hr />
+</ul>
+	
+	
+
 <script>
 	const inquireInput = document.querySelector("#inquireInput");
 	inquireInput.addEventListener('click',(e)=>{
-	if(<%=loginMember == null%>){
+	if(<%= loginMember == null%>){
 			alert('로그인후 이용하세요');
 	}
 		})
