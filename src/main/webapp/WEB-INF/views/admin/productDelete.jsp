@@ -84,11 +84,10 @@
 							</tr>
 							`;
 						tbody.insertAdjacentHTML('afterbegin', li);
-					});
-				})					
-			},
+					})
+				},					
 			error : console.log
+			})
 		});
 		
-	});
 </script>
