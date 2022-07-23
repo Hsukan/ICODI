@@ -62,15 +62,14 @@
 				const tbody = document.querySelector("#productTable tbody");
 				tbody.innerHTML = '';
 				
-				products.forEach((product) => {
-					if(product == '') return;
-					
-					const {productCode, productName, productPrice, productSize, productColor, attachmentList} = product;
-					attachmentList.forEach((attach) => {
-						const {productRenamedFilename}	= attach;
-						if(productRenamedFilename == undefined){
+					products.forEach((product) => {
+						if(product == '') return;
+						
+						const {productCode, productName, productPrice, productSize, productColor, attachmentList} = product;
+						const {productRenamedFilename} = attachmentList[0];
+						if(productRenamedFilename == undefined) {
 							return;
-						} 
+						}
 						const li =
 							`
 							<tr>

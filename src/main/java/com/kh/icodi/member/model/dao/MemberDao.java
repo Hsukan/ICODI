@@ -17,8 +17,10 @@ import java.util.Properties;
 
 import com.kh.icodi.admin.model.dto.ProductAttachment;
 import com.kh.icodi.admin.model.dto.ProductExt;
+import com.kh.icodi.admin.model.dto.ProductOrder;
 import com.kh.icodi.admin.model.dto.ProductSize;
 import com.kh.icodi.common.MemberCartProductManager;
+import com.kh.icodi.common.MemberOrderProductManager;
 import com.kh.icodi.common.MemberProductManager;
 import com.kh.icodi.member.model.dto.Member;
 import com.kh.icodi.member.model.dto.MemberCart;
@@ -623,15 +625,19 @@ public class MemberDao {
 	
 	// 장바구니 상품 삭제
 	// deleteCart = delete from cart where cart_no = ?
-	public int deleteCart(Connection conn, int no) {
+	public int deleteCart(Connection conn, int[] cartNo) {
 		PreparedStatement pstmt = null;
 		int result = 0;
+		int count[] = new int[cartNo.length];
 		String sql = prop.getProperty("deleteCart");
 		
 		try {
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, no);
-			result = pstmt.executeUpdate();
+			for(int i = 0; i < cartNo.length; i++) {
+				pstmt.setInt(1, cartNo[i]);
+				pstmt.addBatch();
+			}
+			count = pstmt.executeBatch();
 		} catch (SQLException e) {
 			throw new MemberException("장바구니 상품 삭제 오류!", e);
 		} finally {
@@ -640,6 +646,74 @@ public class MemberDao {
 		return result;
 	}
 	
+	// 사용 포인트 차감
+	// deleteMemberPointUse = update member set member_point = member_point - ? where member_id = ?
+	public int deleteMemberPointUse(Connection conn, Map<String, Object> data) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String sql = prop.getProperty("deleteMemberPointUse");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, (int)data.get("usePoint"));
+			pstmt.setString(2, (String)data.get("memberId"));
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new MemberException("사용 포인트 차감", e);
+		} finally {
+			close(pstmt);
+		}
+		return result;
+	}
+	
+	// 주문내역 조회 (3개월 전 - 기본설정)
+	// findOrderListByMemberId = select a.* from ( select p.*, a.*, b.* from product_order p, member_order m, product_order_product o, product a, member b where m.order_no = o.order_no and o.product_code = a.product_code and m.member_id = b.member_id) a where (to_date(a.order_date, 'YY/MM/DD') between to_date(?, 'YY/MM/DD') and to_date(?, 'YY/MM/DD')) and a.member_id = ?
+	public List<MemberOrderProductManager> findOrderListByMemberId(Connection conn, Map<String, Object> data) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		List<MemberOrderProductManager> orderList = new ArrayList<>();
+		String sql = prop.getProperty("findOrderListByMemberId");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, (String)data.get("start"));
+			pstmt.setString(2, (String)data.get("end"));
+			pstmt.setString(3, (String)data.get("memberId"));
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				orderList.add(handleMemberOrderProductResultSet(rset));
+			}
+		} catch (SQLException e) {
+			throw new MemberException("주문내역 조회 오류!", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		return orderList;
+	}
+	
+	public static MemberOrderProductManager handleMemberOrderProductResultSet(ResultSet rset) throws SQLException {
+		MemberOrderProductManager manager = new MemberOrderProductManager();
+		Member member = handleMemberResultSet(rset);
+		ProductExt product = handleProductExtResultSet(rset);
+		ProductOrder order = handleProductOrderResultSet(rset);
+		manager.setMember(member);
+		manager.setProduct(product);
+		manager.setProductOrder(order);
+		return manager;
+	}
+
+	public static ProductOrder handleProductOrderResultSet(ResultSet rset) throws SQLException {
+		ProductOrder order = new ProductOrder();
+		order.setOrderNo(rset.getString("order_no"));
+		order.setOrderTotalPrice(rset.getInt("order_total_price"));
+		order.setOrderPayments(rset.getString("order_payments"));
+		order.setOrderDate(rset.getDate("order_date"));
+		order.setOrderStatus(rset.getString("order_status"));
+		order.setOrderTotalCount(rset.getInt("order_total_count"));
+		return order;
+	}
+
 	private MemberCartProductManager handleMemberCartProductResultSet(ResultSet rset) throws SQLException {
 		MemberCartProductManager manager = new MemberCartProductManager();
 		MemberCart cart = handleMemberCartResultSet(rset);
@@ -673,7 +747,7 @@ public class MemberDao {
 		return manager;
 	}
 	
-	private ProductExt handleProductExtResultSet(ResultSet rset) throws SQLException {
+	public static ProductExt handleProductExtResultSet(ResultSet rset) throws SQLException {
 		ProductExt product = new ProductExt();
 		product.setProductCode(rset.getString("product_code"));
 		product.setCategoryCode(rset.getInt("category_code"));
@@ -697,7 +771,7 @@ public class MemberDao {
 		return cart;
 	}
 	
-	private Member handleMemberResultSet(ResultSet rset) throws SQLException {
+	public static Member handleMemberResultSet(ResultSet rset) throws SQLException {
 		String memberId = rset.getString("member_id"); 
 		String memberName = rset.getString("member_name"); 
 		String password = rset.getString("member_pwd"); 

@@ -31,12 +31,13 @@ public class MemberPayServlet extends HttpServlet {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyMMdd_HHmmssSSS_");
 			DecimalFormat df = new DecimalFormat("0000");
 			
-			
+
 			String[] productCodes = request.getParameterValues("productCode");
 			String payment = request.getParameter("finalPayment");
 			int addPoint = Integer.parseInt(request.getParameter("finalMemberPoint"));
 			int totalPrice = Integer.parseInt(request.getParameter("finalPrice"));
 			String memberId = request.getParameter("finalMemberId");
+			int usePoint = Integer.parseInt(request.getParameter("finalUsePoint"));
 			String[] _cartAmount = request.getParameterValues("cartAmount");
 			String[] _cartNo = request.getParameterValues("cartNo");
 		
@@ -51,6 +52,7 @@ public class MemberPayServlet extends HttpServlet {
 			
 			
 			Map<String, Object> data = new HashMap<>(); 
+			data.put("usePoint", usePoint);
 			for(int i = 0; i < productCodes.length; i++) { 
 				String orderNo = sdf.format(new Date()) + df.format(Math.random()*10000);
 				data.put("orderNo",  orderNo);

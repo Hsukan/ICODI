@@ -22,9 +22,23 @@
 				</nav>
 			</article>
 		<div id="content-center">
-		<span>주문배송관리</span>
-		
-		</div>
+			<span>주문배송관리</span>
+				<div class="waiting-wrap">
+					<a href="<%= request.getContextPath()%>/admin/waitDeposit">
+						<div>입금대기</div>
+					</a>
+				</div>
+				<div class="finish-wrap">
+					<a href="<%= request.getContextPath()%>/admin/changeOrderStatus">
+						<div>결제완료</div>
+					</a>
+				</div>
+				<div class="refund-wrap">
+					<a href="<%= request.getContextPath()%>/admin/chanageOrderStatus">
+						<div>교환/환불처리</div>
+					</a>
+				</div>
+			</div>
 		<div id="content-wrap">
 				<h2>상품관리</h2>
 			<div class="product-content">

@@ -12,6 +12,7 @@ import java.util.Map;
 
 import com.kh.icodi.admin.model.dto.ProductAttachment;
 import com.kh.icodi.common.MemberCartProductManager;
+import com.kh.icodi.common.MemberOrderProductManager;
 import com.kh.icodi.common.MemberProductManager;
 import com.kh.icodi.member.model.dao.MemberDao;
 import com.kh.icodi.member.model.dto.Member;
@@ -170,6 +171,7 @@ public class MemberService {
 			int result = memberDao.insertCart(conn, data);
 			cartNo = memberDao.findCartNoBySeq(conn);
 			order = memberDao.findOrderListByCartNo(conn, cartNo);
+						
 			String productCode = order.getProductExt().getProductCode();
 			List<ProductAttachment> attachments = memberDao.findAttachmentByProductCode(conn, productCode);
 			if(attachments != null && !attachments.isEmpty()) {
@@ -214,6 +216,7 @@ public class MemberService {
 			result = memberDao.insertOrderProduct(conn, data, orderNo);
 			result = memberDao.updateMemberPoint(conn, data);
 			result = memberDao.deleteOrderCartNo(conn, data);
+			result = (int)data.get("usePoint") != 0 ? memberDao.deleteMemberPointUse(conn, data) : 0;
 			commit(conn);
 		} catch(Exception e) {
 			rollback(conn);
@@ -235,9 +238,7 @@ public class MemberService {
 		Connection conn = getConnection();
 		int result = 0;
 		try {
-			for(int no : cartNo) {
-				result = memberDao.deleteCart(conn, no);
-			}
+			result = memberDao.deleteCart(conn, cartNo);
 			commit(conn);
 		} catch(Exception e) {
 			rollback(conn);
@@ -262,5 +263,12 @@ public class MemberService {
 			}
 		}
 		return order;
+	}
+
+	public List<MemberOrderProductManager> findOrderListByMemberId(Map<String, Object> data) {
+		Connection conn = getConnection();
+		List<MemberOrderProductManager> orderList = memberDao.findOrderListByMemberId(conn, data);
+		close(conn);
+		return orderList;
 	}
 }
