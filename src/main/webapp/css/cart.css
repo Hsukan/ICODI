@@ -69,6 +69,10 @@ table {
 }
 #productImg {
 	padding:5px;
+	width:100px;
+}
+#productImg img {
+	width:100%;
 }
 #productInfo {
 	width:300px;

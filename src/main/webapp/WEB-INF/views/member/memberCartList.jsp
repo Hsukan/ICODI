@@ -1,3 +1,5 @@
+<%@page import="com.kh.icodi.admin.model.dto.ProductAttachment"%>
+<%@page import="com.kh.icodi.admin.model.dto.ProductExt"%>
 <%@page import="com.kh.icodi.admin.model.dto.Product"%>
 <%@page import="com.kh.icodi.member.model.dto.MemberCart"%>
 <%@page import="java.text.DecimalFormat"%>
@@ -50,7 +52,8 @@
 							<% if(cartList != null && !cartList.isEmpty()) { 
 								for(MemberCartProductManager list : cartList) {
 									MemberCart cart = list.getCart();
-									Product product = list.getProduct();
+									ProductExt product = list.getProduct();
+									
 							%>
 							<tr>
 								<td class="checkbox">
@@ -59,7 +62,11 @@
 									</span>						
 								</td>
 								<td id="productImg">
-									<div>이미지</div>
+									<% for(ProductAttachment attach : product.getAttachmentList()) { 
+										if(attach.getProductRenamedFilename() == null) break;
+									%>
+									<img src="<%= request.getContextPath() %>/upload/admin/<%= attach.getProductRenamedFilename() %>" alt="" />
+									<% } %>
 								</td>
 								<td id="productInfo">
 									<div class="productName"><%= product.getProductName() %></div>
@@ -84,7 +91,7 @@
 						<tfoot>
 							<tr>
 								<td colspan="2">[기본배송]</td>
-								<td colspan="6" id="orderProductPrice">상품구매금액 <span id="productTotalPrice"></span>원 + 배송비 2,500 = 합계 : <span id="totalPrice"></span>원</td>
+								<td colspan="6" id="orderProductPrice">상품구매금액 <span id="productTotalPrice"></span>원 + 배송비 <span id="fee">2,500</span> = 합계 : <span id="totalPrice"></span>원</td>
 							</tr>
 						</tfoot>
 					</table>
@@ -143,7 +150,7 @@ document.querySelector("#delBtn").addEventListener('click', (e) => {
 			delCartNo.push(select[i].value);
 		}
 	}
-	console.log(delCartNo);
+
 	// 비동기로 삭제
 	$.ajax({
 		url : '<%= request.getContextPath()%>/member/cartDelete',
@@ -155,6 +162,24 @@ document.querySelector("#delBtn").addEventListener('click', (e) => {
 		},
 		error : console.log
 	});
+});
+
+window.addEventListener('load', (e) => {
+	const productPrices = document.querySelectorAll("#productPrice");
+	const productTotalPrice = document.querySelector("#productTotalPrice");
+	const totalPrice = document.querySelector("#totalPrice");
+	const orderPrice = document.querySelector("#orderPrice");
+	const total = document.querySelector("#total");
+	const fee = document.querySelector("#fee");
+	
+	const productPrice = [...productPrices].map((product) => Number(product.innerHTML.replace(",",""))).reduce((total, price) => {
+		return total + price;
+	});
+	
+	productTotalPrice.innerHTML = productPrice.toLocaleString('ko-KR');
+	orderPrice.innerHTML = productTotalPrice.innerHTML;
+	totalPrice.innerHTML = (productPrice + Number(fee.innerHTML.replace(",",""))).toLocaleString('ko-KR');
+	total.innerHTML = totalPrice.innerHTML;
 });
 
 </script>

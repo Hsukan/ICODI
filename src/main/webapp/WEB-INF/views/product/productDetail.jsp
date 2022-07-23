@@ -89,9 +89,9 @@
 								<span id="totalPrice" class="totalPriceVal">0</span>원
 								(<span id="totalCount" class="totalCountVal">0</span>개)
 							</div>
-							<button id="buy">BUY IT NOW</button>
+							<button id="buy" type="button">BUY IT NOW</button>
 							<br />
-							<button id="cart">ADD TO CART</button>
+							<button id="cart" type="button">ADD TO CART</button>
 						</div>
 					</div>
 					<div class="product-detail-wrap">
@@ -241,10 +241,11 @@ document.querySelectorAll("button").forEach((button) => {
 		const frm = document.totalProductFrm;
 		const tbody = document.querySelector(".totalProductList tbody");
 		const productCode = document.querySelectorAll("[name=productCode]");
-		
-		/* <input type="hidden" name="productCode" value="\${productCode}" />
-			<input type="hidden" name="productCount" value="1"/> */
-		
+		let cartList = [];
+		[...productCode].forEach((code) => {
+			const productCount = code.nextElementSibling.value;
+			cartList.push({"productCode":code.value, "productCount":productCount});	
+		});
 			
 		if(tbody.children.length == 0) {
 			alert("상품을 선택해주세요.");
@@ -252,17 +253,43 @@ document.querySelectorAll("button").forEach((button) => {
 		}
 		
 		if(e.target.id === 'buy') {
-			frm.action = "<%= request.getContextPath()%>/product/order";
+			frm.action = "<%= request.getContextPath()%>/member/order";
 			frm.submit();
 			return;
 		} else if(e.target.id === 'cart') {
-			frm.action = "<%= request.getContextPath()%>/product/addCart";
-			frm.submit();
-			return;
+			$.ajax({
+				url : '<%= request.getContextPath()%>/member/findCart',
+				type : "GET",
+				data : {data : JSON.stringify(cartList)},
+				success(response) {
+					if(response[0]) {
+						if(confirm('장바구니에 존재하는 상품입니다. 그래도 추가하시겠습니까?')) {
+							addCart(cartList);
+						} else return;
+					} else {
+						addCart(cartList);
+					}
+				},
+				error : console.log
+			})
+			
 		}
 	})
 })
-
+const addCart = (cartList) => {
+	$.ajax({
+		url : '<%= request.getContextPath()%>/member/addCart',
+		type : "POST",
+		data : {data : JSON.stringify(cartList)},
+		success(response) {
+			if(confirm('장바구니로 이동하시겠습니까?')) {
+				location.href = '<%= request.getContextPath()%>/member/memberCart';
+				return;
+			}
+		},
+		error : console.log
+	});
+};
 </script>
 </body>
 </html>

@@ -28,6 +28,7 @@ public class OrderProductStockDelete extends HttpServlet {
 		try {
 			String data = request.getParameter("data");
 			List<Map<String, Object>> list = new Gson().fromJson(data, List.class);
+			System.out.println("list = "+list);
 			int result = adminService.deleteOrderProductStock(list);
 		} catch(Exception e) {
 			e.printStackTrace();
