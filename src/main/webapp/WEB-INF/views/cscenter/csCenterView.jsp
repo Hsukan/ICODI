@@ -15,6 +15,8 @@
 <title></title>
 </head>
 <body>
+<main>
+
 <div id="titleContainer">
 		<h1>SUPPORT CENTER</h1>
 	<hr />
@@ -41,7 +43,7 @@
 	<h1>[<%=csCenter.getNoticeTitle() %>]</h1>
 	<span><%=csCenter.getNoticeContent()%></span>
 	</div>
-	
+</main>	
 	<script>
 	const inquireInput = document.querySelector("#inquireInput");
 	inquireInput.addEventListener('click',(e)=>{

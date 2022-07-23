@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
+
 <link rel="stylesheet"
 	href="<%=request.getContextPath() %>/css/admin.css" />
 
@@ -14,7 +15,7 @@
 							<li><a href="#">회원 정보 관리</a></li>
 							<li><a href="#">상품 관리</a></li>
 							<li><a href="#">주문/배송 관리</a></li>
-							<li><a href="<%=request.getContextPath()%>/stats">통계</a></li>
+							<li><a href="<%=request.getContextPath()%>/admin/stats">통계</a></li>
 							
 						</ul>
 					</div>
@@ -87,3 +88,4 @@
 	</script>
 </body>
 </html>
+<%@include file="/WEB-INF/views/common/footer.jsp"%>

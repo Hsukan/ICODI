@@ -17,6 +17,8 @@
 <title>Insert title here</title>
 </head>
 <body>
+<main>
+	<div class="main-content-height">
 	<div id="titleContainer">
 		<h1>SUPPORT CENTER</h1>
 	<hr />
@@ -95,8 +97,8 @@
 		<%} %>		
 	<% 	}
 	}%>
-	
-	
+	</div>
+	</main>
 	<script>
 	document.inquireAnswerFrm.onsubmit = (e) =>{
 		if(document.querySelector("[name=answerWriter]").innerHTML != null){
@@ -107,3 +109,4 @@
 	</script>
 </body>
 </html>
+<%@include file="/WEB-INF/views/common/footer.jsp"%>

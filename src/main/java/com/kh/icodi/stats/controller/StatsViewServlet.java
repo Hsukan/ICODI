@@ -16,7 +16,7 @@ import com.kh.icodi.stats.model.exception.StatsService;
 /**
  * Servlet implementation class StatsFinder
  */
-@WebServlet("/stats")
+@WebServlet("/admin/stats")
 public class StatsViewServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	/**
@@ -28,7 +28,7 @@ public class StatsViewServlet extends HttpServlet {
 		
 		request.setAttribute("list", list);
 		
-		request.getRequestDispatcher("WEB-INF/views/admin/statsView.jsp").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/views/admin/statsView.jsp").forward(request, response);
 	}
 
 	

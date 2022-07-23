@@ -14,6 +14,7 @@
 <title>Insert title here</title>
 </head>
 <body>
+<main>
 <div id="titleContainer">
 		<h1>SUPPORT CENTER</h1>
 	<hr />
@@ -85,9 +86,8 @@
 		
 		<%}%>
 	<br />
-	<hr />
 </ul>
-	
+</main>	
 	
 
 <script>
@@ -102,3 +102,4 @@
 </script>
 </body>
 </html>
+<%@include file="/WEB-INF/views/common/footer.jsp"%>

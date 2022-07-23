@@ -20,7 +20,7 @@ import com.kh.icodi.codiBook.model.service.CodiBookService;
 @WebServlet("/product/mainTopItem")
 public class IndexTopItemServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private CodiBookService codiBookService = new CodiBookService();
+	private AdminService adminService = new AdminService();
 
 
 	/**
@@ -29,7 +29,7 @@ public class IndexTopItemServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			int No = 1;
-			List<ProductExt> productList = codiBookService.findAllByCategoryNo(No);
+			List<ProductExt> productList = adminService.mainProductByCategoryNo(No);
 
 			
 			response.setContentType("application/json; charset=utf-8");

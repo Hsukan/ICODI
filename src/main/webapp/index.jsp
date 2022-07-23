@@ -1,5 +1,3 @@
-
-
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!-- src/main/webapp 부터 시작! -->
@@ -11,28 +9,6 @@
 	href="<%=request.getContextPath() %>/css/main.css" />
 <br />
 <br />
-    <style>
-        #topwrap{width: 1024px; position: relative;}
-        .topItem{width: 200px; height: 300px; border: 1px solid black; margin-right: 15px;}
-        .topItem span{margin-left: 20px;}
-        .topItem img{width: 100%; height: 60%;}
-        .slick-prev{
-            position: absolute;
-            top: 45%;
-            left: -50px;
-            width: 25px;
-            height: 27px;
-            border-radius: 50%;
-        }
-        .slick-next{
-            position: absolute;
-            top: 45%;
-            right: -50px;
-            width: 25px;
-            height: 27px;
-            border-radius: 50%;
-        }
-    </style>
 <section>
 	<div id="sliderContainer">
 		<ul id="slider">
@@ -65,6 +41,16 @@
 	<div id="topwrap">
 	
 	</div>
+	<br /><br />
+	<span>BOTTOM</span>
+	<a href="<%=request.getContextPath()%>/product/tops?categoryNo=2">
+	<span style="float: right; margin-right: 15px;">더보기</span>
+	</a>
+	<br><br>
+	<div id="bottomwrap">
+	
+	</div>
+	
 </section>
 <br />
 <br />
@@ -141,7 +127,9 @@
         	                infinite: true,
         	                slidesToShow: 4,
         	                prevArrow: "<button type='button' class='slick-next'>></button>",
-        	                nextArrow: "<button type='button' class='slick-prev'><</button>"
+        	                nextArrow: "<button type='button' class='slick-prev'><</button>",
+        	                autoplay: true,
+        	                autoplaySpeed: 1500
         	            });
         	        });
         			
@@ -149,4 +137,46 @@
         	});
         };
         topItem();
+        
+        const bottomItem = () => {
+        	$.ajax({
+        		url: '<%=request.getContextPath()%>/product/mainBottomItem',
+        		dataType: 'json',
+        		success(response){
+					console.log("response@newTopItem = " + response);
+					const div = document.querySelector("#bottomwrap");
+					
+					response.forEach((product) => {
+						const {productRenamedFilename} = product.attachmentList[0];
+						const {productCode, productName, productPrice} = product;
+						
+						const img = `
+							<div class="bottomItem">
+							<a href="<%= request.getContextPath()%>/product/detail?product_name=\${productName}">					
+							<img src="<%= request.getContextPath()%>/upload/admin/\${productRenamedFilename}" alt="" /></a><br /><br />
+							<span>\${productName}</span><br /><br />
+							<span>\${productPrice}</span>
+						</div>
+						`;
+						div.insertAdjacentHTML('beforeend', img);
+					})
+        		},
+        		error: console.log,
+        		complete() {
+        			$(document).ready(function(){
+        	            $('#bottomwrap').slick({
+        	                infinite: true,
+        	                slidesToShow: 4,
+        	                prevArrow: "<button type='button' class='slick-next'>></button>",
+        	                nextArrow: "<button type='button' class='slick-prev'><</button>",
+        	                autoplay: true,
+        	                autoplaySpeed: 2000
+        	            });
+        	        });
+        			
+        		}
+        	});
+        };
+        bottomItem();
 	</script>
+<%@include file="/WEB-INF/views/common/footer.jsp"%>
