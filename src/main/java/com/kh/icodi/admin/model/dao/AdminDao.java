@@ -535,4 +535,154 @@ public class AdminDao {
 		}
 		return result;
 	}
+	
+	// 배송을 포함한 리스트
+	// findOrderListDeliveryContains = select a.* from ( select p.*, a.*, b.*, row_number() over (order by p.order_date desc) rnum from product_order p, member_order m, product_order_product o, product a, member b where m.order_no = o.order_no and o.product_code = a.product_code and m.member_id = b.member_id) a where a.rnum between ? and ? and a.order_status like ?
+	public List<MemberOrderProductManager> findOrderListDeliveryContains(Connection conn, Map<String, Object> data) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		List<MemberOrderProductManager> list = new ArrayList<>();
+		String sql = prop.getProperty("findOrderListDeliveryContains");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, (int)data.get("start"));
+			pstmt.setInt(2, (int)data.get("end"));
+			pstmt.setString(3, "%배송%");
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				list.add(handleMemberOrderProductResultSet(rset));
+			}
+		} catch (SQLException e) {
+			throw new AdminException("관리자 주문 상태 조회 오류!", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		return list;
+	}
+	
+	// 배송 포함한 리스트 개수 조회
+	// getTotalContentDeliveryContains = select count(*) from product_order where order_status like ?
+	public int getTotalContentDeliveryContains(Connection conn) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		int totalContent = 0;
+		String sql = prop.getProperty("getTotalContentDeliveryContains");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, "%배송%");
+			rset = pstmt.executeQuery();
+			if(rset.next()) {
+				totalContent = rset.getInt(1);
+			}
+		} catch (SQLException e) {
+			throw new AdminException("상품 개수 조회 오류!", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		return totalContent;
+	}
+
+	// 모든 회원 주문 리스트 조회
+	// findAllOrderList = select a.* from ( select p.*, a.*, b.*, row_number() over (order by p.order_date desc) rnum from product_order p, member_order m, product_order_product o, product a, member b where m.order_no = o.order_no and o.product_code = a.product_code and m.member_id = b.member_id) a where a.rnum between ? and ?
+	public List<MemberOrderProductManager> findAllOrderList(Connection conn, Map<String, Object> data) {
+		PreparedStatement pstmt = null;
+		List<MemberOrderProductManager> list = new ArrayList<>();
+		ResultSet rset = null;
+		String sql = prop.getProperty("findAllOrderList");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, (int)data.get("start"));
+			pstmt.setInt(2, (int)data.get("end"));
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				list.add(handleMemberOrderProductResultSet(rset));
+			}
+		} catch (SQLException e) {
+			throw new AdminException("모든 회원 주문리스트 조회 오류!", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		return list;
+	}
+	
+	// 모든 회원 주문리스트 개수 조회
+	// getTotalContentAllOrderList = select count(*) from product_order
+	public int getTotalContentAllOrderList(Connection conn) {
+		PreparedStatement pstmt = null;
+		int totalContent = 0;
+		ResultSet rset = null;
+		String sql = prop.getProperty("getTotalContentAllOrderList");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			rset = pstmt.executeQuery();
+			if(rset.next()) {
+				totalContent = rset.getInt(1);
+			}
+		} catch (SQLException e) {
+			throw new AdminException("모든 회원 주문리스트 개수 조회 오류!", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		return totalContent;
+	}
+	
+	// 키워드로 주문리스트 조회
+	// findOrderListBySearchKeyword = select a.* from ( select p.*, a.*, b.*, row_number() over (order by p.order_date desc) rnum from product_order p, member_order m, product_order_product o, product a, member b where m.order_no = o.order_no and o.product_code = a.product_code and m.member_id = b.member_id) a where (a.rnum between ? and ?) and a.% = ?
+	public List<MemberOrderProductManager> findOrderListBySearchKeyword(Connection conn, Map<String, Object> data) {
+		PreparedStatement pstmt = null;
+		List<MemberOrderProductManager> list = new ArrayList<>();
+		ResultSet rset = null;
+		String sql = prop.getProperty("findOrderListBySearchKeyword");
+		sql = sql.replace("%", (String)data.get("searchKeyword"));
+		System.out.println("sql = " + sql);
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, (int)data.get("start"));
+			pstmt.setInt(2, (int)data.get("end"));
+			pstmt.setString(3, (String)data.get("searchValue"));
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				list.add(handleMemberOrderProductResultSet(rset));
+			}
+		} catch (SQLException e) {
+			throw new AdminException("키워드 주문리스트 조회 오류!", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		return list;
+	}
+	
+	// 키워드 주문리스트 개수 조회
+	// getTotalContentBySearchKeyword = select count(*) from product_order o, member m, member_order a where a.order_no = o.order_no and m.% = ?
+	public int getTotalContentBySearchKeyword(Connection conn, Map<String, Object> data) {
+		PreparedStatement pstmt = null;
+		int totalContent = 0;
+		ResultSet rset = null;
+		String sql = prop.getProperty("getTotalContentBySearchKeyword");
+		sql = sql.replace("%", (String)data.get("searchKeyword"));
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, (String)data.get("searchValue"));
+			rset = pstmt.executeQuery();
+			if(rset.next()) {
+				totalContent = rset.getInt(1);
+			}
+		} catch(Exception e) {
+			throw new AdminException("키워드 주문리스트 개수 조회 오류!", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		return totalContent;
+	}
 }
