@@ -121,3 +121,4 @@ div#search-container {
 		<%= request.getAttribute("pagebar") %>
 	</div>
 </section>
+<%@include file="/WEB-INF/views/common/footer.jsp"%>
