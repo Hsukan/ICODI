@@ -50,6 +50,15 @@
 	<div id="bottomwrap">
 	
 	</div>
+	<br /><br />
+	<span>SHOES</span>
+	<a href="<%=request.getContextPath()%>/product/tops?categoryNo=3">
+	<span style="float: right; margin-right: 15px;">더보기</span>
+	</a>
+	<br><br>
+	<div id="shoeswrap">
+	
+	</div>
 	
 </section>
 <br />
@@ -96,7 +105,7 @@
           // Actual slide
           dynamicSlider.firstElementChild.style.setProperty("margin-left", "-" + curSlide + "00%");
         }, slideDelay);
-  	
+        
         const topItem = () => {
         	$.ajax({
         		url: '<%=request.getContextPath()%>/product/mainTopItem',
@@ -136,14 +145,14 @@
         		}
         	});
         };
+      	
         topItem();
-        
+
         const bottomItem = () => {
         	$.ajax({
         		url: '<%=request.getContextPath()%>/product/mainBottomItem',
         		dataType: 'json',
         		success(response){
-					console.log("response@newTopItem = " + response);
 					const div = document.querySelector("#bottomwrap");
 					
 					response.forEach((product) => {
@@ -178,5 +187,45 @@
         	});
         };
         bottomItem();
+
+        const shoesItem = () => {
+        	$.ajax({
+        		url: '<%=request.getContextPath()%>/product/mainshoesItem',
+        		dataType: 'json',
+        		success(response){
+					const div = document.querySelector("#shoeswrap");
+					
+					response.forEach((product) => {
+						const {productRenamedFilename} = product.attachmentList[0];
+						const {productCode, productName, productPrice} = product;
+						
+						const img = `
+							<div class="shoesItem">
+							<a href="<%= request.getContextPath()%>/product/detail?product_name=\${productName}">					
+							<img src="<%= request.getContextPath()%>/upload/admin/\${productRenamedFilename}" alt="" /></a><br /><br />
+							<span>\${productName}</span><br /><br />
+							<span>\${productPrice}</span>
+						</div>
+						`;
+						div.insertAdjacentHTML('beforeend', img);
+					})
+        		},
+        		error: console.log,
+        		complete() {
+        			$(document).ready(function(){
+        	            $('#shoeswrap').slick({
+        	                infinite: true,
+        	                slidesToShow: 4,
+        	                prevArrow: "<button type='button' class='slick-next'>></button>",
+        	                nextArrow: "<button type='button' class='slick-prev'><</button>",
+        	                autoplay: true,
+        	                autoplaySpeed: 2000
+        	            });
+        	        });
+        			
+        		}
+        	});
+        };
+        shoesItem();
 	</script>
 <%@include file="/WEB-INF/views/common/footer.jsp"%>
