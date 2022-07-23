@@ -232,4 +232,46 @@ public class AdminService {
 		return result;
 	}
 
+	public List<MemberOrderProductManager> findOrderListDeliveryContains(Map<String, Object> data) {
+		Connection conn = getConnection();
+		List<MemberOrderProductManager> list = adminDao.findOrderListDeliveryContains(conn, data);
+		close(conn);
+		return list;
+	}
+
+	public int getTotalContentDeliveryContains() {
+		Connection conn = getConnection();
+		int totalContent = adminDao.getTotalContentDeliveryContains(conn);
+		close(conn);
+		return totalContent;
+	}
+
+	public List<MemberOrderProductManager> findAllOrderList(Map<String, Object> data) {
+		Connection conn = getConnection();
+		List<MemberOrderProductManager> list = adminDao.findAllOrderList(conn, data);
+		close(conn);
+		return list;
+	}
+
+	public int getTotalContentAllOrderList() {
+		Connection conn = getConnection();
+		int totalContent = adminDao.getTotalContentAllOrderList(conn);
+		close(conn);
+		return totalContent;
+	}
+
+	public List<MemberOrderProductManager> findOrderListBySearchKeyword(Map<String, Object> data) {
+		Connection conn = getConnection();
+		List<MemberOrderProductManager> list = adminDao.findOrderListBySearchKeyword(conn, data);
+		close(conn);
+		return list;
+	}
+
+	public int getTotalContentBySearchKeyword(Map<String, Object> data) {
+		Connection conn = getConnection();
+		int totalContent = adminDao.getTotalContentBySearchKeyword(conn, data);
+		close(conn);
+		return totalContent;
+	}
+
 }

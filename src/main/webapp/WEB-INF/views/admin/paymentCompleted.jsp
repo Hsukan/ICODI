@@ -9,11 +9,12 @@
 	List<MemberOrderProductManager> list = (List<MemberOrderProductManager>)request.getAttribute("list");
 	String pagebar = (String)request.getAttribute("pagebar");
 %>
+
 <main>
 	<section>
 		<article>
 			<div class="header-wrap">
-				<h2>입금대기</h2>
+				<h2>결제완료</h2>
 			</div>
 			<div class="order-list-wrap">
 				<table>
@@ -44,7 +45,11 @@
 							<td><%= order.getOrderPayments() %></td>
 							<td><%= order.getOrderStatus() %></td>
 							<td>
-								<button type="button" id="checkedDepositBtn" data-order-no="<%= order.getOrderNo()%>">입금확인</button>
+							<% if(order.getOrderStatus().equals("배송준비중")) { %>
+								<button type="button" id="checkedDeliveryBtn" data-order-no="<%= order.getOrderNo()%>">배송처리</button>
+							<% } else { %>
+								<button type="button" class="style-disabled" id="checkedDeliveryBtn" data-order-no="<%= order.getOrderNo()%>" disabled><%= order.getOrderStatus() %></button>
+							<% } %>
 							</td>
 						</tr>
 						<%
@@ -63,11 +68,11 @@
 	</nav>
 </main>
 <script>
-document.querySelectorAll("#checkedDepositBtn").forEach((btn) => {
+document.querySelectorAll("#checkedDeliveryBtn").forEach((btn) => {
 	btn.addEventListener('click', (e) => {
 		const orderNo = e.target.dataset.orderNo;
-		const updateStatus = '배송준비중';
-		if(!confirm(`\${orderNo}에 대한 입금확인처리를 하시겠습니까?`)) return;
+		const updateStatus = '배송중';
+		if(!confirm(`\${orderNo}에 대한 배송처리를 하시겠습니까?`)) return;
 		
 		$.ajax({
 			url : '<%= request.getContextPath()%>/admin/updateStatus',
@@ -75,9 +80,9 @@ document.querySelectorAll("#checkedDepositBtn").forEach((btn) => {
 			data : {orderNo, updateStatus},
 			success(response) {
 				location.reload();
-			},
+			 },
 			error : console.log
-		});
+		}); 
 	})
 })
 </script>

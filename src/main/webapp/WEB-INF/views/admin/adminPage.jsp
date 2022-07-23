@@ -28,12 +28,12 @@
 					</a>
 				</div>
 				<div class="finish-wrap">
-					<a href="<%= request.getContextPath()%>/admin/changeOrderStatus">
+					<a href="<%= request.getContextPath()%>/admin/paymentCompleted">
 						<div>결제완료</div>
 					</a>
 				</div>
 				<div class="refund-wrap">
-					<a href="<%= request.getContextPath()%>/admin/chanageOrderStatus">
+					<a href="<%= request.getContextPath()%>/admin/orderList">
 						<div>교환/환불처리</div>
 					</a>
 				</div>

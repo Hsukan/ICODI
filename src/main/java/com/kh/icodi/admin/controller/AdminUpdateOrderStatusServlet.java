@@ -27,13 +27,12 @@ public class AdminUpdateOrderStatusServlet extends HttpServlet {
 		try {
 			String orderNo = request.getParameter("orderNo");
 			String updateStatus = request.getParameter("updateStatus");
-			System.out.println("orderNo = " + orderNo);
-			System.out.println("updatestatus = " + updateStatus);
+
 			Map<String, Object> data = new HashMap<>();
 			data.put("orderNo", orderNo);
 			data.put("updateStatus", updateStatus);
 			
-			int result = adminService.updateOrderStatus(data);
+			//int result = adminService.updateOrderStatus(data);
 		} catch(Exception e) {
 			e.printStackTrace();
 			throw e;
