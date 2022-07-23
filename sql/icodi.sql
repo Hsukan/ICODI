@@ -1,7 +1,7 @@
 select * from member;
 select * from notice;
 select * from notice where notice_no = 1;
-
+select * from v$version;
 insert into notice (notice_no, notice_title, notice_content,notice_date,notice_writer) values(1,'네이버페이로 구매 시 주문 확인 안내','안녕하세요? 코디북입니다.
 코디북에서 네이버페이로 구매 할 경우 구매내역을 확인하기 위해서는 네이버에서 확인하셔야 합니다. :)
 네이버 아이디로 로그인 후 구매하시게 되기 때문에 코디북에서는 비회원으로 구매하신 것으로 인식되기 때문이랍니다.
@@ -131,3 +131,6 @@ select * from codi_board;
 select count(*) from codi_board where to_char(reg_date,'YYYY-MM-DD' )= '2022-07-19';
 select * from codi_board;
 select * from alarm;
+
+select * from alarm where alarm_message = 'gd';
+select * from product;

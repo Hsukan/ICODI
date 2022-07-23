@@ -2,23 +2,30 @@
 #header {
     border-bottom: 1px solid rgba(0, 0, 0, .2);
     width: 100%;
-    z-index: 2;
     top: 0;
     background-color: #fff;
     color: #000;
     margin-bottom: 10px;
 }
+
 #header #header_wrapper {
     max-width: 1024px;
     margin: 0 auto;
-    position: relative;
     height: 80px
 }
+#header #header_wrapper{
+	max-width: 1024px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+	padding: 10px;
+}
 #header #header_wrapper .userMenu {
-    height: 44px;
-    right: -150px;
-    bottom: 0px;
-    position: absolute;
+   position: relative;
+    width: 480px;
+    bottom: -30px;
+    display: flex;
+    justify-content: flex-end;
 }
 #header #header_wrapper .userMenu a{
     text-decoration: none;
@@ -31,26 +38,41 @@
 }
 
 #header #header_wrapper .search_wrapper {
-    position: absolute;
-    top: 25px;
-    left: 390px;
-    z-index: 100;
-    margin-bottom: 10px;
-    min-height: 30px
+    position: relative;
+    left: 103px;
+    min-height: 30px;
+    margin-left: 30px;
 }
 
 #header #header_wrapper .search {
     font-size: 14px;
     padding-left: 10px;
-    width: 300px;
-    height: 37px;
     border: 0;
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .15);
     background: #fff;
+    width: 314px;
+    height: 50px;
 }
-
+#header .search_wrapper .search-btn{
+    position: relative;
+    top: -49px;
+    left: 326px;
+    width: 39px;
+    height: 49px;
+    border: none;
+    box-shadow: 0 2px 5px 0 rgb(0 0 0 / 15%);
+}
+#header .search_wrapper i {
+	font-size: 19px;
+}
+.wrapper_left span {font-size: larger;}
 
 /* 알림 관련 */
+#btn-alarm{
+	position: relative;
+    bottom: -17px;
+}
+
 .bell {
   transform-origin: top;
   animation: bell 2s infinite linear;
@@ -70,6 +92,8 @@
 
 #btn-alarm{background-color:white; border:none;}
 #header_alert{width:10px;     position: absolute; bottom: 40px; left: 295px;}
+
+
 /* 메인메뉴 */
 #main_menu_container {
     width: 100%;
@@ -78,7 +102,7 @@
 #main_menu_container #main_menu {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-evenly;
+        justify-content: space-between;
     margin: 0 auto;
     max-width: 1300px
 }
@@ -98,23 +122,23 @@
     font-size: 13px;
 }
 #main_menu_container .main_menu a:hover {
-    color: #ff2477
+    color:rgb(22, 160, 133);
+    font-weight: bolder;
 }
 
 
 #header_of_header_wrapper {
     height: 24px;
-    width: 95%;
+    width: 100%;
 }
 
 #header_of_header_wrapper #header_of_header {
-    max-width: 1300px;
-    margin: 0 auto
+    max-width: 1024px;
+    margin: 5px auto;
+    display: flex;
+    justify-content: space-between;
 }
 
-#header_of_header_wrapper #header_of_header div.btn_wrapper_right {
-    float: right
-}
 
 #header_of_header_wrapper #header_of_header a {
     color: #555;
@@ -125,6 +149,34 @@
     padding-right: 5px;
     text-decoration: none
 }
-
+#header_of_header_wrapper #header_of_header a:hover{
+	color : gray;
+}
 /* 회원가입메뉴 */
 
+/*footer 시작*/
+footer{
+	border-top: 1px solid rgba(0,0,0,.12);
+    box-shadow: 0 -6px 7px -8px rgb(0 0 0 / 20%);
+    padding:10px;
+    text-align: center;}
+#footer-div{
+	    display: flex;
+    justify-content: center;
+    }
+#footer-notice{margin-bottom: 20px;}
+#footer-word{width:500px;}
+#footer-word h4 {margin-bottom: 10px;}
+#footer-icon-div{    
+	width: 600px;
+    display: flex;
+    flex-direction: column;
+    margin-right: 79px;
+    align-items: center;
+ }
+ #footer-icon-div span{
+ 	margin: 10px 0;
+ }
+ #footer-icon-div p {
+ 	color : gray;
+ }

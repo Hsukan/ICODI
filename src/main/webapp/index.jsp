@@ -1,5 +1,3 @@
-
-
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!-- src/main/webapp 부터 시작! -->
@@ -181,3 +179,4 @@
         };
         bottomItem();
 	</script>
+<%@include file="/WEB-INF/views/common/footer.jsp"%>

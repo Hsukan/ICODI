@@ -31,7 +31,7 @@ section{
 /*가운데 박스*/
 #content-center{
 	border : 1px solid black;
-	width : 300px;
+	width : 400px;
 }
 
 /*오른쪽 박스*/
@@ -40,7 +40,6 @@ section{
 #content-wrap{
 	display: flex;
 	flex-direction: column;	
-	padding : 20px;
 	width : 250px;
 }
 
@@ -74,6 +73,7 @@ section{
 color:rgb(22, 160, 133);
 font-size: 80px;
  }
+ 
 #btn-product-enroll, #btn-product-delete{
 	display:flex;
 	flex-direction: column;

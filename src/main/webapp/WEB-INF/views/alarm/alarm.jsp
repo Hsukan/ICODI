@@ -5,7 +5,6 @@
 <%@include file = "/WEB-INF/views/common/header.jsp" %>
 <%
 	List<Alarm> list = (List<Alarm>)request.getAttribute("alarmList");
-
 %>
 <!DOCTYPE html>
 <html>
@@ -15,6 +14,7 @@
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/csCenter.css" />
 </head>
 <body>
+<main>
 <h1>알람</h1>
 <table id="tbl-alarm">
 	<%for(Alarm a : list) {%>
@@ -30,7 +30,7 @@
 	</tr>
 	<%} %>
 </table>
-
+</main>
 
 
 </body>

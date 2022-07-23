@@ -16,6 +16,8 @@
 <title>Insert title here</title>
 </head>
 <body>
+	<main>
+		<div class="main-content-height">
 	<h1>SUPPORT CENTER</h1>
 	<hr />
 	
@@ -46,5 +48,8 @@
 	</tr>
 	</tbody>
 	</table>
+	</div>
+	</main>
 </body>
 </html>
+<%@include file="/WEB-INF/views/common/footer.jsp"%>
