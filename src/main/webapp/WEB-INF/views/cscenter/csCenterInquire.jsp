@@ -11,6 +11,7 @@
 
 </head>
 <body>
+<main>
 <h1>SUPPORT CENTER</h1>
 	<hr />
 	
@@ -63,5 +64,7 @@
 <br />
 <br />
 <br />
+</main>
 </body>
 </html>
+<%@include file="/WEB-INF/views/common/footer.jsp"%>

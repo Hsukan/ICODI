@@ -43,7 +43,7 @@ $(document).ready(function(){
 		success(response){
 			console.log(response);
 			const span = document.querySelector("#codiCnt");
-			span.innerHTML = "<font color=green>"+response+"</font>";
+			span.innerHTML = "<font color=green; size=5px>"+response+"</font>";
 		},
 		error(xhr,textStatus,err){
 			console.log('err');
@@ -70,10 +70,11 @@ window.onload = () => {
 <%} %>
 </head>
 <body>
+	<main>
 	<div id="header">
         <div id="header_of_header_wrapper">
             <div id="header_of_header">
-            	<div class="wrapper_left">총 코디 수 : <span id="codiCnt"></span></div>    	
+            	<div class="wrapper_left"><span>총 코디 수 : </span><span id="codiCnt"></span></div>    	
                 <div class="btn_wrapper_right">
                     <a class="create btn" href="<%= request.getContextPath() %>/codibook/create">· 코디 만들기</a>
                    <a class="cscenter btn" href="<%=request.getContextPath() %>/cs_center">· 고객센터</a>
@@ -81,7 +82,7 @@ window.onload = () => {
             </div>
         </div>
         <div id="header_wrapper">
-            <a href="<%= request.getContextPath()%>/"><img src="<%=request.getContextPath() %>/images/logo.png" alt="" id="logo" style="width: 200px; height: 100px; position: absolute; left:100px; bottom: -15px;"></a>
+            <a href="<%= request.getContextPath()%>/"><img src="<%=request.getContextPath() %>/images/logo.png" alt="" id="logo" style="width: 200px; height: 100px; position: absolute; left:30px; bottom: -15px;"></a>
             <div class="userMenu">
                 <a href="<%= request.getContextPath()%>/member/memberMyCodiList">마이페이지</a>
                 <a href="#">마이쇼핑</a>
@@ -152,3 +153,4 @@ window.onload = () => {
             </div>
         </div>
     </div>
+    </main>

@@ -15,8 +15,8 @@
     height: 80px
 }
 #header #header_wrapper .userMenu {
-    height: 44px;
-    right: -150px;
+    height: 29px;
+    right: 0px;
     bottom: 0px;
     position: absolute;
 }
@@ -47,10 +47,27 @@
     border: 0;
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .15);
     background: #fff;
+    position: absolute;
+    left: -41px;
+    top: -15px;
 }
-
+#header .search_wrapper .search-btn{
+	position: absolute;
+    left: 271px;
+    top: -15px;
+    width: 40px;
+    height: 37px;
+    border: none;
+    box-shadow: 0 2px 5px 0 rgb(0 0 0 / 15%);
+}
+.wrapper_left span {font-size: larger;}
 
 /* 알림 관련 */
+#btn-alarm{
+	position: absolute;
+    bottom : -20px;
+}
+
 .bell {
   transform-origin: top;
   animation: bell 2s infinite linear;
@@ -70,6 +87,8 @@
 
 #btn-alarm{background-color:white; border:none;}
 #header_alert{width:10px;     position: absolute; bottom: 40px; left: 295px;}
+
+
 /* 메인메뉴 */
 #main_menu_container {
     width: 100%;
@@ -98,7 +117,8 @@
     font-size: 13px;
 }
 #main_menu_container .main_menu a:hover {
-    color: #ff2477
+    color:rgb(22, 160, 133);
+    font-weight: bolder;
 }
 
 
@@ -108,13 +128,12 @@
 }
 
 #header_of_header_wrapper #header_of_header {
-    max-width: 1300px;
-    margin: 0 auto
+    max-width: 1024px;
+    margin: 5px auto;
+    display: flex;
+    justify-content: space-between;
 }
 
-#header_of_header_wrapper #header_of_header div.btn_wrapper_right {
-    float: right
-}
 
 #header_of_header_wrapper #header_of_header a {
     color: #555;
@@ -128,3 +147,24 @@
 
 /* 회원가입메뉴 */
 
+/*footer 시작*/
+main{max-width: 1024px;}
+footer{border-top: 1px solid rgba(0,0,0,.12);
+    box-shadow: 0 -6px 7px -8px rgb(0 0 0 / 20%);
+    padding:10px;}
+#footer-div{display:flex;}
+#footer-notice{margin-bottom: 20px;}
+#footer-word{width:500px;}
+#footer-word h4 {margin-bottom: 10px;}
+#footer-icon-div{    
+	    width: 600px;
+    display: flex;
+    flex-direction: column;
+    margin-right: 79px;
+ }
+ #footer-icon-div span{
+ 	margin: 10px 0;
+ }
+ #footer-icon-div p {
+ 	color : gray;
+ }
