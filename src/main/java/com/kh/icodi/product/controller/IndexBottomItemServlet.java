@@ -17,8 +17,8 @@ import com.kh.icodi.codiBook.model.service.CodiBookService;
 /**
  * Servlet implementation class IndexTopItemServlet
  */
-@WebServlet("/product/mainTopItem")
-public class IndexTopItemServlet extends HttpServlet {
+@WebServlet("/product/mainBottomItem")
+public class IndexBottomItemServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private AdminService adminService = new AdminService();
 
@@ -28,7 +28,7 @@ public class IndexTopItemServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
-			int No = 1;
+			int No = 2;
 			List<ProductExt> productList = adminService.mainProductByCategoryNo(No);
 
 			
