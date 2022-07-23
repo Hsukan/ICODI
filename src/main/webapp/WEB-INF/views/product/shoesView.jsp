@@ -35,8 +35,8 @@
 				const ul = document.querySelector(".productList");
 				
 				response.forEach((product) => {
+					console.log(product);
 					const {productRenamedFilename} = product.attachmentList[0];
-					console.log(productRenamedFilename);
 					const {productCode, productName, productPrice} = product;
 					
 					const li = `
@@ -47,7 +47,7 @@
 									<div id="productName">\${productName}</div>
 									<div id="productPrice">\${productPrice}</div>
 								</div>
-							</a>
+							</a>	
 						</li>
 					`;
 					ul.insertAdjacentHTML('beforeend', li);

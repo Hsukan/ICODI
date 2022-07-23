@@ -35,6 +35,7 @@
 				const ul = document.querySelector(".productList");
 				
 				response.forEach((product) => {
+					console.log(product);
 					const {productRenamedFilename} = product.attachmentList[0];
 
 					const {productCode, productName, productPrice} = product;
