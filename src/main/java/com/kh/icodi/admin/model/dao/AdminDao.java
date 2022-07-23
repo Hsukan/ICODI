@@ -418,4 +418,29 @@ public class AdminDao {
 		return codiImg;
 	}
 
+	public List<ProductExt> mainProductByCategoryNo(Connection conn, int no) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		List<ProductExt> productList = new ArrayList<>();
+		String sql = prop.getProperty("mainProductByCategoryNo");
+		//select * from (select rownum rnum, p.* from (select * from product where category_code = ? 
+		//order by product_reg_date desc) p ) p where rnum between 1 and 10
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, no);
+
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				productList.add(handleProductResultSet(rset));
+			}
+		} catch (SQLException e) {
+			throw new AdminException("상품 조회 실패!", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		return productList;
+	}
+
 }

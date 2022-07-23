@@ -186,4 +186,20 @@ public class AdminService {
 		return codiImg;
 	}
 
+	public List<ProductExt> mainProductByCategoryNo(int no) {
+		Connection conn = getConnection();
+		List<ProductExt> productList = adminDao.mainProductByCategoryNo(conn, no);
+		if(productList != null && !productList.isEmpty()) {
+			for(ProductExt product : productList) {
+				List<ProductAttachment> attachments = adminDao.findAttachmentByProductCode(conn, product.getProductCode());
+				if(attachments != null && !attachments.isEmpty()) {
+					for(ProductAttachment attach : attachments) {
+						product.addAttachment(attach);
+					}
+				}
+			}
+		}
+		return productList;
+	}
+
 }
