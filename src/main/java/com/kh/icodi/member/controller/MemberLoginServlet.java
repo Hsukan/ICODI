@@ -71,7 +71,6 @@ public class MemberLoginServlet extends HttpServlet {
 			// 로그인 실패 (아이디 존재하지 않는 경우 || 비밀번호를 틀린 경우)
 			else {
 				session.setAttribute("msg", "아이디 또는 비밀번호가 일치하지 않습니다.");
-				
 				response.sendRedirect(request.getContextPath()+"/member/memberLogin"); // /mvc/member/memberLogin
 			}
 			

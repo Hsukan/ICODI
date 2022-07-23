@@ -3,34 +3,6 @@
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/login.css" />    
-
-<script>
-// 로그인 유효성
-window.onload = () => {
-	
-<% if(loginMember == null){ %>
-	document.loginFrm.onsubmit = (e) => {
-		
-		const memberIdVal = document.querySelectcor("#memberId").value;
-		const passwordVal = document.querySelectcor("#password").value;
-		
-		if(!/^.{4.}$/.test(memberId.value)){
-			alert("유효한 아이디를 입력해주세요.");
-			memberId.select();
-			return false;
-		}
-		if(!/^.{4.}$/.test(password.value)){
-			alert("유효한 비밀번호를 입력해주세요.");
-			password.select();
-			return false;
-		}
-		
-	};
-	
-};
-<% } %>
-</script>
-
 <main>
 	<div class="login-container">
 		<h1>LOGIN</h1>
@@ -56,5 +28,25 @@ window.onload = () => {
 		</form>
 	</div>
 </main>
+<script>
+//로그인 유효성
+<% if(loginMember == null){ %>
+	document.loginFrm.addEventListener('submit', (e) => {
+		const memberIdVal = document.querySelectcor("#memberId").value;
+		const passwordVal = document.querySelectcor("#password").value;
+		
+		if(!/^.{4.}$/.test(memberId.value)){
+			alert("유효한 아이디를 입력해주세요.");
+			memberId.select();
+			return false;
+		}
+		if(!/^.{4.}$/.test(password.value)){
+			alert("유효한 비밀번호를 입력해주세요.");
+			password.select();
+			return false;
+		}
+	});
+<% } %>
+</script>
 </body>
 </html>
