@@ -2,7 +2,6 @@
 #header {
     border-bottom: 1px solid rgba(0, 0, 0, .2);
     width: 100%;
-    z-index: 2;
     top: 0;
     background-color: #fff;
     color: #000;
@@ -12,14 +11,21 @@
 #header #header_wrapper {
     max-width: 1024px;
     margin: 0 auto;
-    position: relative;
     height: 80px
 }
+#header #header_wrapper{
+	max-width: 1024px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+	padding: 10px;
+}
 #header #header_wrapper .userMenu {
-    height: 29px;
-    right: 0px;
-    bottom: 0px;
-    position: absolute;
+   position: relative;
+    width: 480px;
+    bottom: -30px;
+    display: flex;
+    justify-content: flex-end;
 }
 #header #header_wrapper .userMenu a{
     text-decoration: none;
@@ -32,41 +38,39 @@
 }
 
 #header #header_wrapper .search_wrapper {
-    position: absolute;
-    top: 25px;
-    left: 390px;
-    z-index: 100;
-    margin-bottom: 10px;
-    min-height: 30px
+    position: relative;
+    left: 103px;
+    min-height: 30px;
+    margin-left: 30px;
 }
 
 #header #header_wrapper .search {
     font-size: 14px;
     padding-left: 10px;
-    width: 300px;
-    height: 37px;
     border: 0;
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .15);
     background: #fff;
-    position: absolute;
-    left: -41px;
-    top: -15px;
+    width: 314px;
+    height: 50px;
 }
 #header .search_wrapper .search-btn{
-	position: absolute;
-    left: 271px;
-    top: -15px;
-    width: 40px;
-    height: 37px;
+    position: relative;
+    top: -49px;
+    left: 326px;
+    width: 39px;
+    height: 49px;
     border: none;
     box-shadow: 0 2px 5px 0 rgb(0 0 0 / 15%);
+}
+#header .search_wrapper i {
+	font-size: 19px;
 }
 .wrapper_left span {font-size: larger;}
 
 /* 알림 관련 */
 #btn-alarm{
-	position: absolute;
-    bottom : -20px;
+	position: relative;
+    bottom: -17px;
 }
 
 .bell {
@@ -98,7 +102,7 @@
 #main_menu_container #main_menu {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-evenly;
+        justify-content: space-between;
     margin: 0 auto;
     max-width: 1300px
 }
@@ -125,7 +129,7 @@
 
 #header_of_header_wrapper {
     height: 24px;
-    width: 95%;
+    width: 100%;
 }
 
 #header_of_header_wrapper #header_of_header {
@@ -151,19 +155,24 @@
 /* 회원가입메뉴 */
 
 /*footer 시작*/
-main{max-width: 1024px;}
-footer{border-top: 1px solid rgba(0,0,0,.12);
+footer{
+	border-top: 1px solid rgba(0,0,0,.12);
     box-shadow: 0 -6px 7px -8px rgb(0 0 0 / 20%);
-    padding:10px;}
-#footer-div{display:flex;}
+    padding:10px;
+    text-align: center;}
+#footer-div{
+	    display: flex;
+    justify-content: center;
+    }
 #footer-notice{margin-bottom: 20px;}
 #footer-word{width:500px;}
 #footer-word h4 {margin-bottom: 10px;}
 #footer-icon-div{    
-	    width: 600px;
+	width: 600px;
     display: flex;
     flex-direction: column;
     margin-right: 79px;
+    align-items: center;
  }
  #footer-icon-div span{
  	margin: 10px 0;

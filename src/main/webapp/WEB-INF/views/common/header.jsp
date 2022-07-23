@@ -69,7 +69,7 @@ window.onload = () => {
 <%} %>
 </head>
 <body>
-	<main>
+	
 	<div id="header">
         <div id="header_of_header_wrapper">
             <div id="header_of_header">
@@ -80,8 +80,18 @@ window.onload = () => {
                 </div>
             </div>
         </div>
+        
         <div id="header_wrapper">
-            <a href="<%= request.getContextPath()%>/"><img src="<%=request.getContextPath() %>/images/logo.png" alt="" id="logo" style="width: 200px; height: 100px; position: absolute; left:30px; bottom: -15px;"></a>
+            <a href="<%= request.getContextPath()%>/"><img src="<%=request.getContextPath() %>/images/logo.png" alt="" id="logo" style="width: 200px; height: 100px;"></a>
+            
+            <form class="search_wrapper hide_for_mobile" action="<%=request.getContextPath()%>/product/productFind">
+                <input id="productAuto" class="search" type="text" placeholder="검색어를 입력하세요" value=""
+                name="searchFrm">
+                <button class="search-btn" type="submit">
+ 			 	<i class="fas fa-search"></i>
+				</button>
+            </form>
+            
             <div class="userMenu">
                 <a href="<%= request.getContextPath()%>/member/memberMyCodiList">마이페이지</a>
                 <a href="<%= request.getContextPath()%>/member/myShopping">마이쇼핑</a>
@@ -98,13 +108,7 @@ window.onload = () => {
                 <% } %>
             </div>
             
-            <form class="search_wrapper hide_for_mobile" action="<%=request.getContextPath()%>/product/productFind">
-                <input id="productAuto" class="search" type="text" placeholder="검색어를 입력하세요" value=""
-                name="searchFrm">
-                <button class="search-btn" type="submit">
- 			 	<i class="fas fa-search"></i>
-				</button>
-            </form>
+            
             <script>
             $("#productAuto").autocomplete({
                 source(request, response){
@@ -152,4 +156,3 @@ window.onload = () => {
             </div>
         </div>
     </div>
-    </main>
