@@ -3,8 +3,10 @@ package com.kh.icodi.member.controller;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -13,6 +15,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.Gson;
 import com.kh.icodi.member.model.service.MemberService;
 
 /**
@@ -65,6 +68,7 @@ public class MemberPayServlet extends HttpServlet {
 				data.put("cartNo", cartNo[i]); 
 				int result = memberService.insertProductOrder(data); 
 			}
+			response.sendRedirect(request.getContextPath() + "/member/myShopping");
 		} catch(Exception e) {
 			e.printStackTrace();
 			throw e;

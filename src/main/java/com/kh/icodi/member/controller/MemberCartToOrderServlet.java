@@ -31,7 +31,6 @@ public class MemberCartToOrderServlet extends HttpServlet {
 			for(int i = 0; i < cartNo.length; i++) {
 				cartNo[i] = Integer.parseInt(_cartNo[i]);
 			}
-			System.out.println("cartNo@CartToOrder = " + Arrays.toString(cartNo));
 			
 			List<MemberProductManager> order = memberService.findOrderListByCartNo(cartNo);
 			request.setAttribute("order", order);
