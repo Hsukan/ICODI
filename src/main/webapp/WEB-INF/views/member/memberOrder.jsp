@@ -155,7 +155,7 @@
 								<tbody>
 									<tr>
 										<th>적립금</th>
-										<td ><input type="text" value="0" id="point" class="input" /> <span class="size">원 (총 사용가능 적립금 : <span><%= member.getPoint() %></span>원)</span></td>
+										<td ><input type="text" value="0" id="usePoint"/> <span class="size">원 (총 사용가능 적립금 : <span><%= member.getPoint() %></span>원)</span></td>
 									</tr>
 								</tbody>
 							</table>
@@ -201,6 +201,7 @@
 								<input type="hidden" name="finalMemberPoint" />
 								<input type="hidden" name="finalMemberId" value="<%= member.getMemberId() %>" />
 								<input type="hidden" name="finalPrice" />
+								<input type="hidden" name="finalUsePoint" />
 								<button id="orderBtn">결제</button>
 							</div>
 						</div>
@@ -229,14 +230,25 @@
 		[...total].forEach((div) => div.innerHTML = totalPrice.innerHTML);
 	});
 	
-	document.querySelector("#point").addEventListener('change', (e) => {
+	document.querySelector("#usePoint").addEventListener('change', (e) => {
 		const point = e.target;
 		const memberPoint = <%= member.getPoint()%>;
 		const discount = document.querySelector("#discount");
 		const total = document.querySelectorAll("#total");
+		const totalPrice= document.querySelector("#totalPrice");
+		const usePoint = document.querySelector("#usePoint");
+		console.log(totalPrice.innerHTML.replace(",",""));
+		console.log(usePoint.value);
 		
 		if(memberPoint < point.value) {
 			alert('사용가능한 적립금보다 많습니다.');
+			point.value = 0;
+			point.focus();
+			return;
+		}
+		
+		if(Number(totalPrice.innerHTML.replace(",","")) < usePoint.value) {
+			alert('상품 가격보다 사용적립금이 더 많습니다.')
 			point.value = 0;
 			point.focus();
 			return;
@@ -266,12 +278,9 @@
 	});
 	
 	document.querySelector("#orderBtn").addEventListener('click', (e) => {
-		e.preventDefault();
 		const productCode = document.querySelectorAll("[name=productCode]");
-		let productCodeList = [];
-		let productAmountList = [];
 		let productList = [];
-		let productAmounts;
+
 		[...productCode].forEach((code) => {
 		<% 
 			for(MemberProductManager manager : orderList) {
@@ -286,16 +295,17 @@
 			<%
 			}
 			%>
-			//productCodeList.push(`\${code.value}`);
-			//productAmountList.push(`\${productAmounts}`);
 			productList.push({"productCode":`\${code.value}`, "productAmount":`\${productAmounts}`});
 		});
+		
 		const frm = document.memberPayFrm;
 		const finalPayment = document.querySelector("[name=finalPayment]");
 		const finalMemberPoint = document.querySelector("[name=finalMemberPoint]");
 		const payment = document.querySelectorAll("[name=payment]");
 		const finalPrice = document.querySelector("[name=finalPrice]");
 		const addPoint = document.querySelectorAll("#addPoint");
+		const finalUsePoint = document.querySelector("[name=finalUsePoint]");
+		const usePoint = document.querySelector("#usePoint");
 		const total = document.querySelector("#total");
 		
 		[...payment].forEach((pay) => {
@@ -307,21 +317,22 @@
 		const point = [...addPoint].map((text) => Number(text.innerHTML.replace(",", ""))).reduce((total, price) => total+price);
 		finalMemberPoint.value = point;
 		finalPrice.value = total.innerHTML.replace(",","");
-
+		finalUsePoint.value = usePoint.value.replace(",", "");
+		
+		console.log(productList);
 		// 상품 재고 삭제처리
 		$.ajax({
 			url : '<%= request.getContextPath()%>/product/deleteStock',
 			dataType : 'json',
 			type : "POST",
 			traditional:true,
-			data : {productList}
+			data : {data : JSON.stringify(productList)},
 			success(response) {
-				console.log(response);
+				frm.submit();
 			},
 			error : console.log
 		});
 		
-		//frm.submit();
 	});
 	
 </script>
