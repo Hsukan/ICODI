@@ -31,12 +31,23 @@
 		<ul>
 		</ul>
 	</div>
-</div>
-
-			<span id="topReset" class="divReset">x</span>
-			<span id="accReset" class="divReset">x</span>
-			<span id="bottomReset" class="divReset">x</span>
-			<span id="shoesReset" class="divReset">x</span>
+</div>		
+			<div id="button-wrap">
+	            <input type="button" id="btn_reset" value="Reset" onclick="reset();">
+				<input type="button" value="저장" id="btnSave" />
+				<button type="button" id="btnModal" ></button>
+			</div>
+			<span id="msg-canvas">* 상의, 하의, 신발은 1품목 · 악세서리는 3품목 코디 가능합니다.</span>
+			<div id="canvas-wrap">
+			<span id="topPlace">top</span>
+			<span id="bottomPlace">bottom</span>
+			<span id="shoesPlace">shoes</span>
+			<span id="accPlace">acc</span>
+			<span id="topReset" class="divReset">🗙</span>
+			<span id="accReset" class="divReset">🗙</span>
+			<span id="bottomReset" class="divReset">🗙</span>
+			<span id="shoesReset" class="divReset">🗙</span>
+			</div>
 			<div id="canvas">
 				<div id="div1" class="canvasDiv" ondragover="allowDrop(event)">
 				</div>
@@ -51,9 +62,7 @@
 				<div id="div4" class="canvasDiv" ondragover="allowDrop(event)">
 				</div>
 			</div>
-			<input type="button" value="저장" id="btnSave" />
-			<button type="button" id="btnModal" ></button>
-            <input type="button" id="btn_reset" value="Reset" onclick="reset();"></button>
+
 			
 </article>
 <script>
@@ -182,7 +191,7 @@ btnSave.onclick = (e) => {
 	partShot();
 	document.querySelector("#btnModal").click();
 };
-<%-- function partShot() {
+function partShot() {
     //특정부분 스크린샷
    
      html2canvas(document.getElementById("canvas")).then(function (canvas) {
@@ -199,7 +208,7 @@ btnSave.onclick = (e) => {
 
 		document.querySelector("[name=memberId]").value = memberId;
 		document.querySelector("[name=useProductArr]").value = useProductArr;
- }; --%>
+ };
 
  const reset = () => {
 
@@ -257,13 +266,15 @@ const accReset = document.querySelector("#accReset");
           </div>
           <div class="close-area">X</div>
           <div class="content">
-          	<textarea id="content" cols="50" rows="10" name="content" placeholder="생성한 코디에 대한 간단한 설명을 적어주세요."></textarea>
- 			<input type="submit" value="저장" />
-          	<input type="checkbox" name="isOpen" id="isOpen" value="N"/>
-          	<label for="isOpen">비공개 저장</label>
-          	<input type="hidden" name="imgSrc" />
-          	<input type="hidden" name="memberId" />
-          	<input type="hidden" name="useProductArr" />
+          	<textarea id="content" cols="49" rows="10" name="content" placeholder="생성한 코디에 대한 간단한 설명을 적어주세요."></textarea>
+          	<div class="msgSave">
+	          	<input type="checkbox" name="isOpen" id="isOpen" value="N"/>
+	          	<label for="isOpen">비공개 저장</label>
+	 			<input type="submit" id="codibookSave" value="저장" />
+	          	<input type="hidden" name="imgSrc" />
+	          	<input type="hidden" name="memberId" />
+	          	<input type="hidden" name="useProductArr" />
+          	</div>
           </div>
       </div>
   </div>
@@ -273,12 +284,14 @@ const accReset = document.querySelector("#accReset");
 	const modal = document.getElementById("modal")
     function modalOn() {
         modal.style.display = "flex";
+        $('body').css("overflow", "hidden");
     }
     function isModalOn() {
         return modal.style.display === "flex"
     }
     function modalOff() {
         modal.style.display = "none"
+        $('body').css("overflow-y", "scroll");
     }
     const btnModal = document.getElementById("btnModal")
     btnModal.addEventListener("click", e => {
