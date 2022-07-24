@@ -11,6 +11,10 @@
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
+<script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+
 <%
 	List<MemberProductManager> orderList = (List<MemberProductManager>)request.getAttribute("order");
 	Member member = orderList.get(0).getMember();
@@ -79,7 +83,7 @@
 										</div>
 									</td>
 									<td id="productInfo">
-										<div class="productName"><%= orderProduct.getProductName() %></div>
+										<div class="productName" class="strong"><%= orderProduct.getProductName() %></div>
 										<div class="productOption">[옵션:<%=orderProduct.getProductColor() %>/<%= orderProduct.getProductSize() %>]</div>
 										<input type="hidden" name="productCode" value="<%= orderProduct.getProductCode() %>" />
 										<input type="hidden" name="cartNo" value="<%=orderCart.getCartNo() %>" />
@@ -101,7 +105,7 @@
 						<tfoot>
 							<tr>
 								<td>[기본배송]</td>
-								<td colspan="6" id="orderProductPrice">상품구매금액 <span id="productTotalPrice"></span>원 + 배송비 2,500 = 합계 : <span id="totalPrice"></span>원</td>
+								<td colspan="6" id="orderProductPrice">상품구매금액 <span id="productTotalPrice"></span>원 + 배송비 2,500 = 합계 : <span id="totalPrice" class="strong"></span>원</td>
 							</tr>
 						</tfoot>
 					</table>
@@ -125,16 +129,16 @@
 							<tr>
 								<th>휴대전화</th>
 								<td>
-									<input type="text" name="phone" id="phone1" maxlength="3" value="<%= phones[0]%>" />-
-									<input type="text" name="phone" id="phone2" maxlength="4" value="<%= phones[1] %>">-
-									<input type="text" name="phone" id="phone3" maxlength="4" value="<%= phones[2].replace(" ", "") %>"><br>
+									<input type="text" name="phone" id="phone1" maxlength="3" class="input" value="<%= phones[0]%>" />-
+									<input type="text" name="phone" id="phone2" maxlength="4" class="input" value="<%= phones[1] %>">-
+									<input type="text" name="phone" id="phone3" maxlength="4" class="input" value="<%= phones[2].replace(" ", "") %>"><br>
 								</td>
 							</tr>
 							<tr>
 								<th>이메일</th>
 								<td>
-									<input type="text" name="email" id="email1" value="<%= emails[0]%>"/>@
-									<input type="text" name="email" id="email2" value="<%= emails[1] %>">
+									<input type="text" name="email" id="email1" class="input" value="<%= emails[0]%>"/>@
+									<input type="text" name="email" id="email2" class="input" value="<%= emails[1] %>">
 								</td>
 							</tr>
 						</tbody>
@@ -153,7 +157,7 @@
 								<tr>
 									<td><span class="display"><span id="orderPrice"></span>원</span></td>
 									<td><span class="display">-<span id="discount">0</span>원</span></td>
-									<td><span class="display">= <span id="total"></span>원</span></td>
+									<td><span class="display">= <span id="total" class="strong"></span>원</span></td>
 								</tr>
 							</tbody>
 						</table>
@@ -162,7 +166,7 @@
 								<tbody>
 									<tr>
 										<th>적립금</th>
-										<td ><input type="text" value="0" id="usePoint"/> <span class="size">원 (총 사용가능 적립금 : <span><%= member.getPoint() %></span>원)</span></td>
+										<td ><input type="text" value="0" id="usePoint" class="input"/> <span class="size">원 (총 사용가능 적립금 : <span class="strong"><%= member.getPoint() %></span>원)</span></td>
 									</tr>
 								</tbody>
 							</table>
@@ -182,7 +186,7 @@
 									</div>
 								</div>
 								<div class="payment-info-wrap">
-									<table id="cash-info">
+									<table id="cash-info" class="info">
 										<tbody>
 											<tr>
 												<th>입금자명</th>
@@ -194,14 +198,14 @@
 											</tr>
 										</tbody>
 									</table>
-									<div id="card-info">
+									<div id="card-info" class="info">
 										<p>최소 결제 가능 금액은 결제금액에서 배송비를 제외한 금액입니다.</p>
 									</div>
 								</div>
 							</div>
 							<div class="final-wrap">
-								<span>최종결제금액</span>
-								<div id="total"></div>원
+								<span class="final-wrap-header">최종결제금액</span>
+								<div class="flex"><div id="total" class="strong"></div> 원</div>
 								<input type="hidden" name="finalPayment" />
 								<input type="hidden" name="finalMemberPoint" />
 								<input type="hidden" name="finalMemberId" value="<%= member.getMemberId() %>" />
@@ -227,7 +231,7 @@
 	            fade: true,
 	            cssEase: 'linear',
 	            autoplay: true,
-	            autoplaySpeed: 300,
+	            autoplaySpeed: 1000,
 	            prevArrow: "",
 	            nextArrow: ""
 	        });

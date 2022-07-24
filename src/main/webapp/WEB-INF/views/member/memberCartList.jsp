@@ -74,7 +74,7 @@
 									</div>
 								</td>
 								<td id="productInfo">
-									<div class="productName"><%= product.getProductName() %></div>
+									<div class="productName" class="strong"><%= product.getProductName() %></div>
 									<div class="productOption">[옵션:<%=product.getProductColor() %>/<%= product.getProductSize() %>]</div>
 									<input type="hidden" name="productCode" value="<%= product.getProductCode() %>" />
 									<input type="hidden" name="cartNo" value="<%= cart.getCartNo() %>" />
@@ -139,11 +139,11 @@ const select = document.querySelectorAll("#selectOrder");
 	   $(document).ready(function () {
 	        $(img).slick({
 	            infinite: true,
-	            speed: 2000,
+	            speed: 500,
 	            fade: true,
 	            cssEase: 'linear',
 	            autoplay: true,
-	            autoplaySpeed: 2000,
+	            autoplaySpeed: 1000,
 	            prevArrow: "",
 	            nextArrow: ""
 	        });

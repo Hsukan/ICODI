@@ -64,7 +64,7 @@ table {
 }
 .cart-product td {
 	font-size:13px;
-	height:135px;
+	height:110px;
 }
 .cart-product tbody td:not(#productInfo) > * {
 	display:flex;
@@ -80,6 +80,7 @@ table {
 }
 #productImg img {
 	width:100%;
+	height:100px;
 }
 #productInfo {
 	width:300px;

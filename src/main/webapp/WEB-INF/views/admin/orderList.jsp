@@ -5,6 +5,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
+<link rel="stylesheet" href="<%=request.getContextPath() %>/css/adminOrder.css" />
+
 <%
 	List<MemberOrderProductManager> list = (List<MemberOrderProductManager>)request.getAttribute("list");
 	String pagebar = (String)request.getAttribute("pagebar");
@@ -45,12 +47,12 @@
 								ProductOrder order = orderList.getProductOrder();
 						%>
 						<tr>
-							<td><%= order.getOrderNo() %></td>
+							<td class="strong"><%= order.getOrderNo() %></td>
 							<td><%= product.getProductCode() %></td>
 							<td><%= member.getMemberId() %></td>
 							<td><%= member.getMemberName() %></td>
 							<td><%= order.getOrderPayments() %></td>
-							<td class="status"><%= order.getOrderStatus() %></td>
+							<td class="status strong"><%= order.getOrderStatus() %></td>
 							<td>
 								<% if(!order.getOrderStatus().equals("취소") && !order.getOrderStatus().equals("환불") && !order.getOrderStatus().equals("교환")) { %>
 								<button type="button" id="cancle" class="statusBtn" data-order-no="<%= order.getOrderNo() %>" value="취소">취소처리</button>
@@ -85,10 +87,13 @@ document.querySelector("#searchBtn").addEventListener('click', (e) => {
 		data : {searchKeyword, searchValue},
 		success(response) {
 			const {list, pagebar} = response;
+			console.log({pagebar});
 			const tbody = document.querySelector("#orderListTable tbody");
 			const oldPagebar = document.querySelector("#pagebar");
 			tbody.innerHTML = '';
-
+			
+			if(!list) return;
+			
 			list.forEach((order) => {
 				const {member, product, productOrder} = order;
 				const {memberId, memberName} = member;
@@ -96,12 +101,12 @@ document.querySelector("#searchBtn").addEventListener('click', (e) => {
 				const {orderNo, orderPayments, orderStatus} = productOrder;
 				const tr = `
 				<tr>
-					<td>\${orderNo}</td>
+					<td class="strong">\${orderNo}</td>
 					<td>\${productCode}</td>
 					<td>\${memberId}</td>
 					<td>\${memberName}</td>
 					<td>\${orderPayments}</td>
-					<td class="status">\${orderStatus}</td>
+					<td class="status strong">\${orderStatus}</td>
 					<td>
 						<button type="button" id="cancle" class="statusBtn" data-order-no="\${orderNo}" value="취소">취소처리</button>
 						<button type="button" id="refund" class="statusBtn" data-order-no="\${orderNo}" value="환불">환불처리</button>
@@ -110,8 +115,8 @@ document.querySelector("#searchBtn").addEventListener('click', (e) => {
 				</tr>
 				`
 				tbody.insertAdjacentHTML('beforeend', tr);
-				oldPagebar.innerHTML = pagebar;
 			})
+			oldPagebar.innerHTML = pagebar;
 		},
 		error : console.log,
 		complete() {
