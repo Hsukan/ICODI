@@ -12,7 +12,7 @@
 					<div class="nav-wrap">
 						<h2>관리자 페이지</h2>
 						<ul>
-							<li><a href="#">회원 정보 관리</a></li>
+							<li><a href="<%=request.getContextPath()%>/admin/memberList">회원 정보 관리</a></li>
 							<li><a href="#">상품 관리</a></li>
 							<li><a href="#">주문/배송 관리</a></li>
 							<li><a href="<%=request.getContextPath()%>/admin/stats">통계</a></li>

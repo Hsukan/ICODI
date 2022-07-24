@@ -18,8 +18,8 @@
 		<section>
 			<article>
 				<nav class="ootdMenu">
-					<div id="hot" onclick="goToHotCodi();">인기</div>
-					<div id="new" style="font-weight: bold;">최신</div>
+					<div id="hot" onclick="goToHotCodi();" style="cursor: pointer;">인기</div>
+					<div id="new" style="font-weight: bold;" >최신</div>
                 </nav>
 				<div class="content-wrap"></div>
 				<div id="btn-more-content">
