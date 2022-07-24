@@ -19,7 +19,7 @@
 			<article>
 				<nav class="ootdMenu">
 					<div id="hot" style="font-weight: bold;">인기</div>
-					<div id="new" onclick="goToNewCodi();">최신</div>
+					<div id="new" onclick="goToNewCodi();" style="cursor: pointer;">최신</div>
                 </nav>
 				<div class="content-wrap"></div>
 				<div id="btn-more-content">
