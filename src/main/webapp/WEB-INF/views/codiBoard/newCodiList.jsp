@@ -18,8 +18,8 @@
 		<section>
 			<article>
 				<nav class="ootdMenu">
-					<div id="hot" onclick="goToHotCodi();">인기</div>
-					<div id="new" style="font-weight: bold;">최신</div>
+					<div id="hot" onclick="goToHotCodi();" style="cursor: pointer;">인기</div>
+					<div id="new" style="font-weight: bold;" >최신</div>
                 </nav>
 				<div class="content-wrap"></div>
 				<div id="btn-more-content">
@@ -50,7 +50,6 @@ const getPage = (cPage) => {
 			const content = document.querySelector(".content-wrap");
 			
 			response.forEach((codi) => {
-				//console.log(codi);
 				const {codiBoardNo, memberId, codiBoardContent, likeCount, useProduct, regDate, likedMember, filename} = codi;
 
 				const list = `
@@ -65,12 +64,14 @@ const getPage = (cPage) => {
                                 <span id="regDate">\${regDate}</span>
                             </div>
                             <div id="content">\${codiBoardContent}</div>
-                            <button id="\${codiBoardNo}" class="like">
-	    						\${
-	    							likedMember === undefined ? '♡' : '♥'
-	    						}	
-                            </button>
-                            <span id="likeCount">\${likeCount}</span>
+                            <div class="like-wrap">
+	                            <button id="\${codiBoardNo}" class="like">
+		    						\${
+		    							likedMember === undefined ? '🤍' : '💚'
+		    						}	
+	                            </button>
+	                            <span id="likeCount">\${likeCount}</span>                            
+                            </div>
                         </div>
                     </div>
 				</div>
@@ -97,11 +98,9 @@ const getPage = (cPage) => {
 				img.onclick = (e) => {
 					console.log(e.src);
 					location.href = "<%= request.getContextPath()%>/codiBoard/codiDetail?useProduct="+`\${img.dataset.product}`+"&codiBoardNo="+`\${img.dataset.codiBoardNo}`+
-					"&likeCount="+`\${img.dataset.likecount}`;;
+					"&likeCount="+`\${img.dataset.likecount}`;
 				};
 			});
-			
-
 		}
 	});
 };
@@ -121,9 +120,9 @@ const likeIt = (e) => {
 			const {type, likeCount} = response;
 			
 			if(type === 'insert') {
-				e.target.innerHTML = '♥';
+				e.target.innerHTML = '💚';
 			} else {
-				e.target.innerHTML = '♡'
+				e.target.innerHTML = '🤍'
 			}
 			e.target.nextElementSibling.innerHTML = `\${likeCount}`;
 		},

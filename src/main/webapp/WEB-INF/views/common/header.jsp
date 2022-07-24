@@ -30,8 +30,8 @@
 <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
 <style>
-	.ui-menu-item{width:308px; background-color : #fff;}
-	#ui-id-1{height: 0px;  border:1px solid black;}
+	.ui-menu-item{width:308px; background-color : #fff; z-index:999;}
+	#ui-id-1{height: 0px;  border:1px solid black; z-index:999;}
 	.search-btn{width:30px; height: 30px;}
 </style>
 <script>
@@ -42,7 +42,7 @@ $(document).ready(function(){
 		success(response){
 			console.log(response);
 			const span = document.querySelector("#codiCnt");
-			span.innerHTML = "<font color=green; size=5px>"+response+"</font>";
+			span.innerHTML = "<font color=green; size=3px>"+response+"</font>";
 		},
 		error(xhr,textStatus,err){
 			console.log('err');

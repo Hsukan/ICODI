@@ -2,6 +2,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/common/header.jsp"%>
+<%
+	String loginMemberId = (String)request.getAttribute("loginMemberId");
+%>
 <script src="<%=request.getContextPath()%>/js/jquery-3.6.0.js"></script>
 <script
 	src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
@@ -209,7 +212,7 @@ function partShot() {
      }); 
      	const codiArr = new Set(arr);
 		const useProductArr = [...codiArr].join(", ");	
-		const memberId = "<%=loginMember.getMemberId()%>";
+		const memberId = "<%=loginMemberId%>";
 
 		document.querySelector("[name=memberId]").value = memberId;
 		document.querySelector("[name=useProductArr]").value = useProductArr;

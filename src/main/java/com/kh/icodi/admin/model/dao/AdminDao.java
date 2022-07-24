@@ -1,7 +1,7 @@
 package com.kh.icodi.admin.model.dao;
 
-import static com.kh.icodi.member.model.dao.MemberDao.*;
 import static com.kh.icodi.common.JdbcTemplate.close;
+import static com.kh.icodi.member.model.dao.MemberDao.handleMemberOrderProductResultSet;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -20,6 +20,7 @@ import com.kh.icodi.admin.model.dto.ProductExt;
 import com.kh.icodi.admin.model.dto.ProductIO;
 import com.kh.icodi.admin.model.dto.ProductSize;
 import com.kh.icodi.admin.model.exception.AdminException;
+import com.kh.icodi.codiBoard.model.dto.LikeThat;
 import com.kh.icodi.common.MemberOrderProductManager;
 
 public class AdminDao {
@@ -65,7 +66,7 @@ public class AdminDao {
 		PreparedStatement pstmt = null;
 		int result = 0;
 		String sql = prop.getProperty("insertIO");
-		
+
 		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, productIo.getProductCode());
@@ -397,7 +398,7 @@ public class AdminDao {
 		return list;
 	}
 	//select * from codi_board where codi_board_no = ?
-	public String getCodiImg(Connection conn, String codiBoardNo) {
+	public String getCodiImg(Connection conn, int codiBoardNo) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		String codiImg = null;
@@ -406,7 +407,7 @@ public class AdminDao {
 		try {
 			pstmt = conn.prepareStatement(sql);
 			
-			pstmt.setString(1, codiBoardNo);
+			pstmt.setInt(1, codiBoardNo);
 
 			rset = pstmt.executeQuery();
 			while(rset.next()) {
@@ -466,13 +467,13 @@ public class AdminDao {
 	}
 	
 	// 주문 리스트 조회하기
-	// findOrderListByOrderStatus = select a.* from ( select p.*, a.*, b.*, row_number() over (order by p.order_date desc) rnum from product_order p, member_order m, product_order_product o, product a, member b where m.order_no = o.order_no and o.product_code = a.product_code and m.member_id = b.member_id) a where a.order_status = ? and a.rnum between ? and ? order by order_date
+	// findOrderListByOrderStatus = select a.* from ( select rownum rnum, a.* from ( select * from product_order o join member_order m on o.order_no = m.order_no join product_order_product a on o.order_no = a.order_no join product p on a.product_code = p.product_code join member b on m.member_id = b.member_id ) a) a where a.order_status = ? and rnum between ? and ? order by a.order_date
 	public List<MemberOrderProductManager> findOrderListByOrderStatus(Connection conn, Map<String, Object> data) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		List<MemberOrderProductManager> list = new ArrayList<>();
 		String sql = prop.getProperty("findOrderListByOrderStatus");
-		
+
 		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, (String)data.get("status"));
@@ -634,7 +635,7 @@ public class AdminDao {
 	}
 	
 	// 키워드로 주문리스트 조회
-	// findOrderListBySearchKeyword = select a.* from ( select p.*, a.*, b.*, row_number() over (order by p.order_date desc) rnum from product_order p, member_order m, product_order_product o, product a, member b where m.order_no = o.order_no and o.product_code = a.product_code and m.member_id = b.member_id) a where (a.rnum between ? and ?) and a.% = ?
+	// findOrderListBySearchKeyword = select a.* from ( select rownum rnum, a.* from ( select * from product_order o join member_order m on o.order_no = m.order_no join product_order_product a on o.order_no = a.order_no join product p on a.product_code = p.product_code join member b on m.member_id = b.member_id where b.% like ? ) a ) a where a.rnum between ? and ? order by a.order_date
 	public List<MemberOrderProductManager> findOrderListBySearchKeyword(Connection conn, Map<String, Object> data) {
 		PreparedStatement pstmt = null;
 		List<MemberOrderProductManager> list = new ArrayList<>();
@@ -644,9 +645,9 @@ public class AdminDao {
 		System.out.println("sql = " + sql);
 		try {
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, (int)data.get("start"));
-			pstmt.setInt(2, (int)data.get("end"));
-			pstmt.setString(3, (String)data.get("searchValue"));
+			pstmt.setString(1, '%' + (String)data.get("searchValue") + '%');
+			pstmt.setInt(2, (int)data.get("start"));
+			pstmt.setInt(3, (int)data.get("end"));
 			rset = pstmt.executeQuery();
 			while(rset.next()) {
 				list.add(handleMemberOrderProductResultSet(rset));
@@ -683,5 +684,38 @@ public class AdminDao {
 			close(pstmt);
 		}
 		return totalContent;
+	}
+
+	// 좋아요 여부 확인
+	// findLikedByCodiBoardNo = select * from like_that where member_id = ? and codi_board_no = ?
+	public LikeThat findLikedByCodiBoardNo(Connection conn, Map<String, Object> data) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		LikeThat liked = null;
+		String sql = prop.getProperty("findLikedByCodiBoardNo");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, (String)data.get("memberId"));
+			pstmt.setInt(2, (int)data.get("codiBoardNo"));
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				liked = handleLikeThatResultSet(rset);
+			}
+		} catch (SQLException e) {
+			throw new AdminException("좋아요 여부 확인 오류!", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		return liked;
+	}
+
+	private LikeThat handleLikeThatResultSet(ResultSet rset) throws SQLException {
+		LikeThat likeThat = new LikeThat();
+		likeThat.setLikeNo(rset.getInt("like_no"));
+		likeThat.setMemberId(rset.getString("member_id"));
+		likeThat.setCodiBoardNo(rset.getInt("codi_board_no"));
+		return likeThat;
 	}
 }

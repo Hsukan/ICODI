@@ -77,7 +77,6 @@ public class MemberLoginServlet extends HttpServlet {
 
 				loginRe = 1;
 				// response.sendRedirect(request.getContextPath()+"/"); // /icodi/
-				
 			}
 			// 로그인 실패 (아이디 존재하지 않는 경우 || 비밀번호를 틀린 경우)
 			else {
