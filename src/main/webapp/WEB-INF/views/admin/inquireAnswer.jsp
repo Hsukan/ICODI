@@ -14,7 +14,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-	
+	<main>
 	<h1>문의내역확인</h1>
 	<hr></hr>
 	<table id="tbl-inquire-list">
@@ -39,5 +39,6 @@
 		
 	<%} %>
 		</table>
+		</main>
 </body>
 </html>

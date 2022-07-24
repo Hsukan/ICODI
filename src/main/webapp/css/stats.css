@@ -1,6 +1,14 @@
 @charset "UTF-8";
 
+main {
+	max-width: 1024px;
+	margin: 0 auto;
+}
 
+* {
+	margin: 0;
+	padding: 0;
+}
 /*테이블 위쪽 */
 h1{margin : 20px 0 20px 0;}
 

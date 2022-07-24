@@ -37,34 +37,38 @@
     padding-right: 5px;
 }
 
-#header #header_wrapper .search_wrapper {
-    position: relative;
-    left: 103px;
-    min-height: 30px;
-    margin-left: 30px;
-}
 
-#header #header_wrapper .search {
-    font-size: 14px;
+
+
+#header .search_wrapper #productAuto{
+	font-size: 14px;
     padding-left: 10px;
     border: 0;
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .15);
     background: #fff;
-    width: 314px;
-    height: 50px;
+	width: 223px;
+	height: 49px;
 }
+
 #header .search_wrapper .search-btn{
-    position: relative;
-    top: -49px;
-    left: 326px;
+   position: relative;
+    left: -4px;
     width: 39px;
-    height: 49px;
+    height: 52px;
     border: none;
     box-shadow: 0 2px 5px 0 rgb(0 0 0 / 15%);
 }
+
 #header .search_wrapper i {
 	font-size: 19px;
 }
+
+.search_wrapper{
+position: relative;
+    top: 13px;
+    right: -30px;
+}
+
 .wrapper_left span {font-size: larger;}
 
 /* 알림 관련 */
