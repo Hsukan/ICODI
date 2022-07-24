@@ -33,13 +33,30 @@
 				</div>
 				<div class="content-wrap">
 					<div class="member-info-orderList">
-						<div class="member-info-wrap">
-							<img src="<%= request.getContextPath() %>/upload/codiboard/defaultProfile.png" id="profileImg"/>
-							<div id="memberName"><%= memberName %></div>
-							<hr />
-							<img src="" alt="" />
-							<div>적립금</div>
-							<div class="memerPoint-wrap"><div id="memberPoint"><%= loginMember.getPoint() %></div>원</div>
+						<div class="wrap">
+							<div class="member-info-wrap">
+								<img src="<%= request.getContextPath() %>/upload/codiboard/defaultProfile.png" id="profileImg"/>
+								<div id="memberName"><%= memberName %></div>
+								<hr />
+								<img src="" alt="" />
+								<div>적립금</div>
+								<div class="memerPoint-wrap"><div id="memberPoint"><%= loginMember.getPoint() %></div>원</div>
+							</div>
+							<nav>
+								<div id="nav-header">마이쇼핑정보</div>
+								<div id="cart">
+									<img src="" alt="" />
+									<div>카트</div>
+								</div>
+								<div id="order">
+									<img src="" alt="" />
+									<div>주문/배송조회</div>
+								</div>
+								<div id="cscenter">
+									<img src="" alt="" />
+									<div>1:1문의하기</div>
+								</div>
+							</nav>
 						</div>
 						
 						<div class="content">
@@ -89,23 +106,8 @@
 					</div>
 					
 					<div class="nav-orderInfo-wrap">
-						<nav>
-							<div id="nav-header">마이쇼핑정보</div>
-							<div id="cart">
-								<img src="" alt="" />
-								<div>카트</div>
-							</div>
-							<div id="order">
-								<img src="" alt="" />
-								<div>주문/배송조회</div>
-							</div>
-							<div id="cscenter">
-								<img src="" alt="" />
-								<div>1:1문의하기</div>
-							</div>
-						</nav>
 						<div class="orderInfo-wrap">
-							<div id="orderinfo-header">
+							<div id="orderInfo-header">
 								주문상태안내
 							</div>
 							<div class="orderInfo">
@@ -117,17 +119,17 @@
 								<div class="deliveryWait-wrap">
 									<div>배송 준비중</div>
 									<img src="" alt="" />
-									<div>입금이 확인되어, ICODI가 발송할 상품을 열심히 준비하고 있습니다.</div>
+									<div>입금이 확인되어, <br />ICODI가 발송할 상품을 열심히 준비하고 있습니다.</div>
 								</div>
 								<div class="delivery-ing-wrap">
 									<div>배송 중</div>
 									<img src="" alt="" />
-									<div>상품을 <%= memberName %>님께 배송하고 있습니다.</div>
+									<div>상품을 <%= memberName %>님께 <br />배송하고 있습니다.</div>
 								</div>
 								<div class="delivery-finish-wrap">
 									<div>배송완료</div>
 									<img src="" alt="" />
-									<div>상품이 <%= memberName %>님께 전달 완료 되었습니다.</div>
+									<div>상품이 <%= memberName %>님께 <br />전달 완료 되었습니다.</div>
 								</div>
 							</div>
 						</div>

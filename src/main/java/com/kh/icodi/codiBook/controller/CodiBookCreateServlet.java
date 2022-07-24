@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 import com.kh.icodi.admin.model.dto.ProductExt;
 import com.kh.icodi.codiBook.model.service.CodiBookService;
+import com.kh.icodi.member.model.dto.Member;
 
 /**
  * Servlet implementation class CodiBookPageServlet
@@ -25,6 +26,9 @@ public class CodiBookCreateServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Member loginMember = (Member)request.getAttribute("loingMember");
+		String memberId = loginMember != null ? loginMember.getMemberId() : null;
+		request.setAttribute("loginMemerId", memberId);
 		request.getRequestDispatcher("/WEB-INF/views/codiBook/codiBook.jsp").forward(request, response);
 	}
 	

@@ -50,7 +50,6 @@ const getPage = (cPage) => {
 			const content = document.querySelector(".content-wrap");
 			
 			response.forEach((codi) => {
-				//console.log(codi);
 				const {codiBoardNo, memberId, codiBoardContent, likeCount, useProduct, regDate, likedMember, filename} = codi;
 
 				const list = `
@@ -66,12 +65,14 @@ const getPage = (cPage) => {
                                 <span id="regDate">\${regDate}</span>
                             </div>
                             <div id="content">\${codiBoardContent}</div>
-                            <button id="\${codiBoardNo}" class="like">
-	    						\${
-	    							likedMember === undefined ? '♡' : '♥'
-	    						}	
-                            </button>
-                            <span id="likeCount">\${likeCount}</span>
+                            <div class="like-wrap">
+	                            <button id="\${codiBoardNo}" class="like">
+		    						\${
+		    							likedMember === undefined ? '🤍' : '💚'
+		    						}	
+	                            </button>
+	                            <span id="likeCount">\${likeCount}</span>                            
+                        	</div>
                         </div>
                     </div>
 				</div>
@@ -122,9 +123,9 @@ const likeIt = (e) => {
 			const {type, likeCount} = response;
 			
 			if(type === 'insert') {
-				e.target.innerHTML = '♥';
+				e.target.innerHTML = '💚';
 			} else {
-				e.target.innerHTML = '♡'
+				e.target.innerHTML = '🤍'
 			}
 			e.target.nextElementSibling.innerHTML = `\${likeCount}`;
 		},

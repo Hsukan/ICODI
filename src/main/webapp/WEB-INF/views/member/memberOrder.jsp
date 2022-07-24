@@ -70,7 +70,11 @@
 						%>
 								<tr>
 									<td id="productImg">
-										<img src="<%= request.getContextPath() %>/upload/admin/<%=attachment.get(0).getProductRenamedFilename() %>" alt="" />
+									<% for(ProductAttachment attach : orderProduct.getAttachmentList()) { 
+											if(attach.getProductRenamedFilename() == null) break;
+									%>
+										<img src="<%= request.getContextPath() %>/upload/admin/<%= attach.getProductRenamedFilename() %>" alt="" />
+									<% } %>
 									</td>
 									<td id="productInfo">
 										<div class="productName"><%= orderProduct.getProductName() %></div>
@@ -196,8 +200,6 @@
 							<div class="final-wrap">
 								<span>최종결제금액</span>
 								<div id="total"></div>원
-								<!-- <input type="checkbox" name="orderAgree" id="orderAgree" />
-								<label for="orderAgree">결제 정보를 확인하였으며, 구매진행에 동의합니다.</label> -->
 								<input type="hidden" name="finalPayment" />
 								<input type="hidden" name="finalMemberPoint" />
 								<input type="hidden" name="finalMemberId" value="<%= member.getMemberId() %>" />
@@ -234,13 +236,12 @@
 	
 	document.querySelector("#usePoint").addEventListener('change', (e) => {
 		const point = e.target;
+		const orderPrice = document.querySelector("#orderPrice");
 		const memberPoint = <%= member.getPoint()%>;
 		const discount = document.querySelector("#discount");
 		const total = document.querySelectorAll("#total");
 		const totalPrice= document.querySelector("#totalPrice");
 		const usePoint = document.querySelector("#usePoint");
-		console.log(totalPrice.innerHTML.replace(",",""));
-		console.log(usePoint.value);
 		
 		if(memberPoint < point.value) {
 			alert('사용가능한 적립금보다 많습니다.');
@@ -257,7 +258,7 @@
 		}
 		
 		discount.innerHTML = (point.value).toLocaleString('ko-KR');
-		total.forEach((div) => div.innerHTML = (Number(div.innerHTML.replace(",","")) - Number(discount.innerHTML.replace(",",""))).toLocaleString('ko-KR'));
+		total.forEach((div) => div.innerHTML = (Number(orderPrice.innerHTML.replace(",","")) - Number(discount.innerHTML.replace(",",""))).toLocaleString('ko-KR'));
 	});
 	
 	document.querySelectorAll("[name=payment]").forEach((payment) => {
@@ -283,23 +284,22 @@ document.querySelector("#orderBtn").addEventListener('click', (e) => {
 	const productCode = document.querySelectorAll("[name=productCode]");
 	let productList = [];
 
-	[...productCode].forEach((code) => {
+	for(let i = 0; i < productCode.length; i++) {
 	<% 
 		for(MemberProductManager manager : orderList) {
 			ProductExt product = manager.getProductExt();
 	%>
-			productAmounts = code.parentElement.nextElementSibling.nextElementSibling.innerText;
-			<%-- if("<%= product.getProductCode()%>" == code.value && <%= product.getProductStock() %> < productAmount) {
+			productAmounts = productCode[i].parentElement.nextElementSibling.nextElementSibling.innerText;
+			if("<%= product.getProductCode()%>" == productCode[i].value && <%= product.getProductStock() %> < productAmounts) {
 				alert("해당 상품[<%= product.getProductCode()%>]에 대한 재고가 부족합니다. 고객센터에 문의해주세요.");
 				return;
-			} else { --%>
-			/* } */
+			} else {
+				productList.push({"productCode":`\${productCode[i].value}`,"productAmount":`\${productAmounts}`});
+			} 
 		<%
 		}
 		%>
-		productList.push({"productCode":`\${code.value}`,"productAmount":`\${productAmounts}`});
-	});
-	
+	};
 	const frm = document.memberPayFrm;
 	const finalPayment = document.querySelector("[name=finalPayment]");
 	const finalMemberPoint = document.querySelector("[name=finalMemberPoint]");
@@ -321,7 +321,6 @@ document.querySelector("#orderBtn").addEventListener('click', (e) => {
 	finalPrice.value = total.innerHTML.replace(",","");
 	finalUsePoint.value = usePoint.value.replace(",", "");
 	
-	console.log(productList);
 	// 상품 재고 삭제처리
 	$.ajax({
 		url : '<%= request.getContextPath()%>/product/deleteStock',
@@ -334,32 +333,29 @@ document.querySelector("#orderBtn").addEventListener('click', (e) => {
 				alert("주문이 완료되었습니다.");
 				frm.submit();
 			} else {
-			   var IMP = window.IMP; // 생략가능        
-			   IMP.init("imp83181016"); // 가맹점식별코드 (제 아이디로 등록된 거라 그대로 사용하시면 돼요)
+				console.log(123);
+			   var IMP = window.IMP;      
+			   IMP.init("imp83181016");
 			   IMP.request_pay({
-			      pg: 'html5_inicis', // 결제수단? 이니시스
+			      pg: 'html5_inicis',
 			      pay_method: 'card',
-			      merchant_uid: 'merchant_' + new Date().getTime(), // 상점에서 관리하는 주문번호라는데 애매하긴 해요 (이건 그냥 블로그 거 퍼온 거)
-			      name: '주문명:결제테스트',
-			      amount: 100,
-			      buyer_email: 'iamport@siot.do', // 객체 정보 가져오면 될 것 같아요
-			      buyer_name: '구매자이름',
-			      buyer_tel: '010-1234-5678',
-			      buyer_addr: '서울특별시 강남구 삼성동',
-			      buyer_postcode: '123-456', // 우편번호를 저장 안 해서... 이거는 그냥 111-111 이런 식으로 처리하거나 해야 할 것 같아요
-			      m_redirect_url: 'http://localhost:9090/icodi/' // 모바일 결제시 결제 끝나고 렌딩되는 url 지정이라는데... 딱히 안 먹히는 것 같아요 모바일이 아니라 그런가
+			      merchant_uid: 'merchant_' + new Date().getTime(),
+			      name: '아이코디',
+			      amount: `${total.innerHTML}`,
+			      buyer_email: '<%= member.getEmail() %>',
+			      buyer_name: '<%= member.getMemberName()%>',
+			      buyer_tel: '<%= member.getPhone()%>',
+			      buyer_addr: '<%= member.getAddress()%> <%= member.getAddressEx()%>',
+			      buyer_postcode: '111-111',
+			      m_redirect_url: 'http://localhost:9090/icodi/'
 			   }, function (rsp) {
-			      console.log(rsp); // 이 아래 부분은 입맛대로 바꾸셔도 무방합니다
 			      if (rsp.success) {
 			         var msg = '결제가 완료되었습니다.';
-			         msg += '고유ID : ' + rsp.imp_uid;
-			         msg += '상점 거래ID : ' + rsp.merchant_uid;
 			         msg += '결제 금액 : ' + rsp.paid_amount;
 			         msg += '카드 승인번호 : ' + rsp.apply_num;
-					frm.submit();
+					 frm.submit();
 			      } else {
 			         var msg = '결제에 실패하였습니다.';
-			         msg += '에러내용 : ' + rsp.error_msg;
 			      }
 			      alert(msg);
 			   });
@@ -367,38 +363,6 @@ document.querySelector("#orderBtn").addEventListener('click', (e) => {
 		},
 		error : console.log
 	});
-	
 });
-	
-const pay = () => {
-	   var IMP = window.IMP;      
-	   IMP.init("imp83181016");
-	   IMP.request_pay({
-	      pg: 'html5_inicis',
-	      pay_method: 'card',
-	      merchant_uid: 'merchant_' + new Date().getTime(), // 상점에서 관리하는 주문번호라는데 애매하긴 해요 (이건 그냥 블로그 거 퍼온 거)
-	      name: '주문명:결제테스트',
-	      amount: 100,
-	      buyer_email: 'iamport@siot.do', // 객체 정보 가져오면 될 것 같아요
-	      buyer_name: '구매자이름',
-	      buyer_tel: '010-1234-5678',
-	      buyer_addr: '서울특별시 강남구 삼성동',
-	      buyer_postcode: '123-456', // 우편번호를 저장 안 해서... 이거는 그냥 111-111 이런 식으로 처리하거나 해야 할 것 같아요
-	      m_redirect_url: 'http://localhost:9090/icodi/' // 모바일 결제시 결제 끝나고 렌딩되는 url 지정이라는데... 딱히 안 먹히는 것 같아요 모바일이 아니라 그런가
-	   }, function (rsp) {
-	      console.log(rsp); // 이 아래 부분은 입맛대로 바꾸셔도 무방합니다
-	      if (rsp.success) {
-	         var msg = '결제가 완료되었습니다.';
-	         msg += '고유ID : ' + rsp.imp_uid;
-	         msg += '상점 거래ID : ' + rsp.merchant_uid;
-	         msg += '결제 금액 : ' + rsp.paid_amount;
-	         msg += '카드 승인번호 : ' + rsp.apply_num;
-	      } else {
-	         var msg = '결제에 실패하였습니다.';
-	         msg += '에러내용 : ' + rsp.error_msg;
-	      }
-	      alert(msg);
-	   });
-	};
 </script>
 </html>

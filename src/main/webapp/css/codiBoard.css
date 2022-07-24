@@ -18,20 +18,24 @@ a {
     justify-content: space-evenly;
 }
 .ootdMenu {
+	margin-top:30px;
     height: 50px;
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 30px;
 }
+
 .myCodi {
     width: 220px;
     height: 430px;
-    border: 1px solid lightgray;
+    border: 1px solid #d3d3d3a8;
     border-radius: 10px;
+    margin-bottom: 20px;
 }
-.myCodi :hover {
+.myCodi:hover {
     cursor: pointer;
+    border:1px solid rgb(26, 188, 156);
 }
 #myCodiImg {
     width: 100%;
@@ -52,7 +56,7 @@ a {
 .text-wrap {
     display: inline-block;
 }
-#writer, #regDate, #content, #likeCount {
+#writer, #regDate, #content {
     font-size: 12px;
 }
 #writer {
@@ -66,4 +70,13 @@ a {
 .like {
     border: none;
     background-color: transparent;
+}
+.like:hover{
+	cursor:pointer;	
+}
+.like-wrap {
+	padding-top:5px;
+}
+#likeCount {
+	font-size:13px;
 }
