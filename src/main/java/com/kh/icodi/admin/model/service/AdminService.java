@@ -173,9 +173,10 @@ public class AdminService {
 	}
 
 
-	public List<String> findProductList() {
+	public List<String> findProductCodeList() {
 		Connection conn = getConnection();
-		List<String> list = adminDao.findProductList(conn);
+		List<String> list = adminDao.findProductCodeList(conn);
+		
 		close(conn);
 		return list;
 	}
