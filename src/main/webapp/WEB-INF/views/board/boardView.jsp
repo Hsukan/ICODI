@@ -30,9 +30,9 @@
 			<td colspan="6">작성일 : <%= board.getRegDate() %></td>
 		</tr>
 		<tr style="float: left;">
-			<th id="thWriter" style="width: 60px;">작성자 : </th>
+			<th id="thWriter" style="width: 60px; text-align:center;">작성자 : </th>
 			<td id="tdWriter" style="width: 50px; padding-left: 5px;"><%= board.getWriter() %></td>
-            <th id="thReadCount" style="width: 65px;">조회수 : </th>
+            <th id="thReadCount" style="width: 65px; text-align:center;">조회수 : </th>
             <td id="tdReadCount" style="width: 600px" ><%= board.getReadCount() %></td>
            	<% if(attachments != null && !board.getAttachments().isEmpty()) { %>
 				<%  for(Attachment a : board.getAttachments()){ %>

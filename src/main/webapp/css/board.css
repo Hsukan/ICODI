@@ -42,7 +42,7 @@ div#pagebar span.cPage{color: #000; margin-right: 5px;}
 div#pagebar a{margin-right: 5px;}
 
 /*게시글 작성/상세보기 테이블*/
-        table#tbl-board-view {
+table#tbl-board-view {
 	width:1024px; 
 	margin:0 auto; 
 }
