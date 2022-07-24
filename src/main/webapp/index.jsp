@@ -9,6 +9,16 @@
 	href="<%=request.getContextPath() %>/css/main.css" />
 <br />
 <br />
+<style>
+span.moreView {
+float: right; margin-right: 15px; font-size: 13.5px; color: #939393;
+}
+span.moreView:link { color: #939393; }
+span.moreView:hover { color: black; }
+span.moreView:visited {color: #939393; }
+span.moreView:active { color: black; }
+
+</style>
 <section>
 	<div id="sliderContainer">
 		<ul id="slider">
@@ -29,31 +39,31 @@
 			</a></li>
 		</ul>
 		<div id="newItem">
-		<p style="text-align:right; margin:0 35px 20px 0">신상품</p>
+		<p style="text-align:right; margin:0 35px 20px 0; font-size: 14px">신상품</p>
 		</div>
 	</div><br><br>
 	<div id="line" style="width: 1024px; border: 2px solid lightgray;"></div><br><br>
-	<span>TOP</span>
+	<span style="font-size: 15px;">TOP</span>
 	<a href="<%=request.getContextPath()%>/product/tops?categoryNo=1">
-	<span style="float: right; margin-right: 15px;">더보기</span>
+	<span class="moreView">> more</span>
 	</a>
 	<br><br>
 	<div id="topwrap">
 	
 	</div>
 	<br /><br />
-	<span>BOTTOM</span>
+	<span style="font-size: 15px;">BOTTOM</span>
 	<a href="<%=request.getContextPath()%>/product/tops?categoryNo=2">
-	<span style="float: right; margin-right: 15px;">더보기</span>
+	<span class="moreView">> more</span>
 	</a>
 	<br><br>
 	<div id="bottomwrap">
 	
 	</div>
 	<br /><br />
-	<span>SHOES</span>
+	<span style="font-size: 15px;">SHOES</span>
 	<a href="<%=request.getContextPath()%>/product/tops?categoryNo=3">
-	<span style="float: right; margin-right: 15px;">더보기</span>
+	<span class="moreView">> more</span>
 	</a>
 	<br><br>
 	<div id="shoeswrap">
@@ -119,11 +129,11 @@
 						const {productCode, productName, productPrice} = product;
 						
 						const img = `
-							<div class="topItem">
+							<div style="border: 1px solid #9d9d9dd1;" class="topItem">
 							<a href="<%= request.getContextPath()%>/product/detail?product_name=\${productName}">					
-							<img src="<%= request.getContextPath()%>/upload/admin/\${productRenamedFilename}" alt="" /></a><br /><br />
-							<span>\${productName}</span><br /><br />
-							<span>\${productPrice}</span>
+							<img style="height: 70%;" src="<%= request.getContextPath()%>/upload/admin/\${productRenamedFilename}" alt="" /></a><br /><br />
+							<span style="font-size: 13px; top:-19px; position: relative;">\${productName}</span><br /><br />
+							<span style="font-size: 13px; top:-36px; position: relative;">\${productPrice} won</span>
 						</div>
 						`;
 						div.insertAdjacentHTML('beforeend', img);
@@ -160,11 +170,11 @@
 						const {productCode, productName, productPrice} = product;
 						
 						const img = `
-							<div class="bottomItem">
+							<div style="border: 1px solid #9d9d9dd1;" class="bottomItem">
 							<a href="<%= request.getContextPath()%>/product/detail?product_name=\${productName}">					
-							<img src="<%= request.getContextPath()%>/upload/admin/\${productRenamedFilename}" alt="" /></a><br /><br />
-							<span>\${productName}</span><br /><br />
-							<span>\${productPrice}</span>
+							<img style="height: 70%;" src="<%= request.getContextPath()%>/upload/admin/\${productRenamedFilename}" alt="" /></a><br /><br />
+							<span style="font-size: 13px; top:-19px; position: relative;">\${productName}</span><br /><br />
+							<span style="font-size: 13px; top:-36px; position: relative;">\${productPrice} won</span>
 						</div>
 						`;
 						div.insertAdjacentHTML('beforeend', img);
@@ -200,11 +210,11 @@
 						const {productCode, productName, productPrice} = product;
 						
 						const img = `
-							<div class="shoesItem">
+							<div style="border: 1px solid #9d9d9dd1;" class="shoesItem">
 							<a href="<%= request.getContextPath()%>/product/detail?product_name=\${productName}">					
-							<img src="<%= request.getContextPath()%>/upload/admin/\${productRenamedFilename}" alt="" /></a><br /><br />
-							<span>\${productName}</span><br /><br />
-							<span>\${productPrice}</span>
+							<img style="height: 70%;" src="<%= request.getContextPath()%>/upload/admin/\${productRenamedFilename}" alt="" /></a><br /><br />
+							<span style="font-size: 13px; top:-19px; position: relative;">\${productName}</span><br /><br />
+							<span style="font-size: 13px; top:-36px; position: relative;">\${productPrice} won</span>
 						</div>
 						`;
 						div.insertAdjacentHTML('beforeend', img);

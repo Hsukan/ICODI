@@ -1,6 +1,8 @@
 package com.kh.icodi.member.controller;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.google.gson.Gson;
 import com.kh.icodi.common.IcodiMvcUtils;
 import com.kh.icodi.member.model.dto.Member;
 import com.kh.icodi.member.model.service.MemberService;
@@ -49,6 +52,7 @@ public class MemberLoginServlet extends HttpServlet {
 			
 			HttpSession session = request.getSession(true); // 세션이 존재하지 않으면, 새로 생성해서 반환. true생략가능
 			
+			int loginRe = 0;
 			// 로그인 성공
 			if(member != null && password.equals(member.getPassword())) {
 				session.setAttribute("loginMember", member);
@@ -71,19 +75,24 @@ public class MemberLoginServlet extends HttpServlet {
 				
 				response.addCookie(cookie); // 응답메세지에 set-cookie항목으로 전송
 
-				response.sendRedirect(request.getContextPath()+"/"); // /icodi/
+				loginRe = 1;
+				// response.sendRedirect(request.getContextPath()+"/"); // /icodi/
 				
 			}
 			// 로그인 실패 (아이디 존재하지 않는 경우 || 비밀번호를 틀린 경우)
 			else {
 				session.setAttribute("msg", "아이디 또는 비밀번호가 일치하지 않습니다.");
-				response.sendRedirect(request.getContextPath()+"/member/memberLogin"); // /mvc/member/memberLogin
+				// response.sendRedirect(request.getContextPath()+"/member/memberLogin"); // /mvc/member/memberLogin
 			}
 			
 			// 4. 응답 처리 : 로그인후 url변경을 위해 리다이렉트처리
 			// 응답 302 redirect 전송.
 			// 브라우져에게 location으로 재요청을 명령.
 			
+			Map<String, Object> map = new HashMap<>();
+			map.put("loginRe", loginRe);
+			response.setContentType("application/json; charset=utf-8");
+			new Gson().toJson(map, response.getWriter());
 			
 		} catch (Exception e) {
 			e.printStackTrace(); // 로깅
