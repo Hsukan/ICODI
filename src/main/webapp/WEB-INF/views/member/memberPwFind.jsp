@@ -69,9 +69,21 @@
 			},
 			success(memberPw) {
 				console.log("memberPw", memberPw);
+				
+				const div = document.querySelector(".newPw");
+				const btn = `
+				<span class="loginBtn">
+					<a href="<%= request.getContextPath()%>/member/memberLogin">LOGIN</a>
+				</span>
+				`
 				if(memberPw !== null){
-					$(".newPw").text(newPwd);
+					const html =`<span>발급된 비밀번호 : </span>
+					<input type="text" value="" name="tel" readonly/>
+					`;
 					
+					$('.newPw').append(html);
+					$('input[name=tel]').attr('value', newPwd);
+					div.insertAdjacentHTML('beforeend', btn);
 				}
 				else{
 					alert("잘못입력하셨습니다");

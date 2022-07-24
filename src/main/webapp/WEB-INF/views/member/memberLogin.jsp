@@ -14,7 +14,7 @@
 						<li class="old"><a href="<%=request.getContextPath()%>/">기존회원이신가요?</a></li>
 						<li class="new"><a href="<%=request.getContextPath()%>/member/memberEnroll">회원가입</a></li>
 					</ul>
-					<input type="text" name="memberId" id="memberId" placeholder="아이디"value="<%= saveId != null ? saveId : "" %>"> 
+					<input type="text" name="memberId" id="memberId" placeholder="아이디" value="<%= saveId != null ? saveId : "" %>"> 
 					<input type="password" name="password" id="password" placeholder="비밀번호"> 
 					<input type="submit" class="submitBtn" value="로그인"> 
 					<input type="checkbox" name="saveId" id="saveId" <%= saveId != null ? "checked" : "" %>/> 
