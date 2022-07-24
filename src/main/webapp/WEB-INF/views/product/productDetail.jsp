@@ -307,15 +307,14 @@ const addCart = (cartList) => {
 		error : console.log
 	});
 };
-
 $(document).ready(function () {
     $('#product-img').slick({
         infinite: true,
-        speed: 1000,
+        speed: 2000,
         fade: true,
         cssEase: 'linear',
         autoplay: true,
-        autoplaySpeed: 300,
+        autoplaySpeed: 2000,
         prevArrow: "",
         nextArrow: ""
     });
