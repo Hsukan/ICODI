@@ -74,6 +74,13 @@ window.onload = () => {
         <div id="header_of_header_wrapper">
             <div id="header_of_header">
             	<div class="wrapper_left"><span>총 코디 수 : </span><span id="codiCnt"></span></div>    	
+                	<form class="search_wrapper hide_for_mobile" action="<%=request.getContextPath()%>/product/productFind">
+                	<input id="productAuto" class="search" type="text" placeholder="검색어를 입력하세요" value=""
+	                name="searchFrm">
+	                <button class="search-btn" type="submit">
+	 			 	<i class="fas fa-search"></i>
+				</button>
+            </form>
                 <div class="btn_wrapper_right">
                     <a class="create btn" href="<%= request.getContextPath() %>/codibook/create">· 코디 만들기</a>
                    <a class="cscenter btn" href="<%=request.getContextPath() %>/cs_center">· 고객센터</a>
@@ -83,15 +90,7 @@ window.onload = () => {
         
         <div id="header_wrapper">
             <a href="<%= request.getContextPath()%>/"><img src="<%=request.getContextPath() %>/images/logo.png" alt="" id="logo" style="width: 200px; height: 100px;"></a>
-            
-            <form class="search_wrapper hide_for_mobile" action="<%=request.getContextPath()%>/product/productFind">
-                <input id="productAuto" class="search" type="text" placeholder="검색어를 입력하세요" value=""
-                name="searchFrm">
-                <button class="search-btn" type="submit">
- 			 	<i class="fas fa-search"></i>
-				</button>
-            </form>
-            
+   
             <div class="userMenu">
                 <a href="<%= request.getContextPath()%>/member/memberMyCodiList">마이페이지</a>
                 <a href="<%= request.getContextPath()%>/member/myShopping">마이쇼핑</a>
