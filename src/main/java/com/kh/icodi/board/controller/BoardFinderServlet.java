@@ -57,6 +57,7 @@ public class BoardFinderServlet extends HttpServlet {
 		System.out.println("pagebar = " + pagebar);
 		
 		request.setAttribute("searchKeyword", searchKeyword);
+		request.setAttribute("searchType", searchType);
 		request.setAttribute("list", list);
 		request.setAttribute("pagebar", pagebar);
 		request.getRequestDispatcher("/WEB-INF/views/board/boardList.jsp")
