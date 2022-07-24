@@ -481,14 +481,14 @@ public class MemberDao {
 		int result = 0;
 		String sql = prop.getProperty("insertProductOrder");
 		String status = ((String)data.get("payment")).equals("cash") ? "입금대기" : "결제완료";
-		
+		System.out.println("status = " + status);
 		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, (String)data.get("orderNo"));
 			pstmt.setInt(2, (int)data.get("totalPrice"));
 			pstmt.setString(3, (String)data.get("payment"));
-			pstmt.setInt(4, (int)data.get("cartAmount"));
-			pstmt.setString(5, status);
+			pstmt.setString(4, status);
+			pstmt.setInt(5, (int)data.get("cartAmount"));
 			result = pstmt.executeUpdate();
 		} catch (SQLException e) {
 			throw new MemberException("주문 테이블 추가 오류!", e);
@@ -669,7 +669,7 @@ public class MemberDao {
 	}
 	
 	// 주문내역 조회 (3개월 전 - 기본설정)
-	// findOrderListByMemberId = select a.* from ( select p.*, a.*, b.* from product_order p, member_order m, product_order_product o, product a, member b where m.order_no = o.order_no and o.product_code = a.product_code and m.member_id = b.member_id) a where (to_date(a.order_date, 'YY/MM/DD') between to_date(?, 'YY/MM/DD') and to_date(?, 'YY/MM/DD')) and a.member_id = ?
+	// findOrderListByMemberId = select * from product_order o left join member_order m on o.order_no = m.order_no left join product_order_product a on o.order_no = a.order_no left join product p on a.product_code = p.product_code where (to_date(o.order_date, 'YY/MM/DD') between to_date(?, 'YY/MM/DD') and to_date(?, 'YY/MM/DD')) and m.member_id = ?
 	public List<MemberOrderProductManager> findOrderListByMemberId(Connection conn, Map<String, Object> data) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
@@ -683,7 +683,7 @@ public class MemberDao {
 			pstmt.setString(3, (String)data.get("memberId"));
 			rset = pstmt.executeQuery();
 			while(rset.next()) {
-				orderList.add(handleMemberOrderProductResultSet(rset));
+				orderList.add(handleOrderProductResultSet(rset));
 			}
 		} catch (SQLException e) {
 			throw new MemberException("주문내역 조회 오류!", e);
@@ -717,6 +717,15 @@ public class MemberDao {
 			close(pstmt);
 		}
 		return cartList;
+	}
+	
+	public static MemberOrderProductManager handleOrderProductResultSet(ResultSet rset) throws SQLException {
+		MemberOrderProductManager manager = new MemberOrderProductManager();
+		ProductExt product = handleProductExtResultSet(rset);
+		ProductOrder order = handleProductOrderResultSet(rset);
+		manager.setProduct(product);
+		manager.setProductOrder(order);
+		return manager;
 	}
 	
 	public static MemberOrderProductManager handleMemberOrderProductResultSet(ResultSet rset) throws SQLException {

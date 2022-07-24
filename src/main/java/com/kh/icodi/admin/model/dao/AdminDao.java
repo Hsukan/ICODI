@@ -67,7 +67,7 @@ public class AdminDao {
 		PreparedStatement pstmt = null;
 		int result = 0;
 		String sql = prop.getProperty("insertIO");
-		
+
 		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, productIo.getProductCode());
@@ -468,13 +468,13 @@ public class AdminDao {
 	}
 	
 	// 주문 리스트 조회하기
-	// findOrderListByOrderStatus = select a.* from ( select p.*, a.*, b.*, row_number() over (order by p.order_date desc) rnum from product_order p, member_order m, product_order_product o, product a, member b where m.order_no = o.order_no and o.product_code = a.product_code and m.member_id = b.member_id) a where a.order_status = ? and a.rnum between ? and ? order by order_date
+	// findOrderListByOrderStatus = select a.* from ( select rownum rnum, a.* from ( select * from product_order o join member_order m on o.order_no = m.order_no join product_order_product a on o.order_no = a.order_no join product p on a.product_code = p.product_code join member b on m.member_id = b.member_id ) a) a where a.order_status = ? and rnum between ? and ? order by a.order_date
 	public List<MemberOrderProductManager> findOrderListByOrderStatus(Connection conn, Map<String, Object> data) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		List<MemberOrderProductManager> list = new ArrayList<>();
 		String sql = prop.getProperty("findOrderListByOrderStatus");
-		
+
 		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, (String)data.get("status"));

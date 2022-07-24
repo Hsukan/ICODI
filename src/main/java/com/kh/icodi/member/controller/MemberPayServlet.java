@@ -54,9 +54,9 @@ public class MemberPayServlet extends HttpServlet {
 			
 			Map<String, Object> data = new HashMap<>(); 
 			data.put("usePoint", usePoint);
-			String orderNo = sdf.format(new Date()) + df.format(Math.random()*10000);
 			
 			for(int i = 0; i < productCodes.length; i++) { 
+				String orderNo = sdf.format(new Date()) + df.format(Math.random()*10000);
 				data.put("orderNo",  orderNo);
 				data.put("productCode", productCodes[i]);
 				data.put("payment", payment); 

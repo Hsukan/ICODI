@@ -105,7 +105,7 @@
 						<tbody>
 							<tr>
 								<th>상품코드</th> <%-- 검색기능으로 구현하기 --%>
-								<td><input type="text" id="productCode"/></td>
+								<td><input type="text" id="productCode" name="productCode"/></td>
 							</tr>
 							<tr>
 								<th>입/출고 여부</th>
