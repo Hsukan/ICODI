@@ -635,17 +635,17 @@ public class AdminDao {
 	}
 	
 	// 키워드로 주문리스트 조회
-	// findOrderListBySearchKeyword = select a.* from ( select rownum rnum, a.* from ( select * from product_order o join member_order m on o.order_no = m.order_no join product_order_product a on o.order_no = a.order_no join product p on a.product_code = p.product_code join member b on m.member_id = b.member_id where b.% like ? ) a ) a where a.rnum between ? and ? order by a.order_date
+	// findOrderListBySearchKeyword = select a.* from ( select rownum rnum, a.* from ( select * from product_order o join member_order m on o.order_no = m.order_no join product_order_product a on o.order_no = a.order_no join product p on a.product_code = p.product_code join member b on m.member_id = b.member_id where m.% like ? ) a ) a where a.rnum between ? and ? order by a.order_date
 	public List<MemberOrderProductManager> findOrderListBySearchKeyword(Connection conn, Map<String, Object> data) {
 		PreparedStatement pstmt = null;
 		List<MemberOrderProductManager> list = new ArrayList<>();
 		ResultSet rset = null;
 		String sql = prop.getProperty("findOrderListBySearchKeyword");
 		sql = sql.replace("%", (String)data.get("searchKeyword"));
-		System.out.println("sql = " + sql);
+
 		try {
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, '%' + (String)data.get("searchValue") + '%');
+			pstmt.setString(1, "%" + (String)data.get("searchValue") + "%");
 			pstmt.setInt(2, (int)data.get("start"));
 			pstmt.setInt(3, (int)data.get("end"));
 			rset = pstmt.executeQuery();
@@ -660,19 +660,19 @@ public class AdminDao {
 		}
 		return list;
 	}
-	
+		
 	// 키워드 주문리스트 개수 조회
-	// getTotalContentBySearchKeyword = select count(*) from product_order o, member m, member_order a where a.order_no = o.order_no and m.% = ?
+	// getTotalContentBySearchKeyword = select count(*) from product_order o join member_order m on o.order_no = m.order_no where m.% like ?
 	public int getTotalContentBySearchKeyword(Connection conn, Map<String, Object> data) {
 		PreparedStatement pstmt = null;
 		int totalContent = 0;
 		ResultSet rset = null;
 		String sql = prop.getProperty("getTotalContentBySearchKeyword");
 		sql = sql.replace("%", (String)data.get("searchKeyword"));
-		
+
 		try {
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, (String)data.get("searchValue"));
+			pstmt.setString(1, "%" + (String)data.get("searchValue") + "%");
 			rset = pstmt.executeQuery();
 			if(rset.next()) {
 				totalContent = rset.getInt(1);

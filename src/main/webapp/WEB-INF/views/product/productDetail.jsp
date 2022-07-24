@@ -310,11 +310,11 @@ const addCart = (cartList) => {
 $(document).ready(function () {
     $('#product-img').slick({
         infinite: true,
-        speed: 2000,
+        speed: 500,
         fade: true,
         cssEase: 'linear',
         autoplay: true,
-        autoplaySpeed: 2000,
+        autoplaySpeed: 1000,
         prevArrow: "",
         nextArrow: ""
     });

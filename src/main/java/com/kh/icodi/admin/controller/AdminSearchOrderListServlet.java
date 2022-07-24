@@ -32,9 +32,6 @@ public class AdminSearchOrderListServlet extends HttpServlet {
 			String searchKeyword = request.getParameter("searchKeyword");
 			String searchValue = request.getParameter("searchValue");
 			
-			System.out.println("serachKeyword = " + searchKeyword);
-			System.out.println("searchValue = " + searchValue);
-			
 			int numPerPage = 10;
 			int cPage = 1;
 			try {
@@ -53,9 +50,10 @@ public class AdminSearchOrderListServlet extends HttpServlet {
 			List<MemberOrderProductManager> list = adminService.findOrderListBySearchKeyword(data); 
 			
 			int totalContent = adminService.getTotalContentBySearchKeyword(data);
+			System.out.println("totalContent = " + totalContent);
 			String url = request.getRequestURI();
 			String pagebar = IcodiMvcUtils.getPagebar(cPage, numPerPage, totalContent, url);
-			
+			System.out.println("pagebar = " + pagebar);
 			Map<String, Object> param = new HashMap<>();
 			param.put("list", list);
 			param.put("pagebar", pagebar);
