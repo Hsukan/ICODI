@@ -1,7 +1,7 @@
 package com.kh.icodi.admin.model.dao;
 
-import static com.kh.icodi.member.model.dao.MemberDao.*;
 import static com.kh.icodi.common.JdbcTemplate.close;
+import static com.kh.icodi.member.model.dao.MemberDao.handleMemberOrderProductResultSet;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -20,7 +20,8 @@ import com.kh.icodi.admin.model.dto.ProductExt;
 import com.kh.icodi.admin.model.dto.ProductIO;
 import com.kh.icodi.admin.model.dto.ProductSize;
 import com.kh.icodi.admin.model.exception.AdminException;
-import com.kh.icodi.board.model.dto.BoardExt;
+import com.kh.icodi.admin.model.service.AdminService;
+import com.kh.icodi.codiBoard.model.dto.LikeThat;
 import com.kh.icodi.common.MemberOrderProductManager;
 
 public class AdminDao {
@@ -398,7 +399,7 @@ public class AdminDao {
 		return list;
 	}
 	//select * from codi_board where codi_board_no = ?
-	public String getCodiImg(Connection conn, String codiBoardNo) {
+	public String getCodiImg(Connection conn, int codiBoardNo) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		String codiImg = null;
@@ -407,7 +408,7 @@ public class AdminDao {
 		try {
 			pstmt = conn.prepareStatement(sql);
 			
-			pstmt.setString(1, codiBoardNo);
+			pstmt.setInt(1, codiBoardNo);
 
 			rset = pstmt.executeQuery();
 			while(rset.next()) {
@@ -684,5 +685,38 @@ public class AdminDao {
 			close(pstmt);
 		}
 		return totalContent;
+	}
+
+	// 좋아요 여부 확인
+	// findLikedByCodiBoardNo = select * from like_that where member_id = ? and codi_board_no = ?
+	public LikeThat findLikedByCodiBoardNo(Connection conn, Map<String, Object> data) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		LikeThat liked = null;
+		String sql = prop.getProperty("findLikedByCodiBoardNo");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, (String)data.get("memberId"));
+			pstmt.setInt(2, (int)data.get("codiBoardNo"));
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				liked = handleLikeThatResultSet(rset);
+			}
+		} catch (SQLException e) {
+			throw new AdminException("좋아요 여부 확인 오류!", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		return liked;
+	}
+
+	private LikeThat handleLikeThatResultSet(ResultSet rset) throws SQLException {
+		LikeThat likeThat = new LikeThat();
+		likeThat.setLikeNo(rset.getInt("like_no"));
+		likeThat.setMemberId(rset.getString("member_id"));
+		likeThat.setCodiBoardNo(rset.getInt("codi_board_no"));
+		return likeThat;
 	}
 }

@@ -99,26 +99,17 @@
 					</div>
 					<div class="product-detail-wrap">
 						<div id="detail-header"><span>DETAIL</span></div>
-						<div id="detail-content"><%= productInfo %></div>
+						<div id="detail-content">
+							<div id="info">
+								<%= productInfo.replace("\r\n", "<br/>") %>
+							</div>
+						</div>
 					</div>
 				</div>
 			</article>
 		</section>
 	</main>
 <script>
-$(document).ready(function () {
-    $('#product-img').slick({
-        infinite: true,
-        speed: 500,
-        fade: true,
-        cssEase: 'linear',
-        autoplay: true,
-        autoplaySpeed: 300,
-        prevArrow: "",
-        nextArrow: ""
-    });
-});
-
 document.querySelectorAll(".color").forEach((target) => {
 	target.addEventListener('click', (e) => {
 		const color = e.target;
