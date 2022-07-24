@@ -391,7 +391,7 @@ public class MemberDao {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, (String)data.get("productCode"));
 			pstmt.setString(2, (String)data.get("memberId"));
-			pstmt.setInt(3, (int)data.get("productCount"));
+			pstmt.setInt(3, Integer.parseInt((String)data.get("productCount")));
 			result = pstmt.executeUpdate();
 		} catch (SQLException e) {
 			throw new MemberException("장바구니 추가 오류!", e);
@@ -475,11 +475,12 @@ public class MemberDao {
 	}
 	
 	// 상품 주문 테이블 추가
-	// insertProductOrder = insert into product_order values(?, ?, ?, default, default, ?)
+	// insertProductOrder = insert into product_order values(?, ?, ?, default, ?, ?)
 	public int insertProductOrder(Connection conn, Map<String, Object> data) {
 		PreparedStatement pstmt = null;
 		int result = 0;
 		String sql = prop.getProperty("insertProductOrder");
+		String status = ((String)data.get("payment")).equals("cash") ? "입금대기" : "결제완료";
 		
 		try {
 			pstmt = conn.prepareStatement(sql);
@@ -487,6 +488,7 @@ public class MemberDao {
 			pstmt.setInt(2, (int)data.get("totalPrice"));
 			pstmt.setString(3, (String)data.get("payment"));
 			pstmt.setInt(4, (int)data.get("cartAmount"));
+			pstmt.setString(5, status);
 			result = pstmt.executeUpdate();
 		} catch (SQLException e) {
 			throw new MemberException("주문 테이블 추가 오류!", e);
@@ -690,6 +692,31 @@ public class MemberDao {
 			close(pstmt);
 		}
 		return orderList;
+	}
+	
+	// 기존 장바구니 조회
+	// findCartByProductCode = select * from cart where product_code = ? and member_id = ?
+	public MemberCart findCartByProductCode(Connection conn, Map<String, Object> cart) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		MemberCart cartList = null;
+		String sql = prop.getProperty("findCartByProductCode");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, (String)cart.get("productCode"));
+			pstmt.setString(2, (String)cart.get("memberId"));
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				cartList = handleMemberCartResultSet(rset);
+			}
+		} catch (SQLException e) {
+			throw new MemberException("기존 장바구니 조회 오류!", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		return cartList;
 	}
 	
 	public static MemberOrderProductManager handleMemberOrderProductResultSet(ResultSet rset) throws SQLException {

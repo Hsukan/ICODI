@@ -6,6 +6,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 <%
 	List<ProductExt> productList = (List<ProductExt>)request.getAttribute("productList");
 	int productPrice = productList.get(0).getProductPrice();
@@ -21,22 +24,22 @@
 					<div class="product-wrap">
 						<div class="img-wrap">
 							<div id="product-img">
-								<%-- <%
-									if(productList != null && !productList.isEmpty()) {
-										for(ProductExt product : productList) {
-											List<ProductAttachment> attachments = product.getAttachmentList();
-											if(attachments != null && !attachments.isEmpty()) {
-												for(ProductAttachment attach : attachments) {
-													if(attach.getProductRenamedFilename() == null) break;
-								%> --%>
-									<img src="<%= request.getContextPath() %>/upload/admin/<%= productList.get(0).getAttachmentList().get(0)%>" />
-								<%-- <%
-												}
-											}
-		 								}
-									}
-								%> --%>
-							</div>				
+                        <%
+                           if(productList != null && !productList.isEmpty()) {
+                              for(ProductExt product : productList) {
+                                 List<ProductAttachment> attachments = product.getAttachmentList();
+                                 if(attachments != null && !attachments.isEmpty()) {
+                                    for(ProductAttachment attach : attachments) {
+                                       if(attach.getProductRenamedFilename() == null) break;
+                        %>
+                           <img src="<%= request.getContextPath()%>/upload/admin/<%= attach.getProductRenamedFilename() %>" id="image"/>
+                        <%
+                                    }
+                                 }
+                               }
+                           }
+                        %>
+                     </div>    
 						</div>
 						<div class="product-info-wrap">
 							<h2 class="productName"><%= productName %></h2>
@@ -89,9 +92,9 @@
 								<span id="totalPrice" class="totalPriceVal">0</span>원
 								(<span id="totalCount" class="totalCountVal">0</span>개)
 							</div>
-							<button id="buy">BUY IT NOW</button>
+							<button id="buy" type="button">BUY IT NOW</button>
 							<br />
-							<button id="cart">ADD TO CART</button>
+							<button id="cart" type="button">ADD TO CART</button>
 						</div>
 					</div>
 					<div class="product-detail-wrap">
@@ -103,6 +106,19 @@
 		</section>
 	</main>
 <script>
+$(document).ready(function () {
+    $('#product-img').slick({
+        infinite: true,
+        speed: 500,
+        fade: true,
+        cssEase: 'linear',
+        autoplay: true,
+        autoplaySpeed: 300,
+        prevArrow: "",
+        nextArrow: ""
+    });
+});
+
 document.querySelectorAll(".color").forEach((target) => {
 	target.addEventListener('click', (e) => {
 		const color = e.target;
@@ -241,10 +257,11 @@ document.querySelectorAll("button").forEach((button) => {
 		const frm = document.totalProductFrm;
 		const tbody = document.querySelector(".totalProductList tbody");
 		const productCode = document.querySelectorAll("[name=productCode]");
-		
-		/* <input type="hidden" name="productCode" value="\${productCode}" />
-			<input type="hidden" name="productCount" value="1"/> */
-		
+		let cartList = [];
+		[...productCode].forEach((code) => {
+			const productCount = code.nextElementSibling.value;
+			cartList.push({"productCode":code.value, "productCount":productCount});	
+		});
 			
 		if(tbody.children.length == 0) {
 			alert("상품을 선택해주세요.");
@@ -252,17 +269,43 @@ document.querySelectorAll("button").forEach((button) => {
 		}
 		
 		if(e.target.id === 'buy') {
-			frm.action = "<%= request.getContextPath()%>/product/order";
+			frm.action = "<%= request.getContextPath()%>/member/order";
 			frm.submit();
 			return;
 		} else if(e.target.id === 'cart') {
-			frm.action = "<%= request.getContextPath()%>/product/addCart";
-			frm.submit();
-			return;
+			$.ajax({
+				url : '<%= request.getContextPath()%>/member/findCart',
+				type : "GET",
+				data : {data : JSON.stringify(cartList)},
+				success(response) {
+					if(response[0]) {
+						if(confirm('장바구니에 존재하는 상품입니다. 그래도 추가하시겠습니까?')) {
+							addCart(cartList);
+						} else return;
+					} else {
+						addCart(cartList);
+					}
+				},
+				error : console.log
+			})
+			
 		}
 	})
 })
-
+const addCart = (cartList) => {
+	$.ajax({
+		url : '<%= request.getContextPath()%>/member/addCart',
+		type : "POST",
+		data : {data : JSON.stringify(cartList)},
+		success(response) {
+			if(confirm('장바구니로 이동하시겠습니까?')) {
+				location.href = '<%= request.getContextPath()%>/member/memberCart';
+				return;
+			}
+		},
+		error : console.log
+	});
+};
 </script>
 </body>
 </html>

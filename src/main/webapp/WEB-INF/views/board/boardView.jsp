@@ -20,70 +20,48 @@
 %>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/board.css" />
 <section id="board-container">
-	<h2>게시판</h2>
+
 	<table id="tbl-board-view">
 		<tr>
-			<th>글번호</th>
-			<td><%= board.getNo() %></td>
+			<th colspan="6"
+            style="border-bottom: 2px solid lightgray;"><%= board.getTitle() %></th>
 		</tr>
 		<tr>
-			<th>제 목</th>
-			<td><%= board.getTitle() %></td>
+			<td colspan="6">작성일 : <%= board.getRegDate() %></td>
 		</tr>
+		<tr style="float: left;">
+			<th id="thWriter" style="width: 60px; text-align:center;">작성자 : </th>
+			<td id="tdWriter" style="width: 50px; padding-left: 5px;"><%= board.getWriter() %></td>
+            <th id="thReadCount" style="width: 65px; text-align:center;">조회수 : </th>
+            <td id="tdReadCount" style="width: 600px" ><%= board.getReadCount() %></td>
+           	<% if(attachments != null && !board.getAttachments().isEmpty()) { %>
+				<%  for(Attachment a : board.getAttachments()){ %>
+            <td>
+                <img alt="" src="<%=request.getContextPath() %>/images/file.png" style="width: 20px; margin-right:15px">
+                <a href="<%= request.getContextPath()%>/board/fileDownload?no=<%= a.getNo() %>" style="margin-right: 20px; text-decoration: inherit;">
+                <%= a.getOriginalFilename() %>
+                </a>
+            </td>
+        </tr>
+        		<% } %>	
+			<% } %>
 		<tr>
-			<th>작성자</th>
-			<td><%= board.getWriter() %></td>
+            <td colspan="6" style="height: 150px; border-bottom: 1px solid #efefef; border-top: 1px solid #efefef;
+            color:#636363"><%= board.getContent() %></td>
 		</tr>
-		<tr>
-			<th>조회수</th>
-			<td><%= board.getReadCount() %></td>
-		</tr>
-		<% if(attachments != null && !board.getAttachments().isEmpty()) { %>
-			<%  for(Attachment a : board.getAttachments()){ %>
-			<tr>
-				<th>첨부파일</th>
-				<td>
-					<%-- 첨부파일이 있을경우만, 이미지와 함께 original파일명 표시 --%>
-					<% System.out.println("a = " + a); %>
-					<img alt="첨부파일" src="<%=request.getContextPath() %>/images/file.png" width=16px><br>
-					<a href="<%= request.getContextPath()%>/board/fileDownload?no=<%= a.getNo() %>"><%= a.getOriginalFilename() %></a><br>
-				</td>
-			</tr>
-			<% } %>	
-		<% } %>
-		<tr>
-			<th>내 용</th>
-			<td><%= board.getContent() %></td>
-		</tr>
-		<% if(loginMember != null && 
+	</table><br>
+			<% if(loginMember != null && 
 				(loginMember.getMemberId().equals(board.getWriter()) 
 						|| loginMember.getMemberRole() == MemberRole.A)) { %>
-		<tr>
-			<!-- 작성자와 관리자만 마지막행 수정/삭제버튼이 보일수 있게 할 것 -->
-			<th colspan="2">
-				<input type="button" value="수정하기" onclick="updateBoard()">
-				<input type="button" value="삭제하기" onclick="deleteBoard()">
-			</th>
-		</tr>
-		<% } %>
-	</table>
+    <div id="button-wrap">
+        <input type="button" value="수정하기" onclick="updateBoard()">
+        <input type="button" value="삭제하기" onclick="deleteBoard()">
+    </div><br>
+    		<% } %>
 	<hr style="margin-top:30px;" />    
-    
+   	<br /><br />
     <!-- 댓글 작성 부분 -->
     <div class="comment-container">
-        <div class="comment-editor">
-            <form
-            name="boardCommentFrm"
-            action="<%=request.getContextPath()%>/board/boardCommentEnroll" 
-            method="post" >
-                <input type="hidden" name="boardNo" value="<%= board.getNo() %>" />
-                <input type="hidden" name="writer" value="<%= loginMember != null ? loginMember.getMemberId() : "" %>" />
-                <input type="hidden" name="commentLevel" value="1" />
-                <input type="hidden" name="commentRef" value="0" />    
-                <textarea name="content" cols="60" rows="3"></textarea>
-                <button type="submit" id="btn-comment-enroll1">등록</button>
-            </form>
-        </div>
         <!--table#tbl-comment-->
         
         <table id="tbl-comment">
@@ -96,9 +74,11 @@
         								|| loginMember.getMemberRole() == MemberRole.A);
         	%>
         	<tr class="<%= bc.getCommentLevel() == CommentLevel.COMMENT ? "level1" : "level2" %>">
-        		<td>
+        		<td style="font-size: 1.2em;">
         			<sub class="comment-writer"><%= bc.getWriter() %></sub>
         			<sub class="comment-date"><%= sdf.format(bc.getRegDate()) %></sub>
+        		</td>
+        		<td>
         			<div>
         				<%= bc.getContent() %>
         			</div>
@@ -118,6 +98,20 @@
         		}
         	%>
         </table>
+        <br />
+        <div class="comment-editor">
+            <form
+            name="boardCommentFrm"
+            action="<%=request.getContextPath()%>/board/boardCommentEnroll" 
+            method="post" >
+                <input type="hidden" name="boardNo" value="<%= board.getNo() %>" />
+                <input type="hidden" name="writer" value="<%= loginMember != null ? loginMember.getMemberId() : "" %>" />
+                <input type="hidden" name="commentLevel" value="1" />
+                <input type="hidden" name="commentRef" value="0" />    
+                <textarea name="content" cols="125" rows="5" style="resize: none;"></textarea>
+                <button type="submit" id="btn-comment-enroll1">등록</button>
+            </form>
+        </div>
     </div>
     
     
@@ -161,7 +155,7 @@ document.querySelectorAll(".btn-reply").forEach((btn) => {
 		            <input type="hidden" name="writer" value="<%= loginMember != null ? loginMember.getMemberId() : "" %>" />
 		            <input type="hidden" name="commentLevel" value="2" />
 		            <input type="hidden" name="commentRef" value="\${value}" />    
-					<textarea name="content" cols="60" rows="1"></textarea>
+					<textarea name="content" cols="70" rows="2" style="resize: none;"></textarea>
 		            <button type="submit" class="btn-comment-enroll2">등록</button>
 		        </form>
 			</td>

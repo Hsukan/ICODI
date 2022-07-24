@@ -19,7 +19,7 @@ import com.kh.icodi.member.model.service.MemberService;
 /**
  * Servlet implementation class ProductOrderServlet
  */
-@WebServlet("/product/order")
+@WebServlet("/member/order")
 public class MemberOrderServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private MemberService memberService = new MemberService();

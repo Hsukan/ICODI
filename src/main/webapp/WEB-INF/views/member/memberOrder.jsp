@@ -10,6 +10,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
+<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
 <%
 	List<MemberProductManager> orderList = (List<MemberProductManager>)request.getAttribute("order");
 	Member member = orderList.get(0).getMember();
@@ -202,7 +203,8 @@
 								<input type="hidden" name="finalMemberId" value="<%= member.getMemberId() %>" />
 								<input type="hidden" name="finalPrice" />
 								<input type="hidden" name="finalUsePoint" />
-								<button id="orderBtn">결제</button>
+								<input type="hidden" name="finalAddPoint" />
+								<button id="orderBtn" type="button">결제</button>
 							</div>
 						</div>
 					</div>					
@@ -277,63 +279,126 @@
 		});
 	});
 	
-	document.querySelector("#orderBtn").addEventListener('click', (e) => {
-		const productCode = document.querySelectorAll("[name=productCode]");
-		let productList = [];
+document.querySelector("#orderBtn").addEventListener('click', (e) => {
+	const productCode = document.querySelectorAll("[name=productCode]");
+	let productList = [];
 
-		[...productCode].forEach((code) => {
-		<% 
-			for(MemberProductManager manager : orderList) {
-				ProductExt product = manager.getProductExt();
-		%>
-				productAmounts = code.parentElement.nextElementSibling.nextElementSibling.innerText;
-				<%-- if("<%= product.getProductCode()%>" == code.value && <%= product.getProductStock() %> < productAmount) {
-					alert("해당 상품[<%= product.getProductCode()%>]에 대한 재고가 부족합니다. 고객센터에 문의해주세요.");
-					return;
-				} else { --%>
-				/* } */
-			<%
-			}
-			%>
-			productList.push({"productCode":`\${code.value}`, "productAmount":`\${productAmounts}`});
-		});
-		
-		const frm = document.memberPayFrm;
-		const finalPayment = document.querySelector("[name=finalPayment]");
-		const finalMemberPoint = document.querySelector("[name=finalMemberPoint]");
-		const payment = document.querySelectorAll("[name=payment]");
-		const finalPrice = document.querySelector("[name=finalPrice]");
-		const addPoint = document.querySelectorAll("#addPoint");
-		const finalUsePoint = document.querySelector("[name=finalUsePoint]");
-		const usePoint = document.querySelector("#usePoint");
-		const total = document.querySelector("#total");
-		
-		[...payment].forEach((pay) => {
-			if(pay.checked == true) {
-				finalPayment.value = pay.id;
+	[...productCode].forEach((code) => {
+	<% 
+		for(MemberProductManager manager : orderList) {
+			ProductExt product = manager.getProductExt();
+	%>
+			productAmounts = code.parentElement.nextElementSibling.nextElementSibling.innerText;
+			<%-- if("<%= product.getProductCode()%>" == code.value && <%= product.getProductStock() %> < productAmount) {
+				alert("해당 상품[<%= product.getProductCode()%>]에 대한 재고가 부족합니다. 고객센터에 문의해주세요.");
 				return;
-			}
-		});
-		const point = [...addPoint].map((text) => Number(text.innerHTML.replace(",", ""))).reduce((total, price) => total+price);
-		finalMemberPoint.value = point;
-		finalPrice.value = total.innerHTML.replace(",","");
-		finalUsePoint.value = usePoint.value.replace(",", "");
-		
-		console.log(productList);
-		// 상품 재고 삭제처리
-		$.ajax({
-			url : '<%= request.getContextPath()%>/product/deleteStock',
-			dataType : 'json',
-			type : "POST",
-			traditional:true,
-			data : {data : JSON.stringify(productList)},
-			success(response) {
-				frm.submit();
-			},
-			error : console.log
-		});
-		
+			} else { --%>
+			/* } */
+		<%
+		}
+		%>
+		productList.push({"productCode":`\${code.value}`,"productAmount":`\${productAmounts}`});
 	});
 	
+	const frm = document.memberPayFrm;
+	const finalPayment = document.querySelector("[name=finalPayment]");
+	const finalMemberPoint = document.querySelector("[name=finalMemberPoint]");
+	const payment = document.querySelectorAll("[name=payment]");
+	const finalPrice = document.querySelector("[name=finalPrice]");
+	const addPoint = document.querySelectorAll("#addPoint");
+	const finalUsePoint = document.querySelector("[name=finalUsePoint]");
+	const usePoint = document.querySelector("#usePoint");
+	const total = document.querySelector("#total");
+	
+	[...payment].forEach((pay) => {
+		if(pay.checked == true) {
+			finalPayment.value = pay.id;
+			return;
+		}
+	});
+	const point = [...addPoint].map((text) => Number(text.innerHTML.replace(",", ""))).reduce((total, price) => total+price);
+	finalMemberPoint.value = point;
+	finalPrice.value = total.innerHTML.replace(",","");
+	finalUsePoint.value = usePoint.value.replace(",", "");
+	
+	console.log(productList);
+	// 상품 재고 삭제처리
+	$.ajax({
+		url : '<%= request.getContextPath()%>/product/deleteStock',
+		dataType : 'text',
+		type : "POST",
+		traditional:true,
+		data : {data : JSON.stringify(productList)},
+		success(response) {
+			if(finalPayment.value == 'cash') {
+				alert("주문이 완료되었습니다.");
+				frm.submit();
+			} else {
+			   var IMP = window.IMP; // 생략가능        
+			   IMP.init("imp83181016"); // 가맹점식별코드 (제 아이디로 등록된 거라 그대로 사용하시면 돼요)
+			   IMP.request_pay({
+			      pg: 'html5_inicis', // 결제수단? 이니시스
+			      pay_method: 'card',
+			      merchant_uid: 'merchant_' + new Date().getTime(), // 상점에서 관리하는 주문번호라는데 애매하긴 해요 (이건 그냥 블로그 거 퍼온 거)
+			      name: '주문명:결제테스트',
+			      amount: 100,
+			      buyer_email: 'iamport@siot.do', // 객체 정보 가져오면 될 것 같아요
+			      buyer_name: '구매자이름',
+			      buyer_tel: '010-1234-5678',
+			      buyer_addr: '서울특별시 강남구 삼성동',
+			      buyer_postcode: '123-456', // 우편번호를 저장 안 해서... 이거는 그냥 111-111 이런 식으로 처리하거나 해야 할 것 같아요
+			      m_redirect_url: 'http://localhost:9090/icodi/' // 모바일 결제시 결제 끝나고 렌딩되는 url 지정이라는데... 딱히 안 먹히는 것 같아요 모바일이 아니라 그런가
+			   }, function (rsp) {
+			      console.log(rsp); // 이 아래 부분은 입맛대로 바꾸셔도 무방합니다
+			      if (rsp.success) {
+			         var msg = '결제가 완료되었습니다.';
+			         msg += '고유ID : ' + rsp.imp_uid;
+			         msg += '상점 거래ID : ' + rsp.merchant_uid;
+			         msg += '결제 금액 : ' + rsp.paid_amount;
+			         msg += '카드 승인번호 : ' + rsp.apply_num;
+					frm.submit();
+			      } else {
+			         var msg = '결제에 실패하였습니다.';
+			         msg += '에러내용 : ' + rsp.error_msg;
+			      }
+			      alert(msg);
+			   });
+			}
+		},
+		error : console.log
+	});
+	
+});
+	
+const pay = () => {
+	   var IMP = window.IMP;      
+	   IMP.init("imp83181016");
+	   IMP.request_pay({
+	      pg: 'html5_inicis',
+	      pay_method: 'card',
+	      merchant_uid: 'merchant_' + new Date().getTime(), // 상점에서 관리하는 주문번호라는데 애매하긴 해요 (이건 그냥 블로그 거 퍼온 거)
+	      name: '주문명:결제테스트',
+	      amount: 100,
+	      buyer_email: 'iamport@siot.do', // 객체 정보 가져오면 될 것 같아요
+	      buyer_name: '구매자이름',
+	      buyer_tel: '010-1234-5678',
+	      buyer_addr: '서울특별시 강남구 삼성동',
+	      buyer_postcode: '123-456', // 우편번호를 저장 안 해서... 이거는 그냥 111-111 이런 식으로 처리하거나 해야 할 것 같아요
+	      m_redirect_url: 'http://localhost:9090/icodi/' // 모바일 결제시 결제 끝나고 렌딩되는 url 지정이라는데... 딱히 안 먹히는 것 같아요 모바일이 아니라 그런가
+	   }, function (rsp) {
+	      console.log(rsp); // 이 아래 부분은 입맛대로 바꾸셔도 무방합니다
+	      if (rsp.success) {
+	         var msg = '결제가 완료되었습니다.';
+	         msg += '고유ID : ' + rsp.imp_uid;
+	         msg += '상점 거래ID : ' + rsp.merchant_uid;
+	         msg += '결제 금액 : ' + rsp.paid_amount;
+	         msg += '카드 승인번호 : ' + rsp.apply_num;
+	      } else {
+	         var msg = '결제에 실패하였습니다.';
+	         msg += '에러내용 : ' + rsp.error_msg;
+	      }
+	      alert(msg);
+	   });
+	};
 </script>
 </html>

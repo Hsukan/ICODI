@@ -76,7 +76,7 @@
 												<div id="productName" class="strong"><%= product.getProductName() %></div>
 											</a>
 												<div>[옵션:<%= product.getProductColor() %>/<%=product.getProductSize() %>]</div>
-										<td><div id="productPrice"><%=numberFormat.format(order.getOrderTotalPrice())%></div></td>
+										<td><div id="productPrice"><%=numberFormat.format(product.getProductPrice() * order.getOrderTotalCount())%></div></td>
 										</td>
 										<td><div id="productAmount"><%= order.getOrderTotalCount() %></div></td>
 										<td><div id="productStatus"><%= order.getOrderStatus() %></div></td>
@@ -153,7 +153,7 @@ document.querySelector("#dateSelectBtn").addEventListener('click', (e) => {
 			
 			response.forEach((order) => {
 				const {product, productOrder} = order;
-				const {productName, productColor, productSize} = product;
+				const {productName, productColor, productSize, productPrice} = product;
 				const {orderDate, orderNo, orderStatus, orderTotalPrice, orderTotalCount} = productOrder;
 
 				const year = orderDate.slice(-4);
@@ -173,7 +173,7 @@ document.querySelector("#dateSelectBtn").addEventListener('click', (e) => {
 						</a>
 							<div>[옵션:\${productColor}/\${productSize}]</div>
 					</td>
-					<td><div id="productPrice">\${orderTotalPrice.toLocaleString('ko-KR')}</div></td>
+					<td><div id="productPrice">\${(productPrice * orderTotalCount).toLocaleString('ko-KR')}</div></td>
 					<td><div id="productAmount">\${orderTotalCount}</div></td>
 					<td><div id="productStatus">\${orderStatus}</div></td>
 				</tr>
