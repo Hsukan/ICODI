@@ -35,7 +35,7 @@ public class MemberMyCodiListServlet extends HttpServlet {
 			System.out.println("loginMemberId = " + loginMemberId);
 			
 			int totalContent = codiBoardService.getTotalContentByMe(loginMemberId);
-			int numPerPage = 10;
+			int numPerPage = 8;
 			int totalPage = (int) Math.ceil((double) totalContent / numPerPage);
 			
 			request.setAttribute("loginMemerId", loginMemberId);

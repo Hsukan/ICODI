@@ -50,7 +50,7 @@ const getPage = (cPage) => {
 						<br />
 						<div class="liked-wrap">
 							<span id="likeCount">받은 좋아요   \${likeCount}</span>
-							<span id="Checkheart">\${likeCount === 0 ? '♡' : '♥'}</span>
+							<span style="font-size: 15px;" id="Checkheart">\${likeCount === 0 ? '🤍' : '💗'}</span>
 						</div>
 					</div>
 					`;
