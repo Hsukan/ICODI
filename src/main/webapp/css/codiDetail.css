@@ -26,12 +26,13 @@ hr {
     border: none;
     border-top: 1px solid gray;
 }
-.like-wrap {
-	width:100%;
-	height:50px;
-	display:flex;
-	align-items: center;
-	padding-left:20px;
+.like-count-wrap {
+	height: 50px;
+    display: flex;
+    align-items: center;
+}
+.like-wrap{
+	padding:10px;
 }
 .strong {
 	font-weight: bold;
@@ -63,7 +64,7 @@ hr {
 }
 .productContainer {
 	display:flex;
-	margin-bottom:30px;
+	margin-bottom:50px;
 }
 .product-info-wrap {
     width: 100%;

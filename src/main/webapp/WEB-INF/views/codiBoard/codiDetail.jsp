@@ -25,17 +25,15 @@
 		        <img src="data:image/jpeg;base64,<%=codiImg %>" alt="">
 		        <hr />
 		    </div>
-		    <div class="like-wrap">
-		        <div>
-		       		<div class="like-wrap">
+		    <div class="like-count-wrap">
+	       		<div class="like-wrap">
 		        	<% if(liked == null) { %>
 		       			<button id="<%= codiBoardNo%>" class="like">🤍</button>
 		       		<% } else { %>
 		       			<button id="<%= codiBoardNo%>" class="like">💗</button>
 		       		<% } %>
-		       		</div> 
-		        	<span class="strong" id="likeCount"><%=likeCount %></span>명이 좋아합니다.
-		        </div>
+	       		</div> 
+	        	<span class="strong" id="likeCount"><%=likeCount %></span>명이 좋아합니다.
 		    </div>
 		    <div class="useProductHeader">
 		        <h2>코디에 사용된 상품</h2>
