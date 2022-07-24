@@ -52,9 +52,9 @@
 			success(memberId) {
 				const div = document.querySelector(".resultId");
 				const btn = `
-				<div class="loginBtn">
+				<span class="loginBtn">
 					<a href="<%= request.getContextPath()%>/member/memberLogin">LOGIN</a>
-				</div>
+				</span>
 				`
 				
 				if(memberId !== null) {
@@ -64,7 +64,7 @@
 					
 					$('.resultId').append(html);
 					$('input[name=tel]').attr('value', memberId);
-					div.insertAdjacentHTML('afterend', btn);
+					div.insertAdjacentHTML('beforeend', btn);
 					
 				} else {
 					alert("존재하지 않는 회원입니다.");

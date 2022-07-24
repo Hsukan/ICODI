@@ -73,6 +73,10 @@ button{
 	font-weight: bold;
 }
 
+.loginBtn {
+	margin-left: 23px;
+}
+
 
 .loginBtn a{
 	text-decoration: none;

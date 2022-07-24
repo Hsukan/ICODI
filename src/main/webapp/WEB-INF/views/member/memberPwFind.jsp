@@ -72,9 +72,9 @@
 				
 				const div = document.querySelector(".newPw");
 				const btn = `
-				<div class="loginBtn">
+				<span class="loginBtn">
 					<a href="<%= request.getContextPath()%>/member/memberLogin">LOGIN</a>
-				</div>
+				</span>
 				`
 				if(memberPw !== null){
 					const html =`<span>발급된 비밀번호 : </span>
@@ -83,7 +83,7 @@
 					
 					$('.newPw').append(html);
 					$('input[name=tel]').attr('value', newPwd);
-					div.insertAdjacentHTML('afterend', btn);
+					div.insertAdjacentHTML('beforeend', btn);
 				}
 				else{
 					alert("잘못입력하셨습니다");
