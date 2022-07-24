@@ -70,11 +70,13 @@
 						%>
 								<tr>
 									<td id="productImg">
+										<div id="product-img-wrap">
 									<% for(ProductAttachment attach : orderProduct.getAttachmentList()) { 
 											if(attach.getProductRenamedFilename() == null) break;
 									%>
 										<img src="<%= request.getContextPath() %>/upload/admin/<%= attach.getProductRenamedFilename() %>" alt="" />
 									<% } %>
+										</div>
 									</td>
 									<td id="productInfo">
 										<div class="productName"><%= orderProduct.getProductName() %></div>
@@ -217,6 +219,21 @@
 </main>
 </body>
 <script>
+[...document.querySelectorAll("#product-img-wrap")].forEach((img) => {
+	   $(document).ready(function () {
+	        $(img).slick({
+	            infinite: true,
+	            speed: 500,
+	            fade: true,
+	            cssEase: 'linear',
+	            autoplay: true,
+	            autoplaySpeed: 300,
+	            prevArrow: "",
+	            nextArrow: ""
+	        });
+	    });
+	});
+	
 	window.addEventListener('load', (e) => {
 		const productPrice = document.querySelectorAll("#productPrice");
 		const productTotalPrice = document.querySelector("#productTotalPrice");

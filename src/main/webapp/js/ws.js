@@ -10,8 +10,8 @@ ws.addEventListener('message', (e) => {
 	
 	switch(messageType){
 		case 'NOTIFY_NEW_COMMENT' : 
-			const wrapper = document.querySelector("#notification");
-			const i = document.querySelector("i");
+			const wrapper = document.querySelector("#btn-alarm");
+			const i = document.querySelector("#notification");
 			i.classList.add('bell');
 			i.addEventListener('click',()=>{
 				i.remove();

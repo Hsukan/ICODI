@@ -26,9 +26,10 @@ public class CodiBookCreateServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Member loginMember = (Member)request.getAttribute("loingMember");
+		Member loginMember = (Member) request.getSession().getAttribute("loginMember");
 		String memberId = loginMember != null ? loginMember.getMemberId() : null;
-		request.setAttribute("loginMemerId", memberId);
+		System.out.println("loginMemberId@servlet = " + memberId);
+		request.setAttribute("loginMemberId", memberId);
 		request.getRequestDispatcher("/WEB-INF/views/codiBook/codiBook.jsp").forward(request, response);
 	}
 	

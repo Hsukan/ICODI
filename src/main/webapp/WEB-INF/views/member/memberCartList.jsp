@@ -8,6 +8,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
+<script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 <link rel="stylesheet"
 	href="<%=request.getContextPath() %>/css/cart.css" />
 
@@ -62,11 +65,13 @@
 									</span>						
 								</td>
 								<td id="productImg">
-									<% for(ProductAttachment attach : product.getAttachmentList()) { 
-										if(attach.getProductRenamedFilename() == null) break;
-									%>
-									<img src="<%= request.getContextPath() %>/upload/admin/<%= attach.getProductRenamedFilename() %>" alt="" />
-									<% } %>
+									<div id="product-img-wrap">
+										<% for(ProductAttachment attach : product.getAttachmentList()) { 
+											if(attach.getProductRenamedFilename() == null) break;
+										%>
+										<img src="<%= request.getContextPath() %>/upload/admin/<%= attach.getProductRenamedFilename() %>" alt="" />
+										<% } %>
+									</div>
 								</td>
 								<td id="productInfo">
 									<div class="productName"><%= product.getProductName() %></div>
@@ -91,7 +96,7 @@
 						<tfoot>
 							<tr>
 								<td colspan="2">[기본배송]</td>
-								<td colspan="6" id="orderProductPrice">상품구매금액 <span id="productTotalPrice"></span>원 + 배송비 <span id="fee">2,500</span> = 합계 : <span id="totalPrice"></span>원</td>
+								<td colspan="6" id="orderProductPrice">상품구매금액 <span id="productTotalPrice"></span>원 + 배송비 <span id="fee">2,500</span> = 합계 : <span id="totalPrice" class="strong"></span>원</td>
 							</tr>
 						</tfoot>
 					</table>
@@ -112,7 +117,7 @@
 								<tr>
 									<td><span class="display"><span id="orderPrice"></span>원</span></td>
 									<td><span class="display"><span>2,500원</span></span></td>
-									<td><span class="display">= <span id="total"></span>원</span></td>
+									<td><span class="display">= <span id="total" class="strong"></span>원</span></td>
 								</tr>
 							</tbody>
 						</table>
@@ -128,7 +133,24 @@
 </main>
 
 <script>
-const select = document.querySelectorAll("#selectOrder");Order").addEventListener('click', (e) => {
+const select = document.querySelectorAll("#selectOrder");
+
+[...document.querySelectorAll("#product-img-wrap")].forEach((img) => {
+	   $(document).ready(function () {
+	        $(img).slick({
+	            infinite: true,
+	            speed: 2000,
+	            fade: true,
+	            cssEase: 'linear',
+	            autoplay: true,
+	            autoplaySpeed: 2000,
+	            prevArrow: "",
+	            nextArrow: ""
+	        });
+	    });
+	});
+
+document.querySelector("#allOrder").addEventListener('click', (e) => {
 	[...select].forEach((check) => {
 		check.checked = e.target.checked
 	});
@@ -156,6 +178,19 @@ document.querySelector("#delBtn").addEventListener('click', (e) => {
 		},
 		error : console.log
 	});
+});
+
+$(document).ready(function () {
+    $('#product-img-wrap').slick({
+        infinite: true,
+        speed: 1000,
+        fade: true,
+        cssEase: 'linear',
+        autoplay: true,
+        autoplaySpeed: 300,
+        prevArrow: "",
+        nextArrow: ""
+    });
 });
 
 window.addEventListener('load', (e) => {

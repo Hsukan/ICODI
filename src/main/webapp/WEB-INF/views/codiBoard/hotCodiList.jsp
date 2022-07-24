@@ -68,7 +68,7 @@ const getPage = (cPage) => {
                             <div class="like-wrap">
 	                            <button id="\${codiBoardNo}" class="like">
 		    						\${
-		    							likedMember === undefined ? '🤍' : '💚'
+		    							likedMember === undefined ? '🤍' : '💗'
 		    						}	
 	                            </button>
 	                            <span id="likeCount">\${likeCount}</span>                            
@@ -123,7 +123,7 @@ const likeIt = (e) => {
 			const {type, likeCount} = response;
 			
 			if(type === 'insert') {
-				e.target.innerHTML = '💚';
+				e.target.innerHTML = '💗';
 			} else {
 				e.target.innerHTML = '🤍'
 			}

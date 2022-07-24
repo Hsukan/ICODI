@@ -30,7 +30,7 @@ public class NewCodiMoreServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			int cPage = Integer.parseInt(request.getParameter("cPage"));
-			int numPerPage = 10;
+			int numPerPage = 12;
 			int start = (cPage - 1) * numPerPage + 1;
 			int end = cPage * numPerPage;
 			Member loginMember = (Member)request.getSession().getAttribute("loginMember");

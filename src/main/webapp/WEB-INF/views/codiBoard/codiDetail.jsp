@@ -16,8 +16,7 @@
 	LikeThat liked = (LikeThat)request.getAttribute("liked");
 	int codiBoardNo = (int)request.getAttribute("codiBoardNo");
 	DecimalFormat numFormat = new DecimalFormat("#,###");
-	String loginMemberId = (String)request.getAttribute("loginMemberId");
-
+	String loginMemberId = (String)request.getAttribute("loginMemberId") != null ? (String)request.getAttribute("loginMemberId") : null;
 %>
 <main>
 	<section>
@@ -26,17 +25,15 @@
 		        <img src="data:image/jpeg;base64,<%=codiImg %>" alt="">
 		        <hr />
 		    </div>
-		    <div class="like-wrap">
-		        <div>
-		       		<div class="like-wrap">
+		    <div class="like-count-wrap">
+	       		<div class="like-wrap">
 		        	<% if(liked == null) { %>
 		       			<button id="<%= codiBoardNo%>" class="like">🤍</button>
 		       		<% } else { %>
-		       			<button id="<%= codiBoardNo%>" class="like">💚</button>
+		       			<button id="<%= codiBoardNo%>" class="like">💗</button>
 		       		<% } %>
-		       		</div> 
-		        	<span class="strong" id="likeCount"><%=likeCount %></span>명이 좋아합니다.
-		        </div>
+	       		</div> 
+	        	<span class="strong" id="likeCount"><%=likeCount %></span>명이 좋아합니다.
 		    </div>
 		    <div class="useProductHeader">
 		        <h2>코디에 사용된 상품</h2>
@@ -95,7 +92,7 @@ const likeItAtDetail = (e) => {
 			const {type, likeCount} = response;
 			
 			if(type === 'insert') {
-				e.target.innerHTML = '💚';
+				e.target.innerHTML = '💗';
 			} else {
 				e.target.innerHTML = '🤍'
 			}
