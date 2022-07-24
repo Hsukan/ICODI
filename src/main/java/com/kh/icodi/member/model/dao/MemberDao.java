@@ -391,7 +391,7 @@ public class MemberDao {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, (String)data.get("productCode"));
 			pstmt.setString(2, (String)data.get("memberId"));
-			pstmt.setInt(3, Integer.parseInt((String)data.get("productCount")));
+			pstmt.setInt(3, (int)data.get("productCount"));
 			result = pstmt.executeUpdate();
 		} catch (SQLException e) {
 			throw new MemberException("장바구니 추가 오류!", e);

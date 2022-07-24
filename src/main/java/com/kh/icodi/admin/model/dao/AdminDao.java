@@ -636,7 +636,7 @@ public class AdminDao {
 	}
 	
 	// 키워드로 주문리스트 조회
-	// findOrderListBySearchKeyword = select a.* from ( select p.*, a.*, b.*, row_number() over (order by p.order_date desc) rnum from product_order p, member_order m, product_order_product o, product a, member b where m.order_no = o.order_no and o.product_code = a.product_code and m.member_id = b.member_id) a where (a.rnum between ? and ?) and a.% = ?
+	// findOrderListBySearchKeyword = select a.* from ( select rownum rnum, a.* from ( select * from product_order o join member_order m on o.order_no = m.order_no join product_order_product a on o.order_no = a.order_no join product p on a.product_code = p.product_code join member b on m.member_id = b.member_id where b.% like ? ) a ) a where a.rnum between ? and ? order by a.order_date
 	public List<MemberOrderProductManager> findOrderListBySearchKeyword(Connection conn, Map<String, Object> data) {
 		PreparedStatement pstmt = null;
 		List<MemberOrderProductManager> list = new ArrayList<>();
@@ -646,9 +646,9 @@ public class AdminDao {
 		System.out.println("sql = " + sql);
 		try {
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, (int)data.get("start"));
-			pstmt.setInt(2, (int)data.get("end"));
-			pstmt.setString(3, (String)data.get("searchValue"));
+			pstmt.setString(1, '%' + (String)data.get("searchValue") + '%');
+			pstmt.setInt(2, (int)data.get("start"));
+			pstmt.setInt(3, (int)data.get("end"));
 			rset = pstmt.executeQuery();
 			while(rset.next()) {
 				list.add(handleMemberOrderProductResultSet(rset));

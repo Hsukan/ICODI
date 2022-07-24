@@ -170,7 +170,7 @@ document.querySelectorAll(".size").forEach((target) => {
 			
 			document.querySelector("#soldOut").innerHTML = '';
 			// 품절 확인
-			<%-- <% if(productList != null && !productList.isEmpty()) {
+			<% if(productList != null && !productList.isEmpty()) {
 				for(Product product : productList) {
 			%>
 				if("<%= product.getProductCode()%>" == productCode && <%= product.getProductStock()%> == 0) {
@@ -178,7 +178,7 @@ document.querySelectorAll(".size").forEach((target) => {
 						return;
 					}
 		 	<% }
-			} %> --%>
+			} %>
 			
 			const tr = `
 			<tr id="\${productCode}" class="productList">
@@ -260,10 +260,20 @@ document.querySelectorAll("button").forEach((button) => {
 		}
 		
 		if(e.target.id === 'buy') {
+			if(<%= loginMember == null %>) {
+				alert("로그인 후 이용할 수 있습니다.");
+				location.href = "<%= request.getContextPath()%>/member/memberLogin";
+				return;
+			}
 			frm.action = "<%= request.getContextPath()%>/member/order";
 			frm.submit();
 			return;
 		} else if(e.target.id === 'cart') {
+			if(<%= loginMember == null %>) {
+				alert("로그인 후 이용할 수 있습니다.");
+				location.href = "<%= request.getContextPath()%>/member/memberLogin";
+				return;
+			}
 			$.ajax({
 				url : '<%= request.getContextPath()%>/member/findCart',
 				type : "GET",
@@ -310,35 +320,5 @@ $(document).ready(function () {
         nextArrow: ""
     });
 });
-
-const showImage = () => {
-	console.log(123);
-	<%-- const img = document.querySelector("#image");
-	
-	let cnt = 0;
-	setInterval(() => {
-		count++;
-		<% 
-		for(ProductExt product : productList) {
-			List<ProductAttachment> attachments = product.getAttachmentList();
-			if(attachments != null && !attachments.isEmpty()) {
-				for(int i = 0; i < attachments.size(); i++) {
-					ProductAttachment attach = attachments.get(i);
-					if(attach.getProductRenamedFilename() == null) return;
-	%>
-			img.src = `<%= request.getContextPath()%>/upload/admin/<%= attach.getProductRenamedFilename()%>`;
-	<% 
-				}
-			}
-		}
-	%>
-		if(cnt > 2) {
-			cnt = 0;
-		}
-	}, 3000);
-	//img.src = `<%= request.getContextPath()%>/upload/admin/${photoList[imgNum]}`;
-	//setTimeout(showImage, 5000); --%>
-};
-showImage();
 </script>
 <%@include file="/WEB-INF/views/common/footer.jsp"%>

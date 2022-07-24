@@ -20,7 +20,7 @@
 	<section>
 		<article>
 			<div class="content-wrap">
-				<form action="<%= request.getContextPath()%>/member/cartToOrder">
+				<form action="<%= request.getContextPath()%>/member/cartToOrder" name="memberOrderFrm">
 					<div class="title-wrap">
 						<h2>SHOPPING CART</h2>
 					</div>
@@ -37,7 +37,7 @@
 						<thead>
 							<tr>
 								<th class="checkbox">
-									<input type="checkbox" name="checkbox" id="allOrder" />
+									<input type="checkbox" name="allCheck" id="allOrder" />
 								</th>
 								<th>이미지</th>
 								<th>상품정보</th>
@@ -132,11 +132,7 @@ const select = document.querySelectorAll("#selectOrder");
 
 document.querySelector("#allOrder").addEventListener('click', (e) => {
 	[...select].forEach((check) => {
-		if(check.checked == false) {
-			check.checked = true;
-		} else {
-			check.checked = false;
-		}
+		check.checked = e.target.checked
 	});
 });
 
@@ -181,7 +177,6 @@ window.addEventListener('load', (e) => {
 	totalPrice.innerHTML = (productPrice + Number(fee.innerHTML.replace(",",""))).toLocaleString('ko-KR');
 	total.innerHTML = totalPrice.innerHTML;
 });
-
 </script>
 </body>
 </html>
