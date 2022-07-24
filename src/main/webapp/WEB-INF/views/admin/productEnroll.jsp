@@ -5,7 +5,7 @@
 <%@ include file="/WEB-INF/views/common/header.jsp"%>
 <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
-
+<link rel="stylesheet" href="<%=request.getContextPath()%>/css/productEnroll.css">
 <main>
 	<div class="content-wrap">
 		<div class="header-wrap">
@@ -42,7 +42,7 @@
 							<tr>
 								<th>상품옵션</th>
 								<td>
-									<table>
+									<table id="option-tbl">
 										<tr>
 											<th>옵션명</th>
 											<th>옵션값</th>
@@ -76,13 +76,13 @@
 							<tr>
 								<th>상품 상세설명</th>
 								<td>
-									<textarea name="productInfo" cols="30" rows="5"></textarea>
+									<textarea name="productInfo" cols="40" rows="7"></textarea>
 								</td>
 							</tr>
 							<tr>
 								<th>상품용 이미지</th>
-								<td><input type="file" name="productImage1"/></td>
-								<td><input type="file" name="productImage2"/></td>
+								<td class="td-file"><input type="file" name="productImage1"/></td>
+								<td class="td-file"><input type="file" name="productImage2"/></td>
 							</tr>
 							<tr>
 								<th>코디용 이미지</th>
@@ -90,16 +90,16 @@
 							</tr>
 						</tbody>
 					</table>
-					<button>상품등록</button>
+					<button id="btn-1">상품등록</button>
 				</form>
 			</article>
 			
 			<hr />
 			
-			<article>
 				<div class="header-wrap">
 					<h2>상품 재고 관리</h2>
 				</div>
+			<article>
 				<form action="<%= request.getContextPath()%>/admin/productStock" method="POST" name="productStockFrm">
 					<table>
 						<tbody>
@@ -109,9 +109,15 @@
 							</tr>
 							<tr>
 								<th>입/출고 여부</th>
-								<td>
-									<input type="radio" name="ioStatus" value="I"/> 입고
-									<input type="radio" name="ioStatus" value="O"/> 출고
+								<td id="td-io">
+									<div class="div-io">
+									<input type="radio" name="ioStatus" value="I"/>
+									<span>입고</span>
+									</div>
+									<div class="div-io">
+									<input type="radio" name="ioStatus" value="O"/>
+									<span>출고</span>
+									</div>
 								</td>
 							</tr>
 							<tr>
@@ -122,7 +128,7 @@
 							</tr>
 						</tbody>
 					</table>
-					<button>재고등록</button>
+					<button id="btn-2">재고등록</button>
 				</form>
 			</article>
 		</section>
@@ -155,3 +161,4 @@
 </main>
 </body>
 </html>
+<%@include file="/WEB-INF/views/common/footer.jsp"%>
