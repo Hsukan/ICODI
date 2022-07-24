@@ -6,6 +6,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
+<!-- <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" /> -->
+<script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 <%
 	List<ProductExt> productList = (List<ProductExt>)request.getAttribute("productList");
 	int productPrice = productList.get(0).getProductPrice();
@@ -21,21 +23,21 @@
 					<div class="product-wrap">
 						<div class="img-wrap">
 							<div id="product-img">
-								<%-- <%
+								<%
 									if(productList != null && !productList.isEmpty()) {
 										for(ProductExt product : productList) {
 											List<ProductAttachment> attachments = product.getAttachmentList();
 											if(attachments != null && !attachments.isEmpty()) {
 												for(ProductAttachment attach : attachments) {
 													if(attach.getProductRenamedFilename() == null) break;
-								%> --%>
-									<img src="<%= request.getContextPath() %>/upload/admin/<%= productList.get(0).getAttachmentList().get(0)%>" />
-								<%-- <%
+								%>
+									<img src="<%= request.getContextPath()%>/upload/admin/<%= attach.getProductRenamedFilename() %>" id="image"/>
+								<%
 												}
 											}
 		 								}
 									}
-								%> --%>
+								%>
 							</div>				
 						</div>
 						<div class="product-info-wrap">
@@ -290,7 +292,48 @@ const addCart = (cartList) => {
 		error : console.log
 	});
 };
+
+$(document).ready(function () {
+    $('#product-img').slick({
+        infinite: true,
+        speed: 1000,
+        fade: true,
+        cssEase: 'linear',
+        autoplay: true,
+        autoplaySpeed: 300,
+        prevArrow: "",
+        nextArrow: ""
+    });
+});
+
+const showImage = () => {
+	console.log(123);
+	<%-- const img = document.querySelector("#image");
+	
+	let cnt = 0;
+	setInterval(() => {
+		count++;
+		<% 
+		for(ProductExt product : productList) {
+			List<ProductAttachment> attachments = product.getAttachmentList();
+			if(attachments != null && !attachments.isEmpty()) {
+				for(int i = 0; i < attachments.size(); i++) {
+					ProductAttachment attach = attachments.get(i);
+					if(attach.getProductRenamedFilename() == null) return;
+	%>
+			img.src = `<%= request.getContextPath()%>/upload/admin/<%= attach.getProductRenamedFilename()%>`;
+	<% 
+				}
+			}
+		}
+	%>
+		if(cnt > 2) {
+			cnt = 0;
+		}
+	}, 3000);
+	//img.src = `<%= request.getContextPath()%>/upload/admin/${photoList[imgNum]}`;
+	//setTimeout(showImage, 5000); --%>
+};
+showImage();
 </script>
-</body>
-</html>
 <%@include file="/WEB-INF/views/common/footer.jsp"%>

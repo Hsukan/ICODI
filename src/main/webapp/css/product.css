@@ -15,13 +15,17 @@ main {
 	display:flex;
 }
 #product-img {
-	width : 650px;
+	width : 500px;
+	/* height:800px; */
 	display: flex;
 	justify-content: center;
+	/* overflow: hidden; */
+	margin-right: 20px;
 }
-#product-img img {
-	width: 500px;
-	height: 700px;
+#product-img > * {
+	width: 100%;
+	height: 100%;
+		object-fit :fill;
 }
 
 .productName {
