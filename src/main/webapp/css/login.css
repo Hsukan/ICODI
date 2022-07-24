@@ -18,7 +18,7 @@ main {
 
 
 h1{
-    color: rgb(22, 160, 133);
+    color: rgb(26, 188, 156);
     text-align: center;
     font-size: 40px;
     margin-bottom : 30px;
@@ -95,7 +95,7 @@ ul{
 
 .submitBtn{
     font-size: 25px;
-    background-color: rgb(22, 160, 133);
+    background-color: rgb(26, 188, 156);
     margin-bottom: 30px;
     padding: 10px;
     border: none;
