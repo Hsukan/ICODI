@@ -38,23 +38,23 @@
 								<img src="<%= request.getContextPath() %>/upload/codiboard/defaultProfile.png" id="profileImg"/>
 								<div id="memberName"><%= memberName %></div>
 								<hr />
-								<img src="" alt="" />
+								<img src="<%= request.getContextPath() %>/upload/main/dollar-coins.png" id="pointImg"/>
 								<div>적립금</div>
-								<div class="memerPoint-wrap"><div id="memberPoint"><%= loginMember.getPoint() %></div>원</div>
+								<div class="memerPoint-wrap"><div id="memberPoint" class="strong"><%= loginMember.getPoint() %></div>원</div>
 							</div>
 							<nav>
 								<div id="nav-header">마이쇼핑정보</div>
-								<div id="cart">
-									<img src="" alt="" />
-									<div>카트</div>
+								<div id="cart" class="navImgWrap">
+									<img src="<%= request.getContextPath() %>/upload/main/shopping-cart.png"/>
+									<a href="<%= request.getContextPath()%>/member/memberCart">카트</a>
 								</div>
-								<div id="order">
-									<img src="" alt="" />
-									<div>주문/배송조회</div>
+								<div id="order" class="navImgWrap">
+									<img src="<%= request.getContextPath() %>/upload/main/express-delivery.png" />
+									<a href="<%= request.getContextPath()%>/member/order">주문/배송내역</a>
 								</div>
-								<div id="cscenter">
-									<img src="" alt="" />
-									<div>1:1문의하기</div>
+								<div id="cscenter" class="navImgWrap">
+									<img src="<%= request.getContextPath() %>/upload/main/conversation.png" />
+									<a href="<%= request.getContextPath()%>/cs_center">1:1문의하기</a>
 								</div>
 							</nav>
 						</div>
@@ -111,25 +111,25 @@
 								주문상태안내
 							</div>
 							<div class="orderInfo">
-								<div class="wait-wrap">
-									<div>입금대기</div>
-									<img src="" alt="" />
+								<div class="wait-wrap info">
+									<div class="infoHeader">입금대기</div>
+									<img src="<%= request.getContextPath() %>/upload/main/credit-card.png" class="infoImg"/>
 									<div>입금 전 상태입니다.</div>
 								</div>
-								<div class="deliveryWait-wrap">
-									<div>배송 준비중</div>
-									<img src="" alt="" />
+								<div class="deliveryWait-wrap info">
+									<div class="infoHeader">배송 준비중</div>
+									<img src="<%= request.getContextPath() %>/upload/main/box.png" class="infoImg"/>
 									<div>입금이 확인되어, <br />ICODI가 발송할 상품을 열심히 준비하고 있습니다.</div>
 								</div>
-								<div class="delivery-ing-wrap">
-									<div>배송 중</div>
-									<img src="" alt="" />
-									<div>상품을 <%= memberName %>님께 <br />배송하고 있습니다.</div>
+								<div class="delivery-ing-wrap info">
+									<div class="infoHeader">배송 중</div>
+									<img src="<%= request.getContextPath() %>/upload/main/delivery-truck.png" class="infoImg"/>
+									<div>상품을 <span class="strong"><%= memberName %></span>님께 <br />배송하고 있습니다.</div>
 								</div>
-								<div class="delivery-finish-wrap">
-									<div>배송완료</div>
-									<img src="" alt="" />
-									<div>상품이 <%= memberName %>님께 <br />전달 완료 되었습니다.</div>
+								<div class="delivery-finish-wrap info">
+									<div class="infoHeader">배송완료</div>
+									<img src="<%= request.getContextPath() %>/upload/main/home.png" class="infoImg"/>
+									<div>상품이 <span class="strong"><%= memberName %></span>님께 <br />전달 완료 되었습니다.</div>
 								</div>
 							</div>
 						</div>

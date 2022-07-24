@@ -80,3 +80,30 @@ a {
 #likeCount {
 	font-size:13px;
 }
+#hot, #new {
+	cursor: pointer;
+}
+#btn-more-content {
+	height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#btn-more {
+	width:70px;
+	height:35px;
+	background-color: white;
+	border:1px solid rgb(26, 188, 156);
+	color:rgb(22, 160, 133);
+	cursor: pointer;
+}
+#btn-more:hover {
+	background-color: rgb(26, 188, 156, 0.5);
+	color:white;
+	border:none;
+}
+#btn-more:disabled {
+	background-color: rgb(26, 188, 156, 0.5);
+	color:white;
+	border:none;
+}
