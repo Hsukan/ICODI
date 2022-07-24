@@ -72,7 +72,7 @@ position: relative;
     right: -45px;
 }
 
-.wrapper_left span {font-size: larger;}
+.wrapper_left span {font-size: large;}
 
 /* 알림 관련 */
 #btn-alarm{

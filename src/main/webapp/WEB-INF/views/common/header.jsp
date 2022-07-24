@@ -46,7 +46,7 @@ $(document).ready(function(){
 		success(response){
 			console.log(response);
 			const span = document.querySelector("#codiCnt");
-			span.innerHTML = "<font color=green; size=5px>"+response+"</font>";
+			span.innerHTML = "<font color=green; size=3px>"+response+"</font>";
 		},
 		error(xhr,textStatus,err){
 			console.log('err');

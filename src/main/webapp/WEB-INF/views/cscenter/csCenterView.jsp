@@ -16,7 +16,7 @@
 </head>
 <body>
 <main>
-
+<div class="main-content-height">
 <div id="titleContainer">
 		<h1>SUPPORT CENTER</h1>
 	<hr />
@@ -43,6 +43,7 @@
 	<h1>[<%=csCenter.getNoticeTitle() %>]</h1>
 	<span><%=csCenter.getNoticeContent()%></span>
 	</div>
+	</div>
 </main>	
 	<script>
 	const inquireInput = document.querySelector("#inquireInput");
@@ -55,3 +56,4 @@
 </body>
 
 </html>
+<%@include file="/WEB-INF/views/common/footer.jsp"%>
