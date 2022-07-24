@@ -11,14 +11,13 @@
 
 <!-- 내 게시글 확인 -->
 <section id="my-board-wrapper">
-	<h2> 내가 작성한 게시글 </h2>
 	<table id="tbl-my-board">
-		<tr>
+		<tr id="menuHeader">
 			<th>번호</th>
+			<th></th>
 			<th>제목</th>
 			<th>작성자</th>
 			<th>작성일</th>
-			<th>첨부파일</th>
 			<th>조회수</th>
 		</tr>
 		<%
@@ -29,20 +28,17 @@
 		<tr>
 			<td><%= board.getNo() %></td>
 			<td>
-				<a href="<%= request.getContextPath()%>/board/boardView?no=<%= board.getNo() %>">
-						<%= board.getTitle() %>
-				</a>
-				<% if(board.getCommentCount() > 0){ %>
-				✉<%= board.getCommentCount() %>
+				<% if(board.getAttachCount() > 0){ %>
+				<img src="<%= request.getContextPath() %>/images/clip.png" alt="" style="width: 30px;" />
 				<% } %>
 			</td>
+			<td id="boardTitle">
+				<a href="<%= request.getContextPath()%>/board/boardView?no=<%= board.getNo() %>">
+						<%= board.getTitle() %> <% if(board.getCommentCount() > 0){ %> [<%= board.getCommentCount() %>]
+				<% } %>
+			</a></td>
 			<td><%= board.getWriter() %></td>
 			<td><%= new SimpleDateFormat("yyyy-MM-dd HH:mm").format(board.getRegDate()) %></td>
-			<td>
-				<% if(board.getAttachCount() > 0){ %>
-				<img src="<%= request.getContextPath() %>/images/logo.png" alt="" style="width: 16px;" />
-				<% } %>
-			</td>
 			<td><%= board.getReadCount() %></td>
 		</tr>
 		<%
