@@ -6,6 +6,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 <%
 	List<ProductExt> productList = (List<ProductExt>)request.getAttribute("productList");
 	int productPrice = productList.get(0).getProductPrice();
@@ -21,22 +24,22 @@
 					<div class="product-wrap">
 						<div class="img-wrap">
 							<div id="product-img">
-								<%-- <%
-									if(productList != null && !productList.isEmpty()) {
-										for(ProductExt product : productList) {
-											List<ProductAttachment> attachments = product.getAttachmentList();
-											if(attachments != null && !attachments.isEmpty()) {
-												for(ProductAttachment attach : attachments) {
-													if(attach.getProductRenamedFilename() == null) break;
-								%> --%>
-									<img src="<%= request.getContextPath() %>/upload/admin/<%= productList.get(0).getAttachmentList().get(0)%>" />
-								<%-- <%
-												}
-											}
-		 								}
-									}
-								%> --%>
-							</div>				
+                        <%
+                           if(productList != null && !productList.isEmpty()) {
+                              for(ProductExt product : productList) {
+                                 List<ProductAttachment> attachments = product.getAttachmentList();
+                                 if(attachments != null && !attachments.isEmpty()) {
+                                    for(ProductAttachment attach : attachments) {
+                                       if(attach.getProductRenamedFilename() == null) break;
+                        %>
+                           <img src="<%= request.getContextPath()%>/upload/admin/<%= attach.getProductRenamedFilename() %>" id="image"/>
+                        <%
+                                    }
+                                 }
+                               }
+                           }
+                        %>
+                     </div>    
 						</div>
 						<div class="product-info-wrap">
 							<h2 class="productName"><%= productName %></h2>
@@ -103,6 +106,19 @@
 		</section>
 	</main>
 <script>
+$(document).ready(function () {
+    $('#product-img').slick({
+        infinite: true,
+        speed: 500,
+        fade: true,
+        cssEase: 'linear',
+        autoplay: true,
+        autoplaySpeed: 300,
+        prevArrow: "",
+        nextArrow: ""
+    });
+});
+
 document.querySelectorAll(".color").forEach((target) => {
 	target.addEventListener('click', (e) => {
 		const color = e.target;
