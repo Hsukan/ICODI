@@ -22,21 +22,23 @@
 				</nav>
 			</article>
 		<div id="content-center">
-			<span>주문배송관리</span>
+			<h2>주문배송관리</h2>
+			<div id="center-wrap">
 				<div class="waiting-wrap">
 					<a href="<%= request.getContextPath()%>/admin/waitDeposit">
-						<div>입금대기</div>
+						<span>입금대기</span>
 					</a>
 				</div>
 				<div class="finish-wrap">
 					<a href="<%= request.getContextPath()%>/admin/paymentCompleted">
-						<div>결제완료</div>
+						<span>결제완료</span>
 					</a>
 				</div>
 				<div class="refund-wrap">
 					<a href="<%= request.getContextPath()%>/admin/orderList">
-						<div>교환/환불처리</div>
+						<span>교환/환불처리</span>
 					</a>
+				</div>
 				</div>
 			</div>
 		<div id="content-wrap">

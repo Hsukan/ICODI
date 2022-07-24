@@ -1,4 +1,13 @@
 @charset "UTF-8";
+main {
+	max-width: 1024px;
+	margin: 0 auto;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+}
 /*테이블 관련*/
 th{
 	width : 110px;

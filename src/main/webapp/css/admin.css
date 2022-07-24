@@ -10,7 +10,9 @@ main {
 	padding: 0;
 }
 ul,li {list-style: none;}
-
+a{
+	text-decoration: none;
+}
 section{
 	display:flex;
 	justify-content : space-between;
@@ -39,10 +41,26 @@ section{
 }
 /*가운데 박스*/
 #content-center{
-	border : 1px solid black;
-	width : 400px;
+	position: relative;
+    top: 51px;
+	display: flex;
+    flex-direction: column;
+    padding: 10px;
+    width: 400px;
+    height: 320px;
+	box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
+    justify-content: space-evenly;
 }
 
+#content-center h2{
+	margin-left: 10px;
+}
+
+.waiting-wrap, .finish-wrap, .refund-wrap{
+	text-align: center;
+	font-size: 26px;
+	margin: 15px 0;
+}
 /*오른쪽 박스*/
 /*상품등록/삭제 박스*/
 

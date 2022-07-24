@@ -11,7 +11,7 @@ main {
 }
 li,ul {list-style : none;}
 input[type=button], #btn-inquireList{ color : green; background-color : white; border : 1px solid green; margin-bottom : 10px; width : 250px; height : 50px;}
-.main-content-height{height: 1000px;}
+.main-content-height{height: 1100px;}
 #csCenter{display : flex;}
 #csInfo{background-color : rgb(22, 160, 133); color:white;}
 #buttonContainer{display : flex; flex-direction : column;}
