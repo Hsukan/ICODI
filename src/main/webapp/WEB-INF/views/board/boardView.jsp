@@ -1,3 +1,4 @@
+<%@page import="java.sql.Date"%>
 <%@page import="com.kh.icodi.member.model.dto.MemberRole"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="com.kh.icodi.board.model.dto.CommentLevel"%>
@@ -17,6 +18,8 @@
 	
 	List<BoardComment> commentList = (List<BoardComment>) request.getAttribute("commentList");
 	
+	SimpleDateFormat format = new SimpleDateFormat("yyyy년 MM월 dd일");
+	
 %>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/board.css" />
 <section id="board-container">
@@ -27,7 +30,7 @@
             style="border-bottom: 2px solid lightgray;"><%= board.getTitle() %></th>
 		</tr>
 		<tr>
-			<td colspan="6">작성일 : <%= board.getRegDate() %></td>
+			<td colspan="6">작성일 : <%=format.format(( board.getRegDate() ))%></td>
 		</tr>
 		<tr style="float: left;">
 			<th id="thWriter" style="width: 60px; text-align:center;">작성자 : </th>

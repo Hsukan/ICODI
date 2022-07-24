@@ -113,7 +113,6 @@ public class BoardUpdateServlet extends HttpServlet {
 			int result = boardService.updateBoard(board);
 			
 			// 3. redirect
-			request.getSession().setAttribute("msg", "게시글을 성공적으로 수정했습니다.");
 			response.sendRedirect(request.getContextPath() + "/board/boardView?no=" + no);
 			
 			
