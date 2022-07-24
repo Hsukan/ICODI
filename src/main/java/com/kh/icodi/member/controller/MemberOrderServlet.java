@@ -42,7 +42,6 @@ public class MemberOrderServlet extends HttpServlet {
 			}
 			
 			Map<String, Object> data = new HashMap<>();
-			
 			for(int i = 0; i < productCode.length; i++) {
 				data.put("productCode", productCode[i]);
 				data.put("productCount", productCount[i]);

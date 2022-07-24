@@ -24,11 +24,11 @@ public class AdminProductStockServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
-			String productName = request.getParameter("productName");
+			String productCode = request.getParameter("productCode");
 			String ioStatus = request.getParameter("ioStatus");
 			int ioStock =Integer.parseInt(request.getParameter("ioStock"));
 			
-			ProductIO productIo = new ProductIO(0, productName, ioStatus, ioStock);
+			ProductIO productIo = new ProductIO(0, productCode, ioStatus, ioStock);
 
 			int result = adminService.insertIO(productIo);
 			response.sendRedirect(request.getContextPath() + "/admin/adminPage");

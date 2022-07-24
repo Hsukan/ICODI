@@ -6,9 +6,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
-    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
-    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
+<script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 <%
 	List<ProductExt> productList = (List<ProductExt>)request.getAttribute("productList");
 	int productPrice = productList.get(0).getProductPrice();
@@ -23,23 +23,23 @@
 				<div class="content-wrap">
 					<div class="product-wrap">
 						<div class="img-wrap">
-							<div id="product-img">
-                        <%
-                           if(productList != null && !productList.isEmpty()) {
-                              for(ProductExt product : productList) {
-                                 List<ProductAttachment> attachments = product.getAttachmentList();
-                                 if(attachments != null && !attachments.isEmpty()) {
-                                    for(ProductAttachment attach : attachments) {
-                                       if(attach.getProductRenamedFilename() == null) break;
-                        %>
-                           <img src="<%= request.getContextPath()%>/upload/admin/<%= attach.getProductRenamedFilename() %>" id="image"/>
-                        <%
-                                    }
-                                 }
-                               }
-                           }
-                        %>
-                     </div>    
+							<div id="product-img">			
+		                        <%
+		                           if(productList != null && !productList.isEmpty()) {
+		                              for(ProductExt product : productList) {
+		                                 List<ProductAttachment> attachments = product.getAttachmentList();
+		                                 if(attachments != null && !attachments.isEmpty()) {
+		                                    for(ProductAttachment attach : attachments) {
+		                                       if(attach.getProductRenamedFilename() == null) break;
+		                        %>
+		                           <img src="<%= request.getContextPath()%>/upload/admin/<%= attach.getProductRenamedFilename() %>" id="image"/>
+		                        <%
+		                                    }
+		                                 }
+		                               }
+		                           }
+		                        %>
+                     		</div>    
 						</div>
 						<div class="product-info-wrap">
 							<h2 class="productName"><%= productName %></h2>
@@ -99,26 +99,17 @@
 					</div>
 					<div class="product-detail-wrap">
 						<div id="detail-header"><span>DETAIL</span></div>
-						<div id="detail-content"><%= productInfo %></div>
+						<div id="detail-content">
+							<div id="info">
+								<%= productInfo.replace("\r\n", "<br/>") %>
+							</div>
+						</div>
 					</div>
 				</div>
 			</article>
 		</section>
 	</main>
 <script>
-$(document).ready(function () {
-    $('#product-img').slick({
-        infinite: true,
-        speed: 500,
-        fade: true,
-        cssEase: 'linear',
-        autoplay: true,
-        autoplaySpeed: 300,
-        prevArrow: "",
-        nextArrow: ""
-    });
-});
-
 document.querySelectorAll(".color").forEach((target) => {
 	target.addEventListener('click', (e) => {
 		const color = e.target;
@@ -179,7 +170,7 @@ document.querySelectorAll(".size").forEach((target) => {
 			
 			document.querySelector("#soldOut").innerHTML = '';
 			// 품절 확인
-			<%-- <% if(productList != null && !productList.isEmpty()) {
+			<% if(productList != null && !productList.isEmpty()) {
 				for(Product product : productList) {
 			%>
 				if("<%= product.getProductCode()%>" == productCode && <%= product.getProductStock()%> == 0) {
@@ -187,7 +178,7 @@ document.querySelectorAll(".size").forEach((target) => {
 						return;
 					}
 		 	<% }
-			} %> --%>
+			} %>
 			
 			const tr = `
 			<tr id="\${productCode}" class="productList">
@@ -269,10 +260,20 @@ document.querySelectorAll("button").forEach((button) => {
 		}
 		
 		if(e.target.id === 'buy') {
+			if(<%= loginMember == null %>) {
+				alert("로그인 후 이용할 수 있습니다.");
+				location.href = "<%= request.getContextPath()%>/member/memberLogin";
+				return;
+			}
 			frm.action = "<%= request.getContextPath()%>/member/order";
 			frm.submit();
 			return;
 		} else if(e.target.id === 'cart') {
+			if(<%= loginMember == null %>) {
+				alert("로그인 후 이용할 수 있습니다.");
+				location.href = "<%= request.getContextPath()%>/member/memberLogin";
+				return;
+			}
 			$.ajax({
 				url : '<%= request.getContextPath()%>/member/findCart',
 				type : "GET",
@@ -306,7 +307,18 @@ const addCart = (cartList) => {
 		error : console.log
 	});
 };
+
+$(document).ready(function () {
+    $('#product-img').slick({
+        infinite: true,
+        speed: 1000,
+        fade: true,
+        cssEase: 'linear',
+        autoplay: true,
+        autoplaySpeed: 300,
+        prevArrow: "",
+        nextArrow: ""
+    });
+});
 </script>
-</body>
-</html>
 <%@include file="/WEB-INF/views/common/footer.jsp"%>

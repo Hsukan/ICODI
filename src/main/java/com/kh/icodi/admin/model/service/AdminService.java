@@ -15,6 +15,7 @@ import com.kh.icodi.admin.model.dto.Product;
 import com.kh.icodi.admin.model.dto.ProductAttachment;
 import com.kh.icodi.admin.model.dto.ProductExt;
 import com.kh.icodi.admin.model.dto.ProductIO;
+import com.kh.icodi.codiBoard.model.dto.LikeThat;
 import com.kh.icodi.common.MemberOrderProductManager;
 
 public class AdminService {
@@ -179,7 +180,7 @@ public class AdminService {
 		return list;
 	}
 
-	public String getCodiImg(String codiBoardNo) {
+	public String getCodiImg(int codiBoardNo) {
 		Connection conn = getConnection();
 		String codiImg = adminDao.getCodiImg(conn, codiBoardNo);
 		close(conn);
@@ -287,6 +288,13 @@ public class AdminService {
 		int totalContent = adminDao.getTotalContentBySearchKeyword(conn, data);
 		close(conn);
 		return totalContent;
+	}
+
+	public LikeThat findLikedByCodiBoardNo(Map<String, Object> data) {
+		Connection conn = getConnection();
+		LikeThat liked = adminDao.findLikedByCodiBoardNo(conn, data);
+		close(conn);
+		return liked;
 	}
 
 }

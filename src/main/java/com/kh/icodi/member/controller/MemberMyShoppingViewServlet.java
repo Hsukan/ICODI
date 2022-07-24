@@ -46,6 +46,7 @@ public class MemberMyShoppingViewServlet extends HttpServlet {
 			data.put("end", end);
 			
 			List<MemberOrderProductManager> orderList = memberService.findOrderListByMemberId(data);
+			
 			request.setAttribute("orderList", orderList);
 			request.setAttribute("defaultDate", data);
 			request.getRequestDispatcher("/WEB-INF/views/member/memberMyShopping.jsp").forward(request, response);
