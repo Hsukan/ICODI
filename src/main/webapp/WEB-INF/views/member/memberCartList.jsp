@@ -128,9 +128,7 @@
 </main>
 
 <script>
-const select = document.querySelectorAll("#selectOrder");
-
-document.querySelector("#allOrder").addEventListener('click', (e) => {
+const select = document.querySelectorAll("#selectOrder");Order").addEventListener('click', (e) => {
 	[...select].forEach((check) => {
 		check.checked = e.target.checked
 	});
