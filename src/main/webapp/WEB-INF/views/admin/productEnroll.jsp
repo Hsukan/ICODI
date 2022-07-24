@@ -136,6 +136,7 @@
 	<script>
 	$("#productCode").autocomplete({
         source(request, response){
+      	  console.log(request);
       	  const {term} = request;
       	  if(!/.+/.test(term)) return;
       	  
@@ -144,13 +145,19 @@
       		  method: "GET",
       		  data : {term},
       		  success(csv){
+      			  console.log(csv);
       			  const arr = csv.split(",").map((classmate) => ({
       				 label : classmate,
       				 value : classmate
       			  }));
+      			  console.log(arr);
       			  response(arr);
+      			  
       		  },
-      		  error : console.log
+      		  error(jqxhr, statusText, err){
+      			  console.log(jqxhr, statusText, err);
+      		  }
+      		  
       	  });
         },
         focus(e, select){

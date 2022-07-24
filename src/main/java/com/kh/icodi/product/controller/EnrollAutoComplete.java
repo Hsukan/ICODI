@@ -29,7 +29,7 @@ public class EnrollAutoComplete extends HttpServlet {
 			String term = request.getParameter("term");
 			
 			List<String> resultList = new ArrayList<>();
-			List<String> list = adminService.findProductList();
+			List<String> list = adminService.findProductCodeList();
 
 			for(String product : list) {
 				if(product.contains(term)) {

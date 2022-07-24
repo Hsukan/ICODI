@@ -20,7 +20,6 @@ import com.kh.icodi.admin.model.dto.ProductExt;
 import com.kh.icodi.admin.model.dto.ProductIO;
 import com.kh.icodi.admin.model.dto.ProductSize;
 import com.kh.icodi.admin.model.exception.AdminException;
-import com.kh.icodi.board.model.dto.BoardExt;
 import com.kh.icodi.common.MemberOrderProductManager;
 
 public class AdminDao {
@@ -377,24 +376,24 @@ public class AdminDao {
 		return productList;
 	}
 
-	public List<String> findProductList(Connection conn) {
+	public List<String> findProductCodeList(Connection conn) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		List<String> list = new ArrayList<>();
-		String sql = prop.getProperty("findProductList");
+		String sql = prop.getProperty("findProductCodeList");
 		
 		try {
 			pstmt = conn.prepareStatement(sql);
+			
 			rset = pstmt.executeQuery();
 			while(rset.next()) {
 				list.add(rset.getString("product_code"));
 			}
+			
 		} catch (SQLException e) {
-			throw new AdminException("상품 재고 관리 검색 오류", e);
-		} finally {
-			close(rset);
-			close(pstmt);
+			e.printStackTrace();
 		}
+		
 		return list;
 	}
 	//select * from codi_board where codi_board_no = ?

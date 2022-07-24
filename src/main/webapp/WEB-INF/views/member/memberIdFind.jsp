@@ -40,6 +40,7 @@
 			return false;
 		}
 		
+		
 		$.ajax({
 			url : '<%= request.getContextPath()%>/member/memberIdFind',
 			method : "POST",
@@ -50,9 +51,21 @@
 			},
 			success(memberId) {
 				const div = document.querySelector(".resultId");
-				div.innerHTML = '';
-				if(memberId !== null) {		
-					div.append(memberId);					
+				const btn = `
+				<div class="loginBtn">
+					<a href="<%= request.getContextPath()%>/member/memberLogin">LOGIN</a>
+				</div>
+				`
+				
+				if(memberId !== null) {
+					const html =`<span>찾으신 아이디 : </span>
+					<input type="text" value="" name="tel" readonly/>
+					`;
+					
+					$('.resultId').append(html);
+					$('input[name=tel]').attr('value', memberId);
+					div.insertAdjacentHTML('afterend', btn);
+					
 				} else {
 					alert("존재하지 않는 회원입니다.");
 				}
