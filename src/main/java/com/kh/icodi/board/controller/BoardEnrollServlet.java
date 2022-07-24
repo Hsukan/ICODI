@@ -102,7 +102,6 @@ public class BoardEnrollServlet extends HttpServlet {
 			int result = boardService.insertBoard(board); 
 			
 			//3. redirect
-			request.getSession().setAttribute("msg", "게시글을 성공적으로 등록하였습니다.");
 			response.sendRedirect(request.getContextPath() + "/board/boardList");
 			
 		} 
