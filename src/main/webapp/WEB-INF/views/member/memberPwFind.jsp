@@ -9,7 +9,7 @@
             <form name="pwFindFrm">
                 <div class="inputInfo">
                     <input type="text" name="memberId" id="memberId" placeholder="ID" required/>
-                    <input type="text" oninput="autoHyphen(this)" name="memberPhone" id="memberPhone" placeholder="전화번호" required maxlength="13"/>
+                    <input type="text" oninput="autoHyphen(this)" name="memberPhone" id="memberPhone" placeholder="휴대폰번호 (- 제외)" required maxlength="13"/>
                 </div>
                 <button class="findPwBtn">임시번호 발급</button>
                 <div class="newPw">
@@ -50,7 +50,7 @@
 		}
 		
 		const phone = document.querySelector("#memberPhone");
-		if(!/^010-[0-9]{4}-[0-9]{4}$/.test(phone.value)){
+		if(!/^01[0-9]{1}-[0-9]{3,4}-[0-9]{4}$/.test(phone.value)){
 			alert("유효한 전화번호를 입력해주세요");
 			phone.select();
 			return false;

@@ -11,7 +11,7 @@
 			<div class="loginForm">
 				<div>
 					<ul>
-						<li class="old"><a href="<%=request.getContextPath()%>/">기존회원이신가요?</a></li>
+						<li class="old"><a href="#">기존회원이신가요?</a></li>
 						<li class="new"><a href="<%=request.getContextPath()%>/member/memberEnroll">회원가입</a></li>
 					</ul>
 					<input type="text" name="memberId" id="memberId" placeholder="아이디" value="<%= saveId != null ? saveId : "" %>"> 
@@ -33,7 +33,6 @@
 <% if(loginMember == null){ %>
 
 	document.loginFrm.addEventListener('submit', (e) => {
-		e.preventDefault();
 		
 		const memberIdVal = document.querySelector("#memberId").value;
 		const passwordVal = document.querySelector("#password").value;
@@ -48,29 +47,6 @@
 			password.select();
 			return false;
 		}
-		
-		$.ajax({
-			url: '<%= request.getContextPath() %>/member/memberLogin',
-			dataType: 'json',
-			method: 'post',
-			data : {
-				memberId : memberId.value,
-				password : password.value
-			},
-			success(response) {
-				console.log(response, typeof response);
-				const re = response['loginRe'];
-				console.log(re, typeof re);
-				if(re === 1) {
-					window.location = document.referrer;
-				}
-				else {
-					location.reload();
-				}
-			},
-			error : console.log
-			
-		});
 	});
 <% } %>	
 
