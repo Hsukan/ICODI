@@ -56,10 +56,6 @@
 			<h2>고객 서비스</h2>
 			<div  class="product-content">
 			<div class="product-content-icon">
-			<i class="fa-solid fa-user" id="btn-csCenter"></i>			
-			<span>고객센터</span>
-			</div>
-			<div class="product-content-icon">
 			<i class="fa-solid fa-walkie-talkie" id="btn-answer"></i>
 			<span>문의답변</span>
 			</div>
@@ -78,9 +74,6 @@
 		location.href = "<%= request.getContextPath()%>/admin/productDelete";
 	});
 	
-	document.querySelector("#btn-csCenter").addEventListener('click',(e)=>{
-		location.href = "<%=request.getContextPath()%>/cs_center";
-	});
 	
 	document.querySelector("#btn-answer").addEventListener('click',(e)=>{
 		location.href = "<%=request.getContextPath()%>/inquireAnswer";
