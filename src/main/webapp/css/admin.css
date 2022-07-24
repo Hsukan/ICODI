@@ -9,6 +9,8 @@ main {
 	margin: 0;
 	padding: 0;
 }
+
+
 ul,li {list-style: none;}
 a{
 	text-decoration: none;
@@ -39,6 +41,7 @@ section{
 .nav-wrap ul li a:hover {
 	color :  rgb(22, 160, 133);
 }
+
 /*가운데 박스*/
 #content-center{
 	position: relative;
@@ -61,6 +64,7 @@ section{
 	font-size: 26px;
 	margin: 15px 0;
 }
+
 /*오른쪽 박스*/
 /*상품등록/삭제 박스*/
 
@@ -68,6 +72,7 @@ section{
 	display: flex;
 	flex-direction: column;	
 	width : 250px;
+	
 }
 
 .product-content{
@@ -104,4 +109,8 @@ font-size: 80px;
 #btn-product-enroll, #btn-product-delete{
 	display:flex;
 	flex-direction: column;
+	cursor: pointer;
 	}
+#btn-answer{
+	cursor: pointer;
+}
