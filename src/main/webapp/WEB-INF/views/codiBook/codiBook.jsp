@@ -4,6 +4,7 @@
 <%@ include file="/WEB-INF/views/common/header.jsp"%>
 <%
 	String loginMemberId = (String)request.getAttribute("loginMemberId");
+	System.out.println("loginMember@codiBook = " + loginMemberId);
 %>
 <script src="<%=request.getContextPath()%>/js/jquery-3.6.0.js"></script>
 <script
@@ -190,13 +191,19 @@ function drop(ev) {
     }
 };
 btnSave.onclick = (e) => {
-	console.log(arr, arr.length);
-	if(arr.length > 0){
-		partShot();
-		document.querySelector("#btnModal").click();
+	console.log("<%=loginMemberId%>");
+	if('<%=loginMemberId%>' != 'null'){
+		if(arr.length > 0){
+			partShot();
+			document.querySelector("#btnModal").click();
+		}
+		else{
+			alert("하나이상의 상품을 코디해야합니다.");
+		}
 	}
 	else{
-		alert("하나이상의 상품을 코디해야합니다.");
+		alert("로그인이 필요합니다.");
+		return;
 	}
 };
 function partShot() {
