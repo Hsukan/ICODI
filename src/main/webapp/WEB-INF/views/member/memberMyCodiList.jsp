@@ -10,7 +10,7 @@
 <script src="<%= request.getContextPath()%>/js/jquery-3.6.0.js"></script>
 <section id="my-codi-wrapper">
 	<div id="my-codi-container"></div>
-	<hr style="border: 0; background-color: gray; height: 1px;"/>
+	<hr style="border: 0; background-color: gray; height: 0.5px;"/>
 	<div id='btn-more-container'>
 		<button id="btn-more" value="1" >MORE<span id="cPage"></span></button>
 	</div>
