@@ -45,7 +45,7 @@ li{
 
 .product img{
 	width: 100%;
-	height: 300px;
+	height: 280px;
 	object-fit: fill;
 	box-sizing: border-box;
 	vertical-align: middle;
@@ -62,10 +62,14 @@ li{
 a #productName{
 	font-size: 14px;
 	font-weight: bold;
-	margin-top: 5px;
+	margin-top: 9px;
+    margin-bottom: 5px;
+    margin-left: 3px;
 }
 a #productPrice {
 	color: #333;
+	margin-left: 4px;
+    font-size: 13px;
 }
 .product-info {
 	cursor: pointer;
