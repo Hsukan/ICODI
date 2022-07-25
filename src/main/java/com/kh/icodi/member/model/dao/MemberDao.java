@@ -400,7 +400,28 @@ public class MemberDao {
 		}
 		return result;
 	}
+	
+	// 장바구니(주문) 추가 오류 
+	// insertCart = insert into cart values (seq_cart_no.nextval, ?, ?, ?)
+	public int insertCartBuyItNo(Connection conn, Map<String, Object> data) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String sql = prop.getProperty("insertCart");
 
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, (String)data.get("productCode"));
+			pstmt.setString(2, (String)data.get("memberId"));
+			pstmt.setInt(3, (int)data.get("productCount"));
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new MemberException("장바구니 추가 오류!", e);
+		} finally {
+			close(pstmt);
+		}
+		return result;
+	}
+	
 	// 최근 추가된 장바구니 번호 찾기
 	// findCartNoBySeq = select seq_cart_no.currval from dual
 	public int findCartNoBySeq(Connection conn) {

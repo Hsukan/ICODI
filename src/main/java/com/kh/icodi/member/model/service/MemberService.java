@@ -169,7 +169,7 @@ public class MemberService {
 		int cartNo = 0;
 		MemberProductManager order = null;
 		try {
-			int result = memberDao.insertCart(conn, data);
+			int result = memberDao.insertCartBuyItNo(conn, data);
 			cartNo = memberDao.findCartNoBySeq(conn);
 			order = memberDao.findOrderListByCartNo(conn, cartNo);
 						
