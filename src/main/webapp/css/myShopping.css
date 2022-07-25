@@ -114,6 +114,7 @@ table tbody tr {
 	margin-top:20px;
 	display:flex;
 	justify-content: space-between;
+	height: 350px;
 }
 .orderInfo-wrap {
 	width:73%;

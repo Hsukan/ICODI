@@ -353,21 +353,20 @@ document.querySelector("#orderBtn").addEventListener('click', (e) => {
 				alert("주문이 완료되었습니다.");
 				frm.submit();
 			} else {
-				console.log(123);
 			   var IMP = window.IMP;      
 			   IMP.init("imp83181016");
 			   IMP.request_pay({
-			      pg: 'html5_inicis',
-			      pay_method: 'card',
-			      merchant_uid: 'merchant_' + new Date().getTime(),
-			      name: '아이코디',
-			      amount: `${total.innerHTML}`,
-			      buyer_email: '<%= member.getEmail() %>',
-			      buyer_name: '<%= member.getMemberName()%>',
-			      buyer_tel: '<%= member.getPhone()%>',
-			      buyer_addr: '<%= member.getAddress()%> <%= member.getAddressEx()%>',
-			      buyer_postcode: '111-111',
-			      m_redirect_url: 'http://localhost:9090/icodi/'
+				   pg: 'html5_inicis',
+	               pay_method: 'card',
+	               merchant_uid: 'merchant_' + new Date().getTime(),
+	               name: '아이코디',
+	               amount: Number(total.innerHTML.replace(",","")),
+	               buyer_email: '<%= member.getEmail() %>',
+	               buyer_name: '<%= member.getMemberName()%>',
+	               buyer_tel: '<%= member.getPhone()%>',
+	               buyer_addr: '<%= member.getAddress()%> <%= member.getAddressEx()%>',
+	               buyer_postcode: '111-111',
+	               m_redirect_url: 'http://localhost:9090/icodi/'
 			   }, function (rsp) {
 			      if (rsp.success) {
 			         var msg = '결제가 완료되었습니다.';

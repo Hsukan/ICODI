@@ -1,25 +1,25 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" isErrorPage="true"%>
 <%
-	//page지시어 isErrorPage="true"로 지정한 경우 -> 기본값은 false
-	//발생한 예외객체 선언없이 접근 가능.
 	String msg = exception.getMessage();
 %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>오류</title>
-<style>
-body{text-align: center;}
-h1{font-size: 500px;}
-.err-msg{color : red;}
-</style>
+<title>error</title>
+<link rel="stylesheet" href="<%=request.getContextPath() %>/css/style.css" />
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Do+Hyeon&family=East+Sea+Dokdo&family=Hi+Melody&family=Jua&family=Lato:wght@700&family=Luckiest+Guy&family=Nanum+Brush+Script&family=Nanum+Gothic:wght@400;700;800&family=Nanum+Pen+Script&family=Noto+Sans+KR:wght@100;300;400;500;700;900&family=Quicksand:wght@300&family=Racing+Sans+One&family=Roboto+Mono:ital,wght@0,400;1,500&family=Shrikhand&family=Ultra&display=swap" rel="stylesheet">
 </head>
 <body>
-	<h1>헉</h1>
-	<p class="err-msg"><%= msg %></p>
+	<p class="err-msg">
+		요청 처리 과정에서 예외가 발생하였습니다.
+		<br />
+		빠른시간 내에 문제를 해결하도록 하겠습니다.
+		<br />
+		이용에 불편드려 죄송합니다.
+	</p>
 	<hr />
-	<a href="<%= request.getContextPath() %>">홈으로</a>
+	<button id="goToMain" onclick="<%= request.getContextPath()%>">메인으로 이동하기</button>
 </body>
 </html>

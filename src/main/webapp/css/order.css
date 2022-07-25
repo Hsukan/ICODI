@@ -149,6 +149,7 @@ table {
 .total-wrap {
 	display:flex;
     justify-content: space-between;
+    margin-bottom: 20px;
 }
 #orderBtn {
 	width:70%;

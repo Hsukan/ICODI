@@ -11,19 +11,18 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>오류</title>
-<style>
-body{text-align: center;}
-h1{font-size: 500px;}
-.err-msg{color : red;}
-</style>
+<title>404</title>
+<link rel="stylesheet" href="<%=request.getContextPath() %>/css/style.css" />
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Do+Hyeon&family=East+Sea+Dokdo&family=Hi+Melody&family=Jua&family=Lato:wght@700&family=Luckiest+Guy&family=Nanum+Brush+Script&family=Nanum+Gothic:wght@400;700;800&family=Nanum+Pen+Script&family=Noto+Sans+KR:wght@100;300;400;500;700;900&family=Quicksand:wght@300&family=Racing+Sans+One&family=Roboto+Mono:ital,wght@0,400;1,500&family=Shrikhand&family=Ultra&display=swap" rel="stylesheet">
 </head>
 <body>
-	<h1>텅</h1>
-	<p class="err-msg">찾으시는 페이지가 없습니다.</p>
+	<p class="err-msg">
+		 <span class="errStrong">요청하신 페이지는 존재하지 않습니다 :</span>
+		 <br />
+		 주소를 올바르게 입력했는 지 확인부탁드리겠습니다.
+	</p>
 	<hr />
-	<a href="<%= request.getContextPath() %>">홈으로</a>
-	<br />
-	<a href="javascript:history.back()">뒤로가기</a>
+	<button id="goToMain" onclick="<%= request.getContextPath()%>">메인으로</button>
+	<button onclick="javascript:history.back()" id="goToBack">뒤로가기</button>
 </body>
 </html>
