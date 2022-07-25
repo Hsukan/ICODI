@@ -133,39 +133,37 @@
 			</article>
 		</section>
 	</div>
-	<script>
-	$("#productCode").autocomplete({
-        source(request, response){
-      	  console.log(request);
-      	  const {term} = request;
-      	  if(!/.+/.test(term)) return;
-      	  
-      	  $.ajax({
-      		  url : "<%= request.getContextPath()%>/productCodeList",
-      		  method: "GET",
-      		  data : {term},
-      		  success(csv){
-      			  console.log(csv);
-      			  const arr = csv.split(",").map((classmate) => ({
-      				 label : classmate,
-      				 value : classmate
-      			  }));
-      			  console.log(arr);
-      			  response(arr);
-      			  
-      		  },
-      		  error(jqxhr, statusText, err){
-      			  console.log(jqxhr, statusText, err);
-      		  }
-      		  
-      	  });
-        },
-        focus(e, select){
-      	  return false;
-        }
-      });
-	</script>
 </main>
-</body>
-</html>
+<script>
+$("#productCode").autocomplete({
+       source(request, response){
+     	  console.log(request);
+     	  const {term} = request;
+     	  if(!/.+/.test(term)) return;
+     	  
+     	  $.ajax({
+     		  url : "<%= request.getContextPath()%>/productCodeList",
+     		  method: "GET",
+     		  data : {term},
+     		  success(csv){
+     			  console.log(csv);
+     			  const arr = csv.split(",").map((classmate) => ({
+     				 label : classmate,
+     				 value : classmate
+     			  }));
+     			  console.log(arr);
+     			  response(arr);
+     			  
+     		  },
+     		  error(jqxhr, statusText, err){
+     			  console.log(jqxhr, statusText, err);
+     		  }
+     		  
+     	  });
+       },
+       focus(e, select){
+     	  return false;
+       }
+     });
+</script>
 <%@include file="/WEB-INF/views/common/footer.jsp"%>

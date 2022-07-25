@@ -23,15 +23,15 @@ public class StatsViewServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		try {
+			List <Stats> list = new ArrayList<>();
 			
-		List <Stats> list = new ArrayList<>();
-		
-		request.setAttribute("list", list);
-		
-		request.getRequestDispatcher("/WEB-INF/views/admin/statsView.jsp").forward(request, response);
+			request.setAttribute("list", list);
+			
+			request.getRequestDispatcher("/WEB-INF/views/admin/statsView.jsp").forward(request, response);
+		} catch(Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
 	}
-
-	
-	
-
 }

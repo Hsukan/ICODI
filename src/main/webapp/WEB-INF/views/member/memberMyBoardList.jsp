@@ -57,5 +57,4 @@
 		<%= request.getAttribute("pagebar") %>
 	</div>
 </section>
-</body>
-</html>
+<%@include file="/WEB-INF/views/common/footer.jsp"%>

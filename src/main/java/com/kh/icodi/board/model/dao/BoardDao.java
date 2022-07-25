@@ -48,7 +48,7 @@ public class BoardDao {
 		}
 	}
 
-	public List<Board> findAll(Connection conn, Map<String, Object> param) {//, Map<String, Object> param
+	public List<Board> findAll(Connection conn, Map<String, Object> param) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		List<Board> list = new ArrayList<>();
@@ -251,16 +251,12 @@ public class BoardDao {
 		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, no);
-			
 			result = pstmt.executeUpdate();
-			
 		} catch (SQLException e) {
 			throw new BoardException("조회수 증가 오류!", e);
 		}finally {
 			close(pstmt);
 		}
-		
-		
 		return result;
 	}
 
@@ -295,16 +291,12 @@ public class BoardDao {
 		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, no);
-			
 			result = pstmt.executeUpdate();
-			
 		} catch (SQLException e) {
 			throw new BoardException("게시물 삭제 오류!", e);
 		}finally {
 			close(pstmt);
 		}
-		
-		
 		return result;
 	}
 
@@ -325,8 +317,6 @@ public class BoardDao {
 		}finally {
 			close(pstmt);
 		}
-		
-		
 		return result;
 	}
 

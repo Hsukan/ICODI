@@ -564,3 +564,4 @@ document.querySelector("#researchButton").addEventListener('click', function(){
     }).open();
 });
 </script>
+<%@include file="/WEB-INF/views/common/footer.jsp"%>

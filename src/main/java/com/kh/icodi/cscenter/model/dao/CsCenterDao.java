@@ -111,9 +111,6 @@ public class CsCenterDao {
 		
 		return result;
 	}
-
-	
-
 	
 	public List<CsCenterInquire> findMyInquire(Connection conn, String loginMemberId) {
 		PreparedStatement pstmt = null;
@@ -358,11 +355,4 @@ public class CsCenterDao {
 		
 		return result;
 	}
-
-	public List<Alarm> findAlarmById(Connection conn) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-
 }
