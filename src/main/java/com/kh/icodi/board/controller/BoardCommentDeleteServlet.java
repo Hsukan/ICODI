@@ -33,10 +33,11 @@ public class BoardCommentDeleteServlet extends HttpServlet {
 			//3. redirect (DML)
 			response.sendRedirect(request.getHeader("Referer"));
 			
+		}catch(Exception e) {
+			e.printStackTrace();
+			throw e;
 		}
-		catch(Exception e) {
 			
-		}
 	}
 
 }
