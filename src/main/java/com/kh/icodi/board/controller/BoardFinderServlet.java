@@ -28,41 +28,41 @@ public class BoardFinderServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//1. 사용자 입력값 처리
-		int cPage = 1;
-		int numPerPage = 10;
-		
 		try {
-			cPage = Integer.parseInt(request.getParameter("cPage"));
-		} catch (NumberFormatException e) {}
-		
-		String searchType = request.getParameter("searchType");
-		String searchKeyword = request.getParameter("searchKeyword");
+			//1. 사용자 입력값 처리
+			int cPage = 1;
+			int numPerPage = 10;
+			
+			try {
+				cPage = Integer.parseInt(request.getParameter("cPage"));
+			} catch (NumberFormatException e) {}
+			
+			String searchType = request.getParameter("searchType");
+			String searchKeyword = request.getParameter("searchKeyword");
 
-		Map<String, Object> param = new HashMap<>();
-		param.put("searchType", searchType);
-		param.put("searchKeyword", searchKeyword);
-		param.put("start", (cPage - 1) * numPerPage + 1);
-		param.put("end", cPage * numPerPage);
-		System.out.println(param);
-		
-		List<BoardExt> list = boardService.findLike(param);
-		System.out.println("list = " + list);
-		
-		int totalContent = boardService.getTotalContentLike(param);
-		System.out.println("totalContent = " + totalContent);
-		String url = request.getRequestURI() + "?searchType=" + searchType + "&searchKeyword=" + searchKeyword;
-		// /mvc/admin/memberFinder
-		String pagebar = IcodiMvcUtils.getPagebar(cPage, numPerPage, totalContent, url);
-		System.out.println("pagebar = " + pagebar);
-		
-		request.setAttribute("searchKeyword", searchKeyword);
-		request.setAttribute("searchType", searchType);
-		request.setAttribute("list", list);
-		request.setAttribute("pagebar", pagebar);
-		request.getRequestDispatcher("/WEB-INF/views/board/boardList.jsp")
-		.forward(request, response);
+			Map<String, Object> param = new HashMap<>();
+			param.put("searchType", searchType);
+			param.put("searchKeyword", searchKeyword);
+			param.put("start", (cPage - 1) * numPerPage + 1);
+			param.put("end", cPage * numPerPage);
+			System.out.println(param);
+			
+			List<BoardExt> list = boardService.findLike(param);
+			
+			int totalContent = boardService.getTotalContentLike(param);
+			String url = request.getRequestURI() + "?searchType=" + searchType + "&searchKeyword=" + searchKeyword;
+			// /mvc/admin/memberFinder
+			String pagebar = IcodiMvcUtils.getPagebar(cPage, numPerPage, totalContent, url);
+			
+			request.setAttribute("searchKeyword", searchKeyword);
+			request.setAttribute("searchType", searchType);
+			request.setAttribute("list", list);
+			request.setAttribute("pagebar", pagebar);
+			request.getRequestDispatcher("/WEB-INF/views/board/boardList.jsp")
+			.forward(request, response);
+		} catch(Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
 	}
-
-
 }

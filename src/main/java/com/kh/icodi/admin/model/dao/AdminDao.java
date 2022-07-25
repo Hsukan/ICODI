@@ -376,7 +376,8 @@ public class AdminDao {
 		}
 		return productList;
 	}
-
+	
+	// findProductCodeList = select product_code from product
 	public List<String> findProductCodeList(Connection conn) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
@@ -385,16 +386,16 @@ public class AdminDao {
 		
 		try {
 			pstmt = conn.prepareStatement(sql);
-			
 			rset = pstmt.executeQuery();
 			while(rset.next()) {
 				list.add(rset.getString("product_code"));
 			}
-			
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new AdminException("상품코드 조회 오류!", e);
+		} finally {
+			close(rset);
+			close(pstmt);
 		}
-		
 		return list;
 	}
 	//select * from codi_board where codi_board_no = ?

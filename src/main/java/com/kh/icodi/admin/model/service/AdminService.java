@@ -95,7 +95,7 @@ public class AdminService {
 	public List<ProductExt> findProductList(Map<String, Object> param) {
 		Connection conn = getConnection();
 		List<ProductExt> productList = adminDao.findProductList(conn, param);
-		// 채은 if문 추가 - 도훈 conflict나면 if문 있는 걸로 저장해주세여
+
 		if(productList != null && !productList.isEmpty()) {
 			for(ProductExt product : productList) {
 				List<ProductAttachment> attachments = adminDao.findAttachmentByProductCode(conn, product.getProductCode());
@@ -128,7 +128,6 @@ public class AdminService {
 	public List<String> findProducAll() {
 		Connection conn = getConnection();
 		List<String> list = adminDao.findProductAll(conn);
-		
 		close(conn);
 		return list;
 	}
@@ -202,7 +201,8 @@ public class AdminService {
 			}
 		}
 		return productList;
-}
+	}
+	
 	public int deleteOrderProductStock(List<Map<String, Object>> list) {
 		Connection conn = getConnection();
 		int result = 0;

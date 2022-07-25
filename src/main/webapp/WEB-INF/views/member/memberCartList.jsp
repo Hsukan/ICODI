@@ -211,5 +211,4 @@ window.addEventListener('load', (e) => {
 	total.innerHTML = totalPrice.innerHTML;
 });
 </script>
-</body>
-</html>
+<%@include file="/WEB-INF/views/common/footer.jsp"%>

@@ -71,3 +71,4 @@
 	const count = document.querySelector("#count");
 	count.innerText = "총 " + totalRowCnt + "명";		
 </script>
+<%@include file="/WEB-INF/views/common/footer.jsp"%>

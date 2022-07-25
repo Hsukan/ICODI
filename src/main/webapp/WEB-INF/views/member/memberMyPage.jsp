@@ -265,3 +265,4 @@ public String phoneChecked(List<String> phoneList, String phone){
 	return phoneList != null && phoneList.contains(phone) ? "selected" : "";
 }
 %>
+<%@include file="/WEB-INF/views/common/footer.jsp"%>

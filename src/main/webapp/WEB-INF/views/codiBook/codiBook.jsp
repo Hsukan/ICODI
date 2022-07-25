@@ -305,5 +305,4 @@ const accReset = document.querySelector("#accReset");
         }
     })
 </script>
-</body>
-</html>
+<%@include file="/WEB-INF/views/common/footer.jsp"%>

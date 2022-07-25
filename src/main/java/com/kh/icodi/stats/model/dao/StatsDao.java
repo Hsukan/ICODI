@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import com.kh.icodi.admin.model.exception.AdminException;
 import com.kh.icodi.stats.model.dto.Stats;
 
 public class StatsDao {
@@ -42,7 +43,7 @@ public class StatsDao {
 			pstmt.setString(2, myDateFormat);
 			result = pstmt.executeUpdate();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new AdminException("방문자수 조회 오류!", e);
 		}finally {
 			close(pstmt);
 		}
@@ -67,11 +68,11 @@ public class StatsDao {
 				list.add(stats);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new AdminException("날짜별 방문자수 조회 오류!");
+		} finally {
+			close(rset);
+			close(pstmt);
 		}
-		
-		
 		return list;
 	}
-
 }

@@ -79,6 +79,7 @@ public class CodiBoardDao {
 		}
 		return codiBoardList;
 	}
+	
 	public List<CodiBoardExt> findHotCodiBoard(Connection conn, Map<String, Object> param) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
@@ -272,7 +273,6 @@ public class CodiBoardDao {
 			if(rset.next()) {
 				totalContent = rset.getInt(1);
 			}
-			System.out.println("totalContent = " + totalContent);
 		} catch (SQLException e) {
 			throw new CodiBoardException("내가 만든 코디 조회 오류!", e);
 		} finally {
@@ -295,7 +295,6 @@ public class CodiBoardDao {
 			pstmt.setInt(3, (int)param.get("end"));
 			rset = pstmt.executeQuery();
 			
-			System.out.println("dao@param = " + param);
 			while(rset.next()) {
 				CodiBoardExt codiBoardExt = handleCodiBoardResultSet(rset);
 				codiBoardList.add(codiBoardExt);

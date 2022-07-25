@@ -221,7 +221,6 @@
 		</article>
 	</section>
 </main>
-</body>
 <script>
 [...document.querySelectorAll("#product-img-wrap")].forEach((img) => {
 	   $(document).ready(function () {
@@ -386,4 +385,4 @@ document.querySelector("#orderBtn").addEventListener('click', (e) => {
 	});
 });
 </script>
-</html>
+<%@include file="/WEB-INF/views/common/footer.jsp"%>
