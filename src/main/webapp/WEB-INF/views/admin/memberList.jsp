@@ -5,6 +5,8 @@
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ include file="/WEB-INF/views/common/header.jsp"%>
+<link rel="stylesheet" href="<%= request.getContextPath() %>/css/memberList.css">
 <%
 
 	List<Member> list = (List<Member>) request.getAttribute("list");
@@ -67,8 +69,8 @@ window.addEventListener('load', (e) => {
         <div id="search-memberRole" class="search-type">
             <form action="<%=request.getContextPath()%>/admin/memberFinder">
                 <input type="hidden" name="searchType" value="member_role"/>
-                <input type="radio" name="searchKeyword" value="U" <%= "member_role".equals(type) && "U".equals(kw) ? "checked" : "" %>> 일반
-                <input type="radio" name="searchKeyword" value="A" <%= "member_role".equals(type) && "A".equals(kw) ? "checked" : "" %>> 관리자
+                <input type="radio" name="searchKeyword" value="U" <%= "member_role".equals(type) && "U".equals(kw) ? "checked" : "" %>><span class="role">일반</span>
+                <input type="radio" name="searchKeyword" value="A" <%= "member_role".equals(type) && "A".equals(kw) ? "checked" : "" %>><span class="role">관리자</span>
                 <button type="submit">검색</button>
             </form>
         </div>
@@ -151,3 +153,4 @@ document.querySelectorAll(".member-role").forEach((select, index) => {
 	};
 });
 </script>
+<%@ include file="/WEB-INF/views/common/footer.jsp"%>
