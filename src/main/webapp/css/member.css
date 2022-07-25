@@ -114,9 +114,10 @@ span#memberProfileId{
   display: none;
   background: rgb(94 94 94 / 50%);
   /* border: 1px solid rgba(255, 255, 255, 0.18); */
+  z-index: 100;
 }
 #modal .modal-window {
-  background: rgba( 255, 255, 255 );
+    background: rgba( 255, 255, 255 );
     border-radius: 4px;
     /* border: 1px solid rgba( 255, 255, 255, 0.18 ); */
     width: 400px;
@@ -187,6 +188,7 @@ input#btn-modal-passwordUpdate {
   color: rgb(26, 188, 156);
   padding: 4px 10px;
   font-weight: bold;
+  cursor: pointer;
 }
 input#btn-save {
   border : 2px solid rgb(26, 188, 156);
@@ -198,6 +200,7 @@ input#btn-save {
   margin-right: 151px;
   margin-left: 86px;
   margin-top: 3px;
+  cursor: pointer;
 }
 input#btn-delete {
   border : 2px solid rgb(26, 188, 156);
@@ -206,6 +209,7 @@ input#btn-delete {
   color: rgb(26, 188, 156);
   padding: 4px 13px;
   font-weight: bold;
+  cursor: pointer;
 }
 input#researchButton {
   border : 2px solid rgb(26, 188, 156);
@@ -215,6 +219,7 @@ input#researchButton {
   padding: 4px 10px;
   font-weight: bold;
   margin-left: 8px;
+  cursor: pointer;
 }
 input#email {
   height: 25px;
@@ -271,6 +276,8 @@ div#my-codi-selected,#my-board-selected {
 	display: inline;
 	font-size: 14px;
 }
+
+/** 내 코디 확인 */
 section#my-codi-wrapper {
 	margin-top: 30px;
 }
@@ -338,19 +345,48 @@ table#tbl-pwd {
   margin-top: 11px;
   padding: 20px 30px;
 }
-table.tbl-pwd-th th {
+th.table-pwd-th {
   text-align: left;
   padding-right: 15px;
-  color: rgb(94, 94, 94);
+  color: rgb(50, 50, 50);
   font-size: 14px;
+  padding-top: 13px;
 }
 input#btnPasswordUpdate {
   margin-bottom: 5px;
   margin-top: 15px;
+  padding: 5px 13px;
+  background-color: rgb(22, 160, 133);
+  color: #fff;
+  font-weight: bold;
+  border: 1px solid rgb(22, 160, 133);
+  border-radius: 3px;
+  cursor: pointer;
+}
+input#btnPasswordUpdate:hover {
+	border: 1px solid rgb(22, 160, 133);
+	background-color: #fff;
+	color: rgb(22, 160, 133);
+	cursor: pointer;
+}
+input#btnPasswordUpdate:active {
+	border: 1px solid rgb(22, 160, 133);
+	background-color: #fff;
+	color: rgb(22, 160, 133);
+	cursor: pointer;
+}
+
+table#tbl-pwd td{
+	text-align: center;
 }
 span#msg1,#msg2,#msg3 {
   font-size: 12px;
 }
+table#tbl-pwd input[type=password] {
+	margin: 13px 0 0;
+}
+
+
 
 /** 내 게시글 확인 */
 section#my-board-wrapper {
@@ -394,8 +430,41 @@ div#my-codi-bagebar {
     text-align: center;
     font-size: 20px;
 }
-
-
+div.non-codi-info-container {
+	margin: 100px auto;
+}
+div#codi-create {
+	margin: 17px auto;
+    display: flex;
+    justify-content: center;
+}
+a.createLink {
+	text-decoration-line: none;
+    margin: 0 5px;
+    position: relative;
+    top: 1px;
+    font-size: 17px;
+    padding-left: 35px;
+    color: #8b8b8bc9;
+    text-shadow: 2px 1px 3px;
+}
+#btn-more {
+    width: 70px;
+    height: 35px;
+    background-color: white;
+    border: 1px solid rgb(26, 188, 156);
+    color: rgb(22, 160, 133);
+    cursor: pointer;
+}
+#btn-more:hover {
+    background-color: rgb(26, 188, 156, 0.5);
+    color: white;
+    border: none;
+}
+#btn-more-container {
+	margin: 20px 0px 35px;
+	text-align: center;
+}
 
 
 

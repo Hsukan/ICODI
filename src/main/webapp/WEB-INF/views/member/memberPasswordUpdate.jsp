@@ -24,7 +24,7 @@
     <html lang="en">
     <head>
     	<meta charset="UTF-8" />
-    	<title>Document</title>
+    	<title>password update</title>
     	<script src="<%= request.getContextPath() %>/js/jquery-3.6.0.js"></script>
     <script>
 window.onload = () => {
@@ -33,24 +33,26 @@ window.onload = () => {
 	<% } %>
 }
 </script>
+<link rel="stylesheet"
+	href="<%=request.getContextPath() %>/css/member.css" />
     </head>
-    <body>
+    <body id="pwd-body">
 <section id=enroll-container>
-		<h2>비밀번호 변경</h2>
+		<div id="enroll-title"><h2>비밀번호 변경</h2></div>
 		<form 
 			name="passwordUpdateFrm" 
 			action="<%=request.getContextPath()%>/member/memberPasswordUpdate" 
 			method="post" >
-			<table>
+			<table id="tbl-pwd">
 				<tr>
-					<th>현재 비밀번호</th>
+					<th class="table-pwd-th">현재 비밀번호</th>
 					<td><input type="password" name="oldPassword" id="oldPassword" required></td>
 				</tr>
 				<tr>
 					<td colspan="2"><span id="msg1"></span></td>
 				</tr>
 				<tr>
-					<th>변경할 비밀번호</th>
+					<th class="table-pwd-th">변경할 비밀번호</th>
 					<td>
 						<input type="password" name="newPassword" id="newPassword" required>
 					</td>
@@ -59,7 +61,7 @@ window.onload = () => {
 					<td colspan="2"><span id="msg2"></span></td>
 				</tr>
 				<tr>
-					<th>비밀번호 확인</th>
+					<th class="table-pwd-th">비밀번호 확인</th>
 					<td>	
 						<input type="password" id="newPasswordCheck" required><br>
 					</td>
@@ -69,7 +71,7 @@ window.onload = () => {
 				</tr>
 				<tr>
 					<td colspan="2" style="text-align: center;">
-						<input type="submit"  value="변경" />
+						<input id="btnPasswordUpdate" type="submit"  value="변경" />
 					</td>
 				</tr>
 			</table>
@@ -88,7 +90,8 @@ window.onload = () => {
 	oldPassword.addEventListener('blur', (e) => {
 	const re = /^(?=.*\d{1,})(?=.*[!@#$%^&*]{1,})(?=.*[a-zA-Z]{1,}).{8,12}$/;
 		if(!re.test(oldPassword.value)){
-			msg1.innerHTML = "비밀번호는 영문+숫자+특수문자(!@#$%^&*) 포함 8자리 이상이여야 합니다.";
+			msg1.innerHTML = "❌ 영문+숫자+특수문자(!@#$%^&*) 포함 8자리 이상";
+			msg1.style.color = 'red';
 			oldPassword.select();
 			return false;
 		}
@@ -100,9 +103,10 @@ window.onload = () => {
 	newPassword.addEventListener('blur', (e) => {
 		const re = /^(?=.*\d{1,})(?=.*[!@#$%^&*]{1,})(?=.*[a-zA-Z]{1,}).{8,12}$/;
 		if(!re.test(newPassword.value)){
-			msg2.innerHTML = "새 비밀번호는 영문+숫자+특수문자(!@#$%^&*) 포함 8자리 이상이여야 합니다.";
-				newPassword.select();
-				return false;
+			msg2.innerHTML = "❌ 영문+숫자+특수문자(!@#$%^&*) 포함 8자리 이상";
+			msg2.style.color = 'red';
+			newPassword.select();
+			return false;
 		}
 		else {
 			msg2.innerHTML = '';
@@ -111,9 +115,10 @@ window.onload = () => {
 	
 	newPasswordCheck.addEventListener('blur', (e) => {
 		if(newPassword.value !== newPasswordCheck.value) {
-			msg3.innerHTML = '비밀번호가 일치하지 않습니다.';
-				newPasswordCheck.value = '';
-				newPassword.select();
+			msg3.innerHTML = '❌ 비밀번호가 일치하지 않습니다';
+			msg3.style.color = 'red';
+			newPasswordCheck.value = '';
+			newPassword.select();
 		}
 		else {
 			msg3.innerHTML = '';
@@ -129,7 +134,7 @@ window.onload = () => {
 		if(newPassword.value !== newPasswordCheck.value) {
 			return false;
 		}
-		
+	
 		
 		$.ajax({
 			url: '<%= request.getContextPath() %>/member/memberPasswordUpdate',
@@ -141,8 +146,18 @@ window.onload = () => {
 				newPassword : newPassword.value
 			},
 			success(response) {
-				opener.parent.location='<%= request.getContextPath() %>/member/memberMyPage';
-				window.close();
+				console.log(response, typeof response);
+				const re = response['result'];
+				console.log(re, typeof re);
+				if(re === 1) {
+					opener.parent.location='<%= request.getContextPath() %>/member/memberMyCodiList';
+					window.close();
+				}
+				else {
+					window.location='<%= request.getContextPath() %>/member/memberPasswordUpdate';
+					location.reload();
+				}
+
 				
 			},
 			error : console.log

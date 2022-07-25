@@ -43,6 +43,7 @@ public class MemberPasswordUpdateServlet extends HttpServlet {
 			
 			Member member = memberService.findById(memberId);
 						
+			
 			String msg = null;
 			int result = 0;
 			if(member != null && oldPassword.equals(member.getPassword())) {
@@ -53,7 +54,7 @@ public class MemberPasswordUpdateServlet extends HttpServlet {
 				
 			}
 			else {
-				msg = "기존 비밀번호가 일치하지 않습니다. 다시 이용해 주세요.";
+				msg = "기존 비밀번호가 일치하지 않습니다.";
 				// response.sendRedirect(request.getContextPath() + "/member/memberPasswordUpdate");
 				
 				Member loginMember = (Member) request.getSession().getAttribute("loginMember");
@@ -65,7 +66,7 @@ public class MemberPasswordUpdateServlet extends HttpServlet {
 			
 			
 			Map<String, Object> map = new HashMap<>();
-			map.put("msg", "성공적으로 등록했습니다.");
+			map.put("result", result);
 			response.setContentType("application/json; charset=utf-8");
 			new Gson().toJson(map, response.getWriter());
 			

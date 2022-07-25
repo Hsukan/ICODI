@@ -10,14 +10,14 @@
 <script src="<%= request.getContextPath()%>/js/jquery-3.6.0.js"></script>
 <section id="my-codi-wrapper">
 	<div id="my-codi-container"></div>
-	<hr />
+	<hr style="border: 0; background-color: gray; height: 1px;"/>
 	<div id='btn-more-container'>
-		<button id="btn-more" value="" >더보기(<span id="cPage"></span> / <span id="totalPage"><%= totalPage %></span>)</button>
+		<button id="btn-more" value="1" >MORE<span id="cPage"></span></button>
 	</div>
 </section>
 <script>
 document.querySelector("#btn-more").addEventListener('click', (e) => {
-	const cPage = Number(document.querySelector("#cPage").textContent) + 1
+	const cPage = Number(document.querySelector("#btn-more").value) + 1
 	getPage(cPage);
 });
 
@@ -31,8 +31,12 @@ const getPage = (cPage) => {
 			const container = document.querySelector("#my-codi-container");
 			if(codiList.length === 0) {
 				const nonHtml = `
-					<div class="codi-info-container">
-						<div id="non-codi">등록하신 코디가 없습니다.</div>
+					<div class="non-codi-info-container">
+						<div id="non-codi"><span style="color:rgba(102, 205, 170, 0.58); font-size:18px;">✖️</span> 등록하신 코디가 없습니다 <span style="color:rgba(102, 205, 170, 0.58); font-size:18px;">✖️</span></div>
+						<div id="codi-create">
+						<img style="width: 25px; height: 25px; margin: 0 5px; position: absolute; left: 690px;" src="<%=request.getContextPath()%>/images/addcodiicon.png" />
+						<a class="createLink" href="<%= request.getContextPath() %>/codibook/create">create codi</a>
+						</div>
 					</div>
 					`;
 				container.insertAdjacentHTML('beforeend', nonHtml);
@@ -49,7 +53,7 @@ const getPage = (cPage) => {
 						</div>
 						<br />
 						<div class="liked-wrap">
-							<span id="likeCount">받은 좋아요   \${likeCount}</span>
+							<span id="likeCount">받은 좋아요&nbsp;&nbsp;&nbsp;\${likeCount}</span>
 							<span style="font-size: 15px;" id="Checkheart">\${likeCount === 0 ? '🤍' : '💗'}</span>
 						</div>
 					</div>
@@ -60,9 +64,12 @@ const getPage = (cPage) => {
 		},
 		error : console.log,
 		complete() {
-			document.querySelector('#cPage').innerHTML = cPage;
 			
 			if(cPage == <%= totalPage %>){
+				document.querySelector("#btn-more").disabled = true;
+			}
+			else if(<%= totalPage %> == 0){
+				document.querySelector('#cPage').value = 0;
 				document.querySelector("#btn-more").disabled = true;
 			}
 			
