@@ -181,3 +181,7 @@ th,td {
 #info {
 	text-align: center;
 }
+#soldOut {
+	font-size: 14px;
+    color: red;
+}

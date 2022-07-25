@@ -40,16 +40,13 @@
     padding-right: 5px;
 }
 
-
-
-
 #header .search_wrapper #productAuto{
 	font-size: 14px;
     padding-left: 10px;
     border: 0;
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .15);
     background: #fff;
-	width: 223px;
+	width: 315px;
 	height: 49px;
 }
 
@@ -57,9 +54,10 @@
    position: relative;
     left: -4px;
     width: 39px;
-    height: 52px;
+    height: 48px;
     border: none;
     box-shadow: 0 2px 5px 0 rgb(0 0 0 / 15%);
+    margin-left: 6px;
 }
 
 #header .search_wrapper i {
@@ -67,12 +65,24 @@
 }
 
 .search_wrapper{
-position: relative;
+	position: relative;
     top: 13px;
     right: -45px;
 }
 
-.wrapper_left span {font-size: large;}
+/* .wrapper_left span {font-size:12.5px;} */
+
+.wrapper_left > span {
+	font-size:12.5px;
+}
+#codiCnt {
+	font-weight: bold;
+}
+.hide_for_mobile {
+    display: flex;
+    align-items: center;
+}
+#ui-id-1{height: 0px; border:none; z-index:999;}
 
 /* 알림 관련 */
 #btn-alarm{
@@ -186,4 +196,15 @@ footer{
  }
  #footer-icon-div p {
  	color : gray;
+ }
+	
+ .footerInfo {
+ 	font-size:13px;
+ }
+ #footer-word h3 {
+ 	font-size:14px;
+ 	
+ }
+ #footer-word > *{
+ 	font-size:13px;
  }

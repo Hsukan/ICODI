@@ -24,7 +24,14 @@ import com.kh.icodi.member.model.dto.Member;
 			"/board/boardEnroll",
 			"/board/boardUpdate",
 			"/board/boardDelete",
-			"/board/boardCommentEnroll"
+			"/board/boardCommentEnroll",
+			"/board/boardCommentDelete",
+			"/member/memberCart",
+			"/member/myShopping",
+			"/member/memberUpdate",
+			"/member/memberPasswordUpdate",
+			"/member/order",
+			"/member/memberDelete"
 			})
 public class LoginFilter implements Filter {
 
