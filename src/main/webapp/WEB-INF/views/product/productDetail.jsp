@@ -9,6 +9,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
 <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+<link rel="stylesheet" href="<%=request.getContextPath()%>/css/product.css" />
 <%
 	List<ProductExt> productList = (List<ProductExt>)request.getAttribute("productList");
 	int productPrice = productList.get(0).getProductPrice();
@@ -16,7 +17,6 @@
 	String productInfo = productList.get(0).getProductInfo();
 	DecimalFormat priceFormat = new DecimalFormat("#,###");
 %>
-<link rel="stylesheet" href="<%=request.getContextPath()%>/css/product.css" />
 	<main>
 		<section>
 			<article>
@@ -73,7 +73,9 @@
 									</tr>
 									<tr>
 										<th></th>
-										<td id="soldOut"></td>
+										<td id="soldOut">
+											
+										</td>
 									</tr>
 								</tbody>
 							</table>
