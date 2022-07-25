@@ -35,7 +35,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Do+Hyeon&family=East+Sea+Dokdo&family=Hi+Melody&family=Jua&family=Lato:wght@700&family=Luckiest+Guy&family=Nanum+Brush+Script&family=Nanum+Gothic:wght@400;700;800&family=Nanum+Pen+Script&family=Noto+Sans+KR:wght@100;300;400;500;700;900&family=Quicksand:wght@300&family=Racing+Sans+One&family=Roboto+Mono:ital,wght@0,400;1,500&family=Shrikhand&family=Ultra&display=swap" rel="stylesheet">
 <style>
 	.ui-menu-item{width:308px; background-color : #fff; z-index:999;}
-	#ui-id-1{height: 0px;  border:1px solid black; z-index:999;}
+	#ui-id-1{height: 0px; border:none; z-index:999;}
 	.search-btn{width:30px; height: 30px;}
 </style>
 <script>
