@@ -37,7 +37,8 @@
 	</div>
 	</div>
 	<div id="csCenterRight">
-	<div class="alert"><span>고객센터 안내 : 구매하신 상품 및 I COD I 이용에 편의를 돕기 위해 전용 고객센터를 운영하고 있으니, 아래 내용 확인 부탁드립니다.</span></div>
+	<div class="alert"><span class="csInfo"><span class="strong">고객센터 안내 </span><br />
+	구매하신 상품 및 I COD I 이용에 편의를 돕기 위해 전용 고객센터를 운영하고 있으니, 아래 내용 확인 부탁드립니다.</span></div>
 	<h2>공지사항</h2>
 	<ul>
 	<% if(list == null || list.isEmpty()){ %>

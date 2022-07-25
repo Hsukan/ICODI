@@ -19,7 +19,7 @@
 							<option value="<%=CategoryNo.stringOf("SHOES")%>">신발</option>
 							<option value="<%=CategoryNo.stringOf("ACC")%>">악세사리</option>
 						</select>
-						<input type="submit" value="삭제"/>
+						<input type="submit" value="삭제" id="delBtn"/>
 					</div>
 					<div class="codiProduct">
 						<table id="productTable">
