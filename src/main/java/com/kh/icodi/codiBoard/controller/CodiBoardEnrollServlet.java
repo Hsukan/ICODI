@@ -22,22 +22,28 @@ public class CodiBoardEnrollServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//
-		request.setCharacterEncoding("utf-8");
 		
-		//
-		String content = request.getParameter("content");
-		System.out.println("content = " + content);
-		String isOpen = request.getParameter("isOpen");
-		if(isOpen == null) {
-			isOpen = null;
+		try {
+			//
+			request.setCharacterEncoding("utf-8");
+			
+			//
+			String content = request.getParameter("content");
+			System.out.println("content = " + content);
+			String isOpen = request.getParameter("isOpen");
+			if(isOpen == null) {
+				isOpen = null;
+			}
+			System.out.println("isOpen = " + isOpen);
+			
+			//
+			int result = codiBoardService.updateContent(content, isOpen);
+		
+			response.sendRedirect(request.getContextPath() + "/codibook/create");
+		}catch(Exception e) {
+			e.printStackTrace();
+			throw e;
 		}
-		System.out.println("isOpen = " + isOpen);
-		
-		//
-		int result = codiBoardService.updateContent(content, isOpen);
-	
-		response.sendRedirect(request.getContextPath() + "/codibook/create");
 	}
 
 }

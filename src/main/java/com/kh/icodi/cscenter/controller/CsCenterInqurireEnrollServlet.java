@@ -33,24 +33,29 @@ public class CsCenterInqurireEnrollServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//1. 사용자 입력값 처리
-		String memberId = request.getParameter("memberId");
-		String title = request.getParameter("title");
-		SelectType selectType = SelectType.valueOf(request.getParameter("selectType"));
-		String content = request.getParameter("content");
-		CsCenterInquire csCenterInquire = new CsCenterInquire(0, memberId, title, selectType, content, null);
-		System.out.println(csCenterInquire);
-		
-		//2. 업무로직
-		int result = csCenterService.insertInquire(csCenterInquire);
-		System.out.println("result = " + result);
-		
-		
-		
-		
-		//3. redirect
-		request.getSession().setAttribute("msg", "문의를 성공적으로 등록했습니다.");
-		response.sendRedirect(request.getContextPath() + "/cs_center");
+		try {
+			//1. 사용자 입력값 처리
+			String memberId = request.getParameter("memberId");
+			String title = request.getParameter("title");
+			SelectType selectType = SelectType.valueOf(request.getParameter("selectType"));
+			String content = request.getParameter("content");
+			CsCenterInquire csCenterInquire = new CsCenterInquire(0, memberId, title, selectType, content, null);
+			System.out.println(csCenterInquire);
+			
+			//2. 업무로직
+			int result = csCenterService.insertInquire(csCenterInquire);
+			System.out.println("result = " + result);
+			
+			
+			
+			
+			//3. redirect
+			request.getSession().setAttribute("msg", "문의를 성공적으로 등록했습니다.");
+			response.sendRedirect(request.getContextPath() + "/cs_center");
+		}catch(Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
 	}
 
 }
