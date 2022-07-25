@@ -4,7 +4,7 @@
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 <link rel="stylesheet"
-	href="<%=request.getContextPath() %>/css/member.css?" />
+	href="<%=request.getContextPath() %>/css/member.css" />
 <%
 	String memberId = loginMember.getMemberId();
 	String memberName = loginMember.getMemberName();
@@ -44,7 +44,7 @@
 			<table>
 				<tr>
 					<td>아이디</td>
-					<td><input type="text" name="memberId" id="memberId" value="<%= memberId %>" readonly/></td>
+					<td><input style="outline: none; border: none; font-size: 15px;" type="text" name="memberId" id="memberId" value="<%= memberId %>" readonly/></td>
 				</tr>
 				<tr>
 					<td>비밀번호</td>
@@ -55,7 +55,7 @@
 				</tr>
     			<tr>
     				<td>이름</td>
-					<td><input type="text" name="memberName" id="memberName" value="<%= memberName %>" readonly/></td>
+					<td><input style="outline: none; border: none; font-size: 15px;" type="text" name="memberName" id="memberName" value="<%= memberName %>" readonly/></td>
 				</tr>
     			<tr>
     				<td>이메일</td>
@@ -109,11 +109,11 @@
 
 <!-- 내 코디 확인 -->
 <div id="myFrm-container">
-	<form class="myFrm" name="myCodiFrm" action="<%= request.getContextPath() %>/member/memberMyCodiList">
+	<form class="myFrm" name="myCodiFrm" action="<%= request.getContextPath() %>/member/memberMyCodiList?memberId=<%= loginMember.getMemberId() %>">
 		<input type="hidden" name="memberId" value="<%= loginMember.getMemberId() %>" />
 	</form>
 	<div id="my-codi-selected" onclick="myCodi();">내 코디</div>
-	<form class="myFrm" name="myBoardFrm" action="<%= request.getContextPath() %>/member/memberMyBoardList">
+	<form class="myFrm" name="myBoardFrm" action="<%= request.getContextPath() %>/member/memberMyBoardList?memberId=<%= loginMember.getMemberId() %>">
 		<input type="hidden" name="memberId" value="<%= loginMember.getMemberId() %>" />
 	</form>
 	<div id="my-board-selected" onclick="myBoard();">내 게시글</div>
@@ -137,7 +137,7 @@ function isModalOn() {
 
 function modalOff() {
     modal.style.display = "none"
-   	$('body').css("overflow", "scroll");
+   	$('body').css("overflow-y", "scroll");
 }
 
 const btnModal = document.getElementById("btn-modal-memberUpdate")
@@ -184,7 +184,7 @@ document.querySelector("#researchButton").addEventListener('click', function(){
 });
    
 const updatePassword = () => {
-	window.open('<%= request.getContextPath() %>/member/memberPasswordUpdate', 'popup', 'width=400px, height=400px, location=no, status=no, scrollbars=no');
+	window.open('<%= request.getContextPath() %>/member/memberPasswordUpdate', 'popup', 'width=500px, height=400px, top=50; left=100; location=no, status=no, scrollbars=no');
 };
 
 /**
