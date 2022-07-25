@@ -222,95 +222,117 @@
 	</section>
 </main>
 <script>
+// 이미지 자동 슬라이드
 [...document.querySelectorAll("#product-img-wrap")].forEach((img) => {
-	   $(document).ready(function () {
-	        $(img).slick({
-	            infinite: true,
-	            speed: 500,
-	            fade: true,
-	            cssEase: 'linear',
-	            autoplay: true,
-	            autoplaySpeed: 1000,
-	            prevArrow: "",
-	            nextArrow: ""
-	        });
-	    });
-	});
+   $(document).ready(function () {
+        $(img).slick({
+            infinite: true,
+            speed: 500,
+            fade: true,
+            cssEase: 'linear',
+            autoplay: true,
+            autoplaySpeed: 1000,
+            prevArrow: "",
+            nextArrow: ""
+        });
+    });
+});
 	
-	window.addEventListener('load', (e) => {
-		const productPrice = document.querySelectorAll("#productPrice");
-		const productTotalPrice = document.querySelector("#productTotalPrice");
-		const totalPrice= document.querySelector("#totalPrice");
-		
-		const price = [...productPrice].map((span) => Number(span.innerHTML.replace(",",""))).reduce((total, price) => total + price);
-		
-		productTotalPrice.innerHTML = price.toLocaleString('ko-KR');
-		totalPrice.innerHTML = (price + 2500).toLocaleString('ko-KR');
-		
-		const orderPrice = document.querySelector("#orderPrice");
-		const discount = document.querySelector("#discount");
-		const total = document.querySelectorAll("#total");
-		orderPrice.innerHTML = totalPrice.innerHTML;
-		[...total].forEach((div) => div.innerHTML = totalPrice.innerHTML);
-	});
+// 주문 상품에 따른 총 가격 랜더링
+window.addEventListener('load', (e) => {
+	const productPrice = document.querySelectorAll("#productPrice");
+	const productTotalPrice = document.querySelector("#productTotalPrice");
+	const totalPrice= document.querySelector("#totalPrice");
 	
-	document.querySelector("#usePoint").addEventListener('change', (e) => {
-		const point = e.target;
-		const orderPrice = document.querySelector("#orderPrice");
-		const memberPoint = <%= member.getPoint()%>;
-		const discount = document.querySelector("#discount");
-		const total = document.querySelectorAll("#total");
-		const totalPrice= document.querySelector("#totalPrice");
-		const usePoint = document.querySelector("#usePoint");
+	const price = [...productPrice].map((span) => Number(span.innerHTML.replace(",",""))).reduce((total, price) => total + price);
+	
+	productTotalPrice.innerHTML = price.toLocaleString('ko-KR');
+	totalPrice.innerHTML = (price + 2500).toLocaleString('ko-KR');
+	
+	const orderPrice = document.querySelector("#orderPrice");
+	const discount = document.querySelector("#discount");
+	const total = document.querySelectorAll("#total");
+	
+	orderPrice.innerHTML = totalPrice.innerHTML;
+	[...total].forEach((div) => div.innerHTML = totalPrice.innerHTML);
+});
+	
+// 사용자 적립금 사용
+document.querySelector("#usePoint").addEventListener('change', (e) => {
+	const point = e.target;
+	const orderPrice = document.querySelector("#orderPrice");
+	const usePoint = document.querySelector("#usePoint");
+	const memberPoint = <%= member.getPoint()%>;
+	const discount = document.querySelector("#discount");
+	const total = document.querySelectorAll("#total");
+	const totalPrice= document.querySelector("#totalPrice");
+	
+	if(memberPoint < point.value) {
+		alert('사용가능한 적립금보다 많습니다.');
+		point.value = 0;
+		point.focus();
+		return;
+	}
+	
+	if(Number(totalPrice.innerHTML.replace(",","")) < usePoint.value) {
+		alert('상품 가격보다 사용적립금이 더 많습니다.')
+		point.value = 0;
+		point.focus();
+		return;
+	}
+	
+	discount.innerHTML = (point.value).toLocaleString('ko-KR');
+	total.forEach((div) => div.innerHTML = (Number(orderPrice.innerHTML.replace(",","")) - Number(discount.innerHTML.replace(",",""))).toLocaleString('ko-KR'));
+});
+	
+// 결제수단에 따라 안내 사항 보여주기
+document.querySelectorAll("[name=payment]").forEach((payment) => {
+	payment.addEventListener('change', (e) => {
+		const cashInfo = document.querySelector("#cash-info");
+		const cardInfo = document.querySelector("#card-info");
+		const finalPayment = document.querySelector("[name=finalPayment]");
 		
-		if(memberPoint < point.value) {
-			alert('사용가능한 적립금보다 많습니다.');
-			point.value = 0;
-			point.focus();
+		if(e.target.id == 'cash') {
+			cashInfo.style.display = 'block';
+			cardInfo.style.display = 'none';
+			finalPayment.value = 'CC';
+			return;
+		} else {
+			cardInfo.style.display = 'block';
+			cashInfo.style.display = 'none';
+			finalPayment.value = 'CA';
 			return;
 		}
-		
-		if(Number(totalPrice.innerHTML.replace(",","")) < usePoint.value) {
-			alert('상품 가격보다 사용적립금이 더 많습니다.')
-			point.value = 0;
-			point.focus();
-			return;
-		}
-		
-		discount.innerHTML = (point.value).toLocaleString('ko-KR');
-		total.forEach((div) => div.innerHTML = (Number(orderPrice.innerHTML.replace(",","")) - Number(discount.innerHTML.replace(",",""))).toLocaleString('ko-KR'));
 	});
-	
-	document.querySelectorAll("[name=payment]").forEach((payment) => {
-		payment.addEventListener('change', (e) => {
-			const cashInfo = document.querySelector("#cash-info");
-			const cardInfo = document.querySelector("#card-info");
-			const finalPayment = document.querySelector("[name=finalPayment]");
-			if(e.target.id == 'cash') {
-				cashInfo.style.display = 'block';
-				cardInfo.style.display = 'none';
-				finalPayment.value = 'CC';
-				return;
-			} else {
-				cardInfo.style.display = 'block';
-				cashInfo.style.display = 'none';
-				finalPayment.value = 'CA';
-				return;
-			}
-		});
-	});
-	
-document.querySelector("#orderBtn").addEventListener('click', (e) => {
-	const productCode = document.querySelectorAll("[name=productCode]");
-	let productList = [];
+});
 
+// 주문번호 클릭 시
+document.querySelector("#orderBtn").addEventListener('click', (e) => {
+	const frm = document.memberPayFrm;
+	
+	const productCode = document.querySelectorAll("[name=productCode]");
+	const finalPayment = document.querySelector("[name=finalPayment]");
+	const finalMemberPoint = document.querySelector("[name=finalMemberPoint]");
+	const finalPrice = document.querySelector("[name=finalPrice]");
+	const payment = document.querySelectorAll("[name=payment]");
+	const addPoint = document.querySelectorAll("#addPoint");
+	const finalUsePoint = document.querySelector("[name=finalUsePoint]");
+	const usePoint = document.querySelector("#usePoint");
+	const total = document.querySelector("#total");
+	
+	let productList = [];
+	
+	// 재고 확인
 	for(let i = 0; i < productCode.length; i++) {
 	<% 
 		for(MemberProductManager manager : orderList) {
 			ProductExt product = manager.getProductExt();
 	%>
 			productAmounts = productCode[i].parentElement.nextElementSibling.nextElementSibling.innerText;
-			if("<%= product.getProductCode()%>" == productCode[i].value && <%= product.getProductStock() %> < productAmounts) {
+			
+			const stockCheckBool = "<%= product.getProductCode()%>" == productCode[i].value && <%= product.getProductStock() %> < productAmounts;
+			
+			if(stockCheckBool) {
 				alert("해당 상품[<%= product.getProductCode()%>]에 대한 재고가 부족합니다. 고객센터에 문의해주세요.");
 				return;
 			} else {
@@ -320,15 +342,6 @@ document.querySelector("#orderBtn").addEventListener('click', (e) => {
 		}
 		%>
 	};
-	const frm = document.memberPayFrm;
-	const finalPayment = document.querySelector("[name=finalPayment]");
-	const finalMemberPoint = document.querySelector("[name=finalMemberPoint]");
-	const payment = document.querySelectorAll("[name=payment]");
-	const finalPrice = document.querySelector("[name=finalPrice]");
-	const addPoint = document.querySelectorAll("#addPoint");
-	const finalUsePoint = document.querySelector("[name=finalUsePoint]");
-	const usePoint = document.querySelector("#usePoint");
-	const total = document.querySelector("#total");
 	
 	[...payment].forEach((pay) => {
 		if(pay.checked == true) {
@@ -336,6 +349,7 @@ document.querySelector("#orderBtn").addEventListener('click', (e) => {
 			return;
 		}
 	});
+	
 	const point = [...addPoint].map((text) => Number(text.innerHTML.replace(",", ""))).reduce((total, price) => total+price);
 	finalMemberPoint.value = point;
 	finalPrice.value = total.innerHTML.replace(",","");
