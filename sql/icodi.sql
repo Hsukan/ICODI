@@ -1,6 +1,7 @@
 select * from member;
 select * from notice;
 select * from notice where notice_no = 1;
+select * from inquire order by inquire_date desc;
 select * from v$version;
 select instance_name, version, status from v$instance;
 insert into notice (notice_no, notice_title, notice_content,notice_date,notice_writer) values(1,'네이버페이로 구매 시 주문 확인 안내','안녕하세요? 코디북입니다.
