@@ -14,11 +14,14 @@ main {
 ul,li {list-style: none;}
 a{
 	text-decoration: none;
+	color : black;
 }
 section{
 	display:flex;
 	justify-content : space-between;
-	margin: 100px 0 30px 0;}
+	margin: 100px 0 30px 0;
+	height: 700px;
+	}
 
 
 
@@ -27,6 +30,7 @@ section{
 	width:250px;
 	padding: 10px;
 	height : 220px;
+	background-color: #EEEEEE;
 	box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 1px, rgba(0, 0, 0, 0.07) 0px 2px 2px, rgba(0, 0, 0, 0.07) 0px 4px 4px, rgba(0, 0, 0, 0.07) 0px 8px 8px, rgba(0, 0, 0, 0.07) 0px 16px 16px;
 }
 
@@ -44,17 +48,20 @@ section{
 
 /*가운데 박스*/
 #content-center{
-	position: relative;
-    top: 51px;
 	display: flex;
     flex-direction: column;
     padding: 10px;
-    width: 400px;
-    height: 320px;
-	box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
-    justify-content: space-evenly;
+    width: 256px;
+    height: 222px;
+box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 1px, rgba(0, 0, 0, 0.07) 0px 2px 2px, rgba(0, 0, 0, 0.07) 0px 4px 4px, rgba(0, 0, 0, 0.07) 0px 8px 8px, rgba(0, 0, 0, 0.07) 0px 16px 16px;
+    align-items: flex-start;
+    justify-content: flex-start;
+    background-color: #EEEEEE;
 }
-
+#center-wrap div{
+	margin : 20px 10px;
+	text-align: left;
+}
 #content-center h2{
 	margin-left: 10px;
 }
@@ -65,14 +72,27 @@ section{
 	margin: 15px 0;
 }
 
+#content-center a {
+  padding: 10px -10px;
+  transition: color .3s ease-in-out, box-shadow .3s ease-in-out;
+}
+#content-center a:hover {
+  box-shadow: inset 165px 0 0 0  rgb(22, 160, 133);
+  color: white;
+}
+
+
 /*오른쪽 박스*/
 /*상품등록/삭제 박스*/
 
 #content-wrap{
 	display: flex;
 	flex-direction: column;	
-	width : 250px;
-	
+	width : 277px;
+	height : 450px;
+	padding : 10px;
+	background-color: #EEEEEE;
+	box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 1px, rgba(0, 0, 0, 0.07) 0px 2px 2px, rgba(0, 0, 0, 0.07) 0px 4px 4px, rgba(0, 0, 0, 0.07) 0px 8px 8px, rgba(0, 0, 0, 0.07) 0px 16px 16px;
 }
 
 .product-content{
@@ -85,15 +105,15 @@ section{
 	margin-top: 10px;
 }
 .product-content-icon {
-	margin : 10px 10px;
-	width: 150px;
+	margin : 10px 5px;
+	width: 100px;
 	padding : 10px;
     height: 120px;
     justify-content: center;
     display: flex;
     align-items: center;
     flex-direction: column;
-    background-color : #EEEEEE;
+   	background-color: #EAEAEA;
     }
 
 #content-wrap h2 {

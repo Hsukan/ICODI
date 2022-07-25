@@ -33,7 +33,7 @@ public class CsCenterInquireViewServlet extends HttpServlet {
 			CsCenterInquire csCenterInquire = csCenterService.findInquireContentByNo(InquireNo);
 			System.out.println(InquireNo);
 			
-			
+			                                                                                                                                                                                                                                                                                                                                                           
 			
 			List<CsCenterInquireAnswer> answerList = csCenterService.findInquireAnwerByInquireNo(InquireNo);
 			request.setAttribute("answerList", answerList);
