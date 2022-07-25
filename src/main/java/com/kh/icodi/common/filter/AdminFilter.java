@@ -18,7 +18,7 @@ import com.kh.icodi.member.model.dto.MemberRole;
 /**
  * Servlet Filter implementation class AdminFilter
  */
-@WebFilter({"/admin/*", "/product/deleteStock", "/product/productFind"})
+@WebFilter({"/admin/*", "/product/deleteStock"})
 public class AdminFilter implements Filter {
 
 	/**

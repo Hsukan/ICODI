@@ -39,7 +39,7 @@ div#search-container {
 		</tr>
 		
 		<% if(searchKeyword != null) {%>
-			<span><%=(searchType == "board_title" ? "제목" : "내용") %>검색 : '<%= searchKeyword %>' 에 대한 검색 결과 입니다.</span>
+			<span>'<%= searchKeyword %>' 에 대한 검색 결과 입니다.</span>
 			<br /><br />
 		<% } %>
 		<% 
