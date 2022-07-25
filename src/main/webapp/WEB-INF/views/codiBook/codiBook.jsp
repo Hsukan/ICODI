@@ -4,7 +4,6 @@
 <%@ include file="/WEB-INF/views/common/header.jsp"%>
 <%
 	String loginMemberId = (String)request.getAttribute("loginMemberId");
-	System.out.println("loginMember@codiBook = " + loginMemberId);
 %>
 <script src="<%=request.getContextPath()%>/js/jquery-3.6.0.js"></script>
 <script
@@ -71,7 +70,6 @@
 <script>
 document.querySelector("#category").addEventListener('change', (e) => {
 	const target = e.target.value;
-	console.log(target);
 	productLoad(target);
 });
 const productLoad = (target) => {
@@ -121,16 +119,10 @@ function allowDrop(ev) {
 //클릭하고 이동시
 function drag(ev) {
         ev.dataTransfer.setData("text", ev.target.id);
-        // console.log("id : " , ev.target.id);
-        // console.log("categoryCode : ", ev.target.dataset.categoryCode);
-        // const imgNum = ev.target.id.charAt(ev.target.id.length - 1);
         const imgCategory = ev.target.dataset.categoryCode;
-        // console.log("이미지 번호 : ", imgCategory);
         const div = document.getElementsByClassName("canvasDiv");
         [...div].forEach((div) => {
             const divNum = div.id.charAt(div.id.length - 1);
-            // console.log("div번호 : ", divNum);
-
             
             if (imgCategory === divNum) {
                 div.setAttribute('ondrop', "drop(event)")
@@ -152,7 +144,6 @@ function drop(ev) {
     const divNumber = ev.target.id.charAt(ev.target.id.length - 1);
 
     const imgNum = ev.target.id.charAt(ev.target.id.length - 1);
-    // console.log(imgNum);
     const div = document.getElementsByClassName("canvasDiv");
     [...div].forEach((div) => {
         const divNum = div.id.charAt(div.id.length - 1);
@@ -170,25 +161,11 @@ function drop(ev) {
 
         }
     });
-    //드랍된 이미지 태그,data 다 가져옴
-
+    
     [...div].forEach((div) => {
         div.classList.remove("target")
-    })
+    });
 
-    if(ev.target.id == "container_img"){
-        new Set(arr);
-        const deleteArr = ev.target.appendChild(document.getElementById(data)).dataset.productCode;
-        for(let i = 0; i < arr.length; i++){
-            if(arr[i] === deleteArr){
-                arr.splice(i, 1);
-            }
-        }
-        //ev.target.innerHTML = " ";
-        console.log(arr);
-        
-        //document.querySelector()
-    }
 };
 btnSave.onclick = (e) => {
 	console.log("<%=loginMemberId%>");
