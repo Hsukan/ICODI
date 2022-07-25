@@ -132,8 +132,8 @@ span.moreView:active { color: black; }
 							<div style="border: 1px solid #9d9d9dd1;" class="topItem">
 							<a href="<%= request.getContextPath()%>/product/detail?product_name=\${productName}">					
 							<img style="height: 70%;" src="<%= request.getContextPath()%>/upload/admin/\${productRenamedFilename}" alt="" /></a><br /><br />
-							<span style="font-size: 13px; top:-19px; position: relative;">\${productName}</span><br /><br />
-							<span style="font-size: 13px; top:-36px; position: relative;">\${productPrice} won</span>
+							<span style="font-size: 13px; top:-15px; position: relative;">\${productName}</span><br /><br />
+							<span style="font-size: 13px; top:-24px; position: relative;">\${productPrice} won</span>
 						</div>
 						`;
 						div.insertAdjacentHTML('beforeend', img);
@@ -173,8 +173,8 @@ span.moreView:active { color: black; }
 							<div style="border: 1px solid #9d9d9dd1;" class="bottomItem">
 							<a href="<%= request.getContextPath()%>/product/detail?product_name=\${productName}">					
 							<img style="height: 70%;" src="<%= request.getContextPath()%>/upload/admin/\${productRenamedFilename}" alt="" /></a><br /><br />
-							<span style="font-size: 13px; top:-19px; position: relative;">\${productName}</span><br /><br />
-							<span style="font-size: 13px; top:-36px; position: relative;">\${productPrice} won</span>
+							<span style="font-size: 13px; top:-15px; position: relative;">\${productName}</span><br /><br />
+							<span style="font-size: 13px; top:-24px; position: relative;">\${productPrice} won</span>
 						</div>
 						`;
 						div.insertAdjacentHTML('beforeend', img);
@@ -213,8 +213,8 @@ span.moreView:active { color: black; }
 							<div style="border: 1px solid #9d9d9dd1;" class="shoesItem">
 							<a href="<%= request.getContextPath()%>/product/detail?product_name=\${productName}">					
 							<img style="height: 70%;" src="<%= request.getContextPath()%>/upload/admin/\${productRenamedFilename}" alt="" /></a><br /><br />
-							<span style="font-size: 13px; top:-19px; position: relative;">\${productName}</span><br /><br />
-							<span style="font-size: 13px; top:-36px; position: relative;">\${productPrice} won</span>
+							<span style="font-size: 13px; top:-15px; position: relative;">\${productName}</span><br /><br />
+							<span style="font-size: 13px; top:-24px; position: relative;">\${productPrice} won</span>
 						</div>
 						`;
 						div.insertAdjacentHTML('beforeend', img);
