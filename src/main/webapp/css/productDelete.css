@@ -54,3 +54,22 @@ tr:last-child td:first-child {
 tr:last-child td:last-child {
   border-bottom-right-radius: 6px;
 }
+#delBtn {
+	height: 25px;
+    width: 60px;
+    background-color: white;
+    border: 1px solid rgb(26, 188, 156);
+    color: gray;
+    cursor: pointer;
+}
+#delBtn:hover {
+	background-color: rgb(22, 160, 133, 0.5);
+	border:none;
+	color:black;
+}
+[name=categoryName] {
+    height: 25px;
+    width: 100px;
+    outline: none;
+    border: 1px solid gray;
+}

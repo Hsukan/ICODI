@@ -20,6 +20,8 @@
 		이용에 불편드려 죄송합니다.
 	</p>
 	<hr />
-	<button id="goToMain" onclick="<%= request.getContextPath()%>">메인으로 이동하기</button>
+	<a href="<%= request.getContextPath()%>">
+		<button id="goToMain">메인으로 이동하기</button>	
+	</a>
 </body>
 </html>

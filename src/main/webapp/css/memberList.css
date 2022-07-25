@@ -7,7 +7,6 @@ section#memberList-container h2 {margin-top: 45px;}
 section#memberList-container table#tbl-member {width: 80%; font-size: 14px; border:1px solid gray; border-collapse:collapse; margin: 40px auto;}
 
 
-
 table#tbl-member td {border:1px solid gray; padding:10px; }
 table#tbl-member th {border:1px solid gray; padding:15px; background-color: #e2e2e2;}
 section#memberList-container div#neck-container{padding:0px; height: 50px; background-color:rgba(0, 188, 212, 0.3);}

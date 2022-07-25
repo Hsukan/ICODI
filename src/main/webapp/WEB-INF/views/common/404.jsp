@@ -22,7 +22,11 @@
 		 주소를 올바르게 입력했는 지 확인부탁드리겠습니다.
 	</p>
 	<hr />
-	<button id="goToMain" onclick="<%= request.getContextPath()%>">메인으로</button>
-	<button onclick="javascript:history.back()" id="goToBack">뒤로가기</button>
+	<a href=""<%= request.getContextPath()%>"">	
+		<button id="goToMain">메인으로</button>
+	</a>
+	<a href="javascript:history.back()">
+		<button id="goToBack">뒤로가기</button>
+	</a>
 </body>
 </html>

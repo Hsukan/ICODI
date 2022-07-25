@@ -16,20 +16,21 @@
 <body>
 	<main>
 	<h1>문의내역확인</h1>
-	<hr></hr>
 	<table id="tbl-inquire-list">
-	<th>작성자</th>
 	<th>문의명</th>
+	<th>작성자</th>
 	<th>등록일</th>
 	<%for(CsCenterInquire c : list) {%>
 		<tr>
 			<td>
-			<%=c.getMemberId() %>
+			<a href="<%=request.getContextPath()%>/csCenter/inquireView?no=<%= c.getNo()%>">
+			<span id="csTitle">
+				<%=c.getTitle() %>			
+			</span>
+			</a>
 			</td>
 			<td>
-			<a href="<%=request.getContextPath()%>/csCenter/inquireView?no=<%= c.getNo()%>">
-			<%=c.getTitle() %>
-			</a>
+			<%=c.getMemberId() %>
 			</td>
 			<td>
 				<%=c.getInquireDate() %>

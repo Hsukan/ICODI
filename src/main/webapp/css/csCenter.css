@@ -10,7 +10,18 @@ main {
 	margin: 0;
 	padding: 0;
 }
-
+a {
+	color:gray;
+    text-decoration: none;
+    font-size: 15px;
+    line-height: 1.5;
+}
+ul > h3 {
+	margin:10px 0;
+}
+.csInfo {
+	font-size:13px;
+}
 button, input[type=submit],input[type=button]{	
 	cursor: pointer;
 }
@@ -32,9 +43,14 @@ input[type=button], #btn-inquireList{ color : green; background-color : white; b
 .alert{background-color: #EBEBEB;
     padding: 15px;
     text-align: center;
-    width: 600px;
+    width: 100%;
     margin-bottom: 25px;
+    line-height: 1.5;
    }
+.strong {
+	font-size:15px;
+	font-weight: bold;
+}
 td,th{border-top: 1px solid rgb(173, 173, 173); border-bottom: 1px solid rgb(173, 173, 173);}
 td{width:600px; height:50px;}
 th{width:200px; height:50px;}
@@ -90,7 +106,9 @@ table {
     margin-left:auto; 
     margin-right:auto;
 }
-
+#csTitle  {
+	font-weight: bold;
+}
 #tbl-inquire-list tr td, #tbl-inquireView td:not(.first){border-top:none;} 
 #tbl-inquire-list{
 	display: flex;
@@ -99,14 +117,14 @@ table {
     margin-bottom: 250px;
     }
 #tbl-inquire-list th{
-	background-color:  rgb(22, 160, 133); 
-	color : white;
-	font-size: 20px;
+	background-color: #A6E2CE;
+	color : black;
+	font-size: 16px;
 }
 #tbl-inquire-list td{
-	background-color: #A6E2CE;
-	color : red;
-	font-size: 18px; 
+	background-color: white;
+	color : gray;
+	font-size: 13px; 
 }
 
 #inquire-list-h2{margin : 20px 0;}

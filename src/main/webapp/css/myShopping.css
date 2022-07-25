@@ -45,7 +45,7 @@ a {
 }
 nav {
 	border-radius: 5px;
-    border: 1px solid rgb(22, 160, 133);
+    border: 1px solid rgb(22, 160, 133, 0.5);
     padding:15px;
 }
 #nav-header {
