@@ -123,7 +123,7 @@
 						</table>
 					</div>
 					<div class="order-wrap">
-						<button id="order-btn">상품주문</button>
+						<button id="order-btn" type="button">상품주문</button>
 					</div>
 				</form>
 			</div>
@@ -156,6 +156,17 @@ document.querySelector("#allOrder").addEventListener('click', (e) => {
 	});
 });
 
+document.querySelector("#order-btn").addEventListener('click', (e) => {
+	const count = $("input:checkbox[name=checkbox]:checked").length;
+
+	if(count == 0) {
+		alert('하나 이상의 상품을 반드시 선택해주세요.');
+		e.preventDefault();
+		return;
+	}
+	document.memberOrderFrm.submit();
+});
+
 document.querySelector("#delBtn").addEventListener('click', (e) => {
 	let delCartNo = [];
 	
@@ -178,19 +189,6 @@ document.querySelector("#delBtn").addEventListener('click', (e) => {
 		},
 		error : console.log
 	});
-});
-
-$(document).ready(function () {
-    $('#product-img-wrap').slick({
-        infinite: true,
-        speed: 1000,
-        fade: true,
-        cssEase: 'linear',
-        autoplay: true,
-        autoplaySpeed: 300,
-        prevArrow: "",
-        nextArrow: ""
-    });
 });
 
 window.addEventListener('load', (e) => {

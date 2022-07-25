@@ -78,7 +78,7 @@ const getPage = (cPage) => {
 					//console.log(img.dataset.codiboardno);
 					location.href = "<%= request.getContextPath()%>/codiBoard/codiDetail?useProduct="+`\${img.dataset.product}`+"&codiBoardNo="+`\${img.dataset.codiboardno}`+
 					"&likeCount="+`\${img.dataset.likecount}`;
-				};
+				};	
 			});
 		}
 	})

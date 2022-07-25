@@ -243,7 +243,7 @@ footer{
     cursor: pointer;
     color:gray;
 }
-.strong {
+.errStrong {
 	font-size:18px;
 	font-weight: bold;
 }

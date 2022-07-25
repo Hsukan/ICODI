@@ -17,7 +17,7 @@
 </head>
 <body>
 	<p class="err-msg">
-		 <span class="strong">요청하신 페이지는 존재하지 않습니다 :</span>
+		 <span class="errStrong">요청하신 페이지는 존재하지 않습니다 :</span>
 		 <br />
 		 주소를 올바르게 입력했는 지 확인부탁드리겠습니다.
 	</p>
