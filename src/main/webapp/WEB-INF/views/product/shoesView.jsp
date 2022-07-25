@@ -45,7 +45,7 @@
 								<img src="<%= request.getContextPath()%>/upload/admin/\${productRenamedFilename}" alt="" />
 								<div class="product-info">
 									<div id="productName">\${productName}</div>
-									<div id="productPrice">\${productPrice}</div>
+									<div id="productPrice">\${productPrice.toLocaleString('ko-KR')}원</div>
 								</div>
 							</a>	
 						</li>

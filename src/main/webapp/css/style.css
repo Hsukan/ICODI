@@ -208,3 +208,42 @@ footer{
  #footer-word > *{
  	font-size:13px;
  }
+ /* 에러페이지 */
+ * {
+ 	font-family: 'Nanum Gothic', sans-serif;
+ }
+ .err-msg {
+ 	font-size:14px;
+ 	line-height: 2;
+ }
+#goToMain {
+    height: 40px;
+     width:150px;
+    background-color: white;
+    border: 1px solid rgb(22, 160, 133);
+    cursor: pointer;
+    color:gray;
+}
+#goToMain:hover {
+	background-color: rgb(26, 188, 156, 0.5);
+	border: none;
+	color:black;
+}
+#goToBack {
+    height: 40px;
+    width:150px;
+	background-color: rgb(26, 188, 156, 0.5);
+	border: none;
+	color:black;
+	cursor: pointer;
+}
+#goToBack:hover {
+    background-color: white;
+    border: 1px solid rgb(22, 160, 133);
+    cursor: pointer;
+    color:gray;
+}
+.strong {
+	font-size:18px;
+	font-weight: bold;
+}
