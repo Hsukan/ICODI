@@ -24,10 +24,16 @@ public class CsCenterListServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		List<CsCenter> list = csCenterService.findAll();
-		
-		request.setAttribute("list", list);
-		request.getRequestDispatcher("/WEB-INF/views/cscenter/csCenter.jsp").forward(request, response);
+		try {
+			
+			List<CsCenter> list = csCenterService.findAll();
+			
+			request.setAttribute("list", list);
+			request.getRequestDispatcher("/WEB-INF/views/cscenter/csCenter.jsp").forward(request, response);
+		}catch(Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
 	}
 
 }
