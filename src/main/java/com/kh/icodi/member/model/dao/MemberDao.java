@@ -501,7 +501,7 @@ public class MemberDao {
 		PreparedStatement pstmt = null;
 		int result = 0;
 		String sql = prop.getProperty("insertProductOrder");
-		String status = ((String)data.get("payment")).equals("cash") ? "입금대기" : "결제완료";
+		String status = ((String)data.get("payment")).equals("cash") ? "입금대기" : "배송준비중";
 		System.out.println("status = " + status);
 		try {
 			pstmt = conn.prepareStatement(sql);
