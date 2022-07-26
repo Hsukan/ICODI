@@ -48,6 +48,9 @@ th,td {
 .color-list, .size-list {
 	display:flex;
 }
+.delete {
+	cursor: pointer;
+}
 .color {
 	display: flex;
 	width:60px;

@@ -112,6 +112,8 @@
 		</section>
 	</main>
 <script>
+
+// 컬러 선택을 통해 선택버튼 비활성화 처리 및 사이즈 버튼 활성화 처리
 document.querySelectorAll(".color").forEach((target) => {
 	target.addEventListener('click', (e) => {
 		const color = e.target;
@@ -137,6 +139,7 @@ document.querySelectorAll(".size").forEach((target) => {
 			size.disabled = true;
 			size.classList.remove('product-select');	
 		} else {
+			// 추가리스트에 기존에 추가된 상품인지 체크 및 후처리
 			const sizeList = document.querySelectorAll(".size-list li");
 			const colorList = document.querySelectorAll(".color-list li");
 			
@@ -149,7 +152,6 @@ document.querySelectorAll(".size").forEach((target) => {
 			let totalSize = '';
 			
 			[...selected].forEach((select) => {
-				console.dir()
 				if(select.className.indexOf('color') != -1) {
 					totalColor = select.innerHTML;
 				} else if(select.className.indexOf('size') != -1) {
@@ -245,6 +247,7 @@ const productDelete = (e) => {
 	totalPrice(totalCnt);
 };
 
+// 바로주문 및 장바구니 추가 처리
 document.querySelectorAll("button").forEach((button) => {
 	button.addEventListener('click', (e) => {
 		const frm = document.totalProductFrm;
@@ -256,11 +259,13 @@ document.querySelectorAll("button").forEach((button) => {
 			cartList.push({"productCode":code.value, "productCount":productCount});	
 		});
 			
+		// 상품을 선택하지 않으면 alert
 		if(tbody.children.length == 0) {
 			alert("상품을 선택해주세요.");
 			return;
 		}
 		
+		// buy it now
 		if(e.target.id === 'buy') {
 			if(<%= loginMember == null %>) {
 				alert("로그인 후 이용할 수 있습니다.");
@@ -270,7 +275,9 @@ document.querySelectorAll("button").forEach((button) => {
 			frm.action = "<%= request.getContextPath()%>/member/order";
 			frm.submit();
 			return;
-		} else if(e.target.id === 'cart') {
+		}
+		// add to cart
+		else if(e.target.id === 'cart') {
 			if(<%= loginMember == null %>) {
 				alert("로그인 후 이용할 수 있습니다.");
 				location.href = "<%= request.getContextPath()%>/member/memberLogin";
@@ -281,6 +288,7 @@ document.querySelectorAll("button").forEach((button) => {
 				type : "GET",
 				data : {data : JSON.stringify(cartList)},
 				success(response) {
+					// 기존 장바구니에 존재하는지 체크
 					if(response[0]) {
 						if(confirm('장바구니에 존재하는 상품입니다. 그래도 추가하시겠습니까?')) {
 							addCart(cartList);

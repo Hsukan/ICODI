@@ -224,7 +224,7 @@
 <script>
 // 이미지 자동 슬라이드
 [...document.querySelectorAll("#product-img-wrap")].forEach((img) => {
-   $(document).ready(function () {
+   $(img).ready(function () {
         $(img).slick({
             infinite: true,
             speed: 500,
@@ -282,10 +282,12 @@ document.querySelector("#usePoint").addEventListener('change', (e) => {
 	}
 	
 	discount.innerHTML = (point.value).toLocaleString('ko-KR');
-	total.forEach((div) => div.innerHTML = (Number(orderPrice.innerHTML.replace(",","")) - Number(discount.innerHTML.replace(",",""))).toLocaleString('ko-KR'));
+	
+	total.forEach((div) => 
+		div.innerHTML = (Number(orderPrice.innerHTML.replace(",","")) - Number(discount.innerHTML.replace(",",""))).toLocaleString('ko-KR'));
 });
 	
-// 결제수단에 따라 안내 사항 보여주기
+// 결제수단에 따른 안내 사항 보여주기
 document.querySelectorAll("[name=payment]").forEach((payment) => {
 	payment.addEventListener('change', (e) => {
 		const cashInfo = document.querySelector("#cash-info");
@@ -306,7 +308,7 @@ document.querySelectorAll("[name=payment]").forEach((payment) => {
 	});
 });
 
-// 주문번호 클릭 시
+// 주문버튼 클릭 시
 document.querySelector("#orderBtn").addEventListener('click', (e) => {
 	const frm = document.memberPayFrm;
 	
@@ -330,9 +332,7 @@ document.querySelector("#orderBtn").addEventListener('click', (e) => {
 	%>
 			productAmounts = productCode[i].parentElement.nextElementSibling.nextElementSibling.innerText;
 			
-			const stockCheckBool = "<%= product.getProductCode()%>" == productCode[i].value && <%= product.getProductStock() %> < productAmounts;
-			
-			if(stockCheckBool) {
+			if("<%= product.getProductCode()%>" == productCode[i].value && <%= product.getProductStock() %> < productAmounts) {
 				alert("해당 상품[<%= product.getProductCode()%>]에 대한 재고가 부족합니다. 고객센터에 문의해주세요.");
 				return;
 			} else {
@@ -342,7 +342,7 @@ document.querySelector("#orderBtn").addEventListener('click', (e) => {
 		}
 		%>
 	};
-	
+
 	[...payment].forEach((pay) => {
 		if(pay.checked == true) {
 			finalPayment.value = pay.id;

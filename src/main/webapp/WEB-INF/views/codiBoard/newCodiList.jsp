@@ -60,7 +60,7 @@ const getPage = (cPage) => {
 
                         <div class="text-wrap">
                             <div class="writerRegDateInfo">
-                                <a href="#" id="writer">\${memberId}</a>
+                                <div id="writer">\${memberId}</a>
                                 <span id="regDate">\${regDate}</span>
                             </div>
                             <div id="content">\${codiBoardContent}</div>
