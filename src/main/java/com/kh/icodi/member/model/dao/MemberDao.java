@@ -401,7 +401,7 @@ public class MemberDao {
 		return result;
 	}
 	
-	// 장바구니(주문) 추가 오류 
+	// 장바구니(주문) 추가 
 	// insertCart = insert into cart values (seq_cart_no.nextval, ?, ?, ?)
 	public int insertCartBuyItNo(Connection conn, Map<String, Object> data) {
 		PreparedStatement pstmt = null;
